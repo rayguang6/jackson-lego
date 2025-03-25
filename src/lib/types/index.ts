@@ -1,15 +1,21 @@
 // Section types
 export enum SectionType {
-  Header = 'header',
   Hero = 'hero',
-  Features = 'features',
-  FeaturesList = 'features-list',
-  Testimonials = 'testimonials',
-  Pricing = 'pricing',
-  FAQ = 'faq',
-  Contact = 'contact',
-  Footer = 'footer',
   CTA = 'cta',
+  Guarantee = 'guarantee',
+  CaseStudies = 'case-studies',
+  About = 'about',
+  WhoIsThisFor = 'who-is-this-for',
+  Offer = 'offer',
+  WorkWithUs = 'work-with-us',
+  BeforeAfter = 'before-after',
+  FAQs = 'faqs',
+  Testimonials = 'testimonials',
+  HowItWorks = 'how-it-works',
+  FeaturesOrServices = 'features-or-services',
+  Solutions = 'solutions',
+  Problem = 'problem',
+  SocialProof = 'social-proof',
 }
 
 // Section interface
