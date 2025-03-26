@@ -6,7 +6,7 @@ import { DesignProvider } from '@/lib/contexts/DesignContext';
 import TabPanel from '@/components/TabPanel';
 import SitemapBuilder from '@/components/sitemap/SitemapBuilder';
 import WireframePreview from '@/components/wireframe/WireframePreview';
-import StyleGuideEditor from '@/components/styleguide/StyleGuideEditor';
+import BrandGuide from '@/components/BrandGuide';
 
 export default function Home() {
   const [isStructurePanelOpen, setIsStructurePanelOpen] = useState(true);
@@ -73,8 +73,8 @@ export default function Home() {
                     },
                     {
                       id: 'style-guide',
-                      label: 'Style Guide',
-                      content: <StyleGuideEditor />,
+                      label: 'Brand Guide',
+                      content: <BrandGuide />,
                     },
                   ]}
                   defaultTab="sitemap"
