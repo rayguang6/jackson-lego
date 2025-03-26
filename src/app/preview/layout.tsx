@@ -11,12 +11,6 @@ export default function PreviewLayout({
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-xl font-bold text-gray-900">Component Preview</h1>
           <div className="flex space-x-6">
-            <Link href="/preview" className="text-gray-600 hover:text-blue-600">
-              Light Hero
-            </Link>
-            <Link href="/preview-dark" className="text-gray-600 hover:text-blue-600">
-              Dark Hero
-            </Link>
             <Link href="/preview/all" className="text-gray-600 hover:text-blue-600">
               All Sections
             </Link>

@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import BaseSection from '../../BaseSection';
+import { LogoIcon } from '@/components/icons/LogoIcon';
 
 interface HeroLightV1Props {
   title?: string;
@@ -11,6 +12,7 @@ interface HeroLightV1Props {
   ctaText?: string;
   badgeText?: string;
   badgeIconColor?: string;
+  theme?: 'light' | 'dark';
 }
 
 export const HeroLightV1: React.FC<HeroLightV1Props> = ({
@@ -18,7 +20,8 @@ export const HeroLightV1: React.FC<HeroLightV1Props> = ({
   subtitle = "Skip design frustration and launch your site fast with pre-designed, proven components.",
   ctaText = "GET INSTANT ACCESS",
   badgeText = "The #1 Community for Game-Changers",
-  badgeIconColor
+  badgeIconColor,
+  theme = 'light'
 }) => {
   // Add a try/catch to handle cases when not within a DesignProvider
   let contextPrimaryColor = "#EF083A"; // Default to fallback
@@ -37,29 +40,28 @@ export const HeroLightV1: React.FC<HeroLightV1Props> = ({
   
   // Use the badge icon color if provided, otherwise use the primary color
   const primaryColor = badgeIconColor || contextPrimaryColor;
+
+  const isDark = theme === 'dark';
   
   const titleParts = title.split('Maximum Efficiency');
   
   return (
     <BaseSection 
-      backgroundColor="white" 
+      backgroundColor={isDark ? "black" : "white"}
       paddingY="large"
       centered={true}
       sectionType="hero"
     >
       {/* Logo */}
       <div className="mb-8">
-        <Image 
-          src="/images/brand-logo.png"
-          alt="YourBrand"
-          width={140}
-          height={32}
-          priority
+        <LogoIcon 
+          brandColor={primaryColor}
+          theme={isDark ? 'dark' : 'light'}
         />
       </div>
 
       {/* Badge */}
-      <div className="inline-flex items-center bg-white rounded-full px-4 py-2 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+      <div className={`inline-flex items-center ${isDark ? 'bg-zinc-800' : 'bg-white'} rounded-full px-4 py-2 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]`}>
         <svg 
           width="21" 
           height="20" 
@@ -75,18 +77,18 @@ export const HeroLightV1: React.FC<HeroLightV1Props> = ({
             style={{ fill: primaryColor }}
           />
         </svg>
-        <span style={{ fontFamily: bodyFont }} className="font-archivo text-sm font-medium text-[#111827]">{badgeText}</span>
+        <span style={{ fontFamily: bodyFont }} className={`font-archivo text-sm font-medium ${isDark ? 'text-white' : 'text-[#111827]'}`}>{badgeText}</span>
       </div>
 
       {/* Title */}
-      <h1 style={{ fontFamily: headingFont }} className="font-manrope text-[48px] leading-[1.2] font-extrabold text-[#111827] mb-4 max-w-[800px]">
+      <h1 style={{ fontFamily: headingFont }} className={`font-manrope text-[48px] leading-[1.2] font-extrabold ${isDark ? 'text-white' : 'text-[#111827]'} mb-4 max-w-[800px]`}>
         {titleParts[0]}
         <span style={{ color: primaryColor, fontFamily: headingFont }}>Maximum Efficiency</span>
         {titleParts[1]}
       </h1>
 
       {/* Subtitle */}
-      <p style={{ fontFamily: bodyFont }} className="font-archivo text-[20px] leading-[1.6] font-normal text-[#4B5563] mb-8 max-w-[800px]">
+      <p style={{ fontFamily: bodyFont }} className={`font-archivo text-[20px] leading-[1.6] font-normal ${isDark ? 'text-gray-300' : 'text-[#4B5563]'} mb-8 max-w-[800px]`}>
         {subtitle}
       </p>
 

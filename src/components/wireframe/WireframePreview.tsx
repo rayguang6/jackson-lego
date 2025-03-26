@@ -167,6 +167,7 @@ const WireframePreview: React.FC = () => {
       if (section.type === SectionType.Hero) {
         return (
           <Component 
+            theme={template.theme}
             title="Multipurpose Page Blocks Designed for Maximum Efficiency"
             subtitle="Skip design frustration and launch your site fast with pre-designed, proven components."
             badgeText="The #1 Community for Game-Changers" 
@@ -177,8 +178,13 @@ const WireframePreview: React.FC = () => {
         );
       }
       
-      // For other section types, render the component with default props
-      return <Component />;
+      // For other section types, render the component with preview props if available
+      if (template.preview) {
+        return <Component {...template.preview} />;
+      }
+      
+      // If no preview props, render with default props
+      return <Component theme={template.theme} />;
     }
     
     // If no template is found, render a skeleton

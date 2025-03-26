@@ -3,23 +3,26 @@
 import React from 'react';
 import Image from 'next/image';
 import { useDesign } from '@/lib/contexts/DesignContext';
+import { LogoIcon } from '@/components/icons/LogoIcon';
 
-interface HeroDarkV3Props {
+interface HeroV3Props {
   title?: string;
   subtitle?: string;
   ctaText?: string;
   badgeText?: string;
   features?: string[];
   usersCount?: string;
+  theme?: 'light' | 'dark';
 }
 
-export const HeroDarkV3: React.FC<HeroDarkV3Props> = ({
+export const HeroV3: React.FC<HeroV3Props> = ({
   title = "Multipurpose Page Blocks Designed for Maximum Efficiency",
   subtitle = "Skip design frustration and launch your site fast with pre-designed, proven components.",
   ctaText = "GET INSTANT ACCESS",
   badgeText = "Generative Business Intelligence for Team",
   features = ["Build for Speed", "Proven, High Impact Design", "Launch Like A Pro"],
-  usersCount = "2,000+"
+  usersCount = "2,000+",
+  theme = 'light'
 }) => {
   // Add a try/catch to handle cases when not within a DesignProvider
   let primaryColor = "#EF083A"; // Default color
@@ -35,11 +38,13 @@ export const HeroDarkV3: React.FC<HeroDarkV3Props> = ({
     // Use default values if not within a DesignProvider
     console.log("Using default styling for preview");
   }
+
+  const isDark = theme === 'dark';
   
   return (
-    <section className="w-full bg-[#0B0F17] py-20 px-4 relative overflow-hidden">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-gradient-radial from-[#780820] to-[#0A0101] opacity-90" />
+    <section className={`w-full ${isDark ? 'bg-[#0B0F17]' : 'bg-white'} py-20 px-4 relative overflow-hidden`}>
+      {/* Background gradient effects - only in dark mode */}
+      {isDark && <div className="absolute inset-0 bg-gradient-radial from-[#780820] to-[#0A0101] opacity-90" />}
       
       <div className="max-w-[1200px] mx-auto relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -47,18 +52,14 @@ export const HeroDarkV3: React.FC<HeroDarkV3Props> = ({
           <div className="flex flex-col">
             {/* Logo */}
             <div className="mb-8">
-              <Image 
-                src="/images/brand-logo-dark.png"
-                alt="YourBrand"
-                width={140}
-                height={32}
-                priority
-                className=""
+              <LogoIcon 
+                brandColor={primaryColor}
+                theme={isDark ? 'dark' : 'light'}
               />
             </div>
 
             {/* Badge */}
-            <div className="inline-flex items-center bg-[#EF083A]/5 backdrop-blur-sm rounded-[25px] px-4 py-2 mb-8 w-fit border border-white/[0.15]">
+            <div className={`inline-flex items-center ${isDark ? 'bg-[#EF083A]/5 backdrop-blur-sm border border-white/[0.15]' : 'bg-gray-50'} rounded-[25px] px-4 py-2 mb-8 w-fit`}>
               <svg 
                 width="21" 
                 height="20" 
@@ -74,16 +75,16 @@ export const HeroDarkV3: React.FC<HeroDarkV3Props> = ({
                   style={{ fill: primaryColor }}
                 />
               </svg>
-              <span style={{ fontFamily: bodyFont }} className="font-archivo text-base font-medium text-white/90">{badgeText}</span>
+              <span style={{ fontFamily: bodyFont }} className={`font-archivo text-base font-medium ${isDark ? 'text-white/90' : 'text-gray-900'}`}>{badgeText}</span>
             </div>
 
             {/* Title */}
-            <h1 style={{ fontFamily: headingFont }} className="font-manrope text-[44px] leading-[1.2] font-normal text-white mb-4">
+            <h1 style={{ fontFamily: headingFont }} className={`font-manrope text-[44px] leading-[1.2] font-normal ${isDark ? 'text-white' : 'text-gray-900'} mb-4`}>
               {title}
             </h1>
 
             {/* Subtitle */}
-            <p style={{ fontFamily: bodyFont }} className="font-manrope text-base leading-[1.67] font-normal text-white/70 mb-8">
+            <p style={{ fontFamily: bodyFont }} className={`font-manrope text-base leading-[1.67] font-normal ${isDark ? 'text-white/70' : 'text-gray-600'} mb-8`}>
               {subtitle}
             </p>
 
@@ -93,10 +94,10 @@ export const HeroDarkV3: React.FC<HeroDarkV3Props> = ({
                 <div key={index} className="flex items-center gap-2">
                   <div className="w-5 h-5 flex items-center justify-center">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#C8D71E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M20 6L9 17L4 12" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <span style={{ fontFamily: bodyFont }} className="font-manrope text-sm leading-[1.75] text-white">{feature}</span>
+                  <span style={{ fontFamily: bodyFont }} className={`font-manrope text-sm leading-[1.75] ${isDark ? 'text-white' : 'text-gray-900'}`}>{feature}</span>
                 </div>
               ))}
             </div>
@@ -123,15 +124,15 @@ export const HeroDarkV3: React.FC<HeroDarkV3Props> = ({
                   className="h-8 w-auto"
                 />
               </div>
-              <p style={{ fontFamily: bodyFont }} className="font-manrope text-sm font-medium text-white/50">
-                Join 2000+Game-Changers Using YourBrand Today.
+              <p style={{ fontFamily: bodyFont }} className={`font-manrope text-sm font-medium ${isDark ? 'text-white/50' : 'text-gray-500'}`}>
+                Join {usersCount} Game-Changers Using <span className={isDark ? 'text-white' : 'text-gray-900'}>YourBrand</span> Today.
               </p>
             </div>
           </div>
 
           {/* Right Video Thumbnail */}
           <div className="relative w-full aspect-[4/5] rounded-[20px] overflow-hidden">
-            <div className="relative h-full rounded-[15px] overflow-hidden bg-[#0B0B0B]">
+            <div className={`relative h-full rounded-[15px] overflow-hidden ${isDark ? 'bg-[#0B0B0B]' : 'bg-gray-100'}`}>
               <Image
                 src="/images/video-thumbnail-2.png"
                 alt="Video thumbnail"
