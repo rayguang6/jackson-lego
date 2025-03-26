@@ -22,7 +22,7 @@ export default function Home() {
           <div className="flex justify-between items-center">
             <h1 className="text-xl font-bold text-gray-900">Jackson Lego</h1>
             <div className="flex space-x-2">
-              <button className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              {/* <button className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
                 Export
               </button>
               <Link 
@@ -30,9 +30,10 @@ export default function Home() {
                 className="bg-indigo-600 rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-disabled={true}
               >
-                Preview Components
-              </Link>
+                Preview
+              </Link> */}
             </div>
           </div>
         </div>

@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export-logo": "ts-node --project tsconfig.json src/scripts/exportLogo.ts"
   },
   "dependencies": {
     "next": "15.2.4",
