@@ -18,6 +18,7 @@ interface DesignContextProps {
   updatePrimaryColor: (color: string) => void;
   updateHeadingFont: (font: string) => void;
   updateBodyFont: (font: string) => void;
+  updateSectionTemplate: (sectionId: string, templateId: string) => void;
   resetDesign: () => void;
 }
 
@@ -192,6 +193,18 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
     }));
   };
 
+  const updateSectionTemplate = (sectionId: string, templateId: string) => {
+    setDesign((prevDesign) => ({
+      ...prevDesign,
+      sections: prevDesign.sections.map((section) =>
+        section.id === sectionId 
+          ? { ...section, templateId } 
+          : section
+      ),
+      updatedAt: new Date().toISOString(),
+    }));
+  };
+
   const resetDesign = () => {
     setDesign({
       id: uuidv4(),
@@ -216,6 +229,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
         updatePrimaryColor,
         updateHeadingFont,
         updateBodyFont,
+        updateSectionTemplate,
         resetDesign,
       }}
     >

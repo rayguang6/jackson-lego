@@ -24,7 +24,8 @@ export interface Section {
   type: SectionType;
   title: string;
   order: number;
-  templateId?: string; // Reference to the selected template for this section
+  templateId?: string; // Reference to the selected template (e.g., 'hero-light-v1')
+  // Additional configuration for the template could be added here later
 }
 
 // Template interface
