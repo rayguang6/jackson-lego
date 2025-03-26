@@ -7,26 +7,21 @@ import SitemapSection from './SitemapSection';
 
 const SitemapBuilder: React.FC = () => {
   const { design, addSection, removeSection, reorderSection } = useDesign();
-  const [newSectionType, setNewSectionType] = useState<SectionType>(SectionType.Features);
-  const [newSectionTitle, setNewSectionTitle] = useState('');
+  const [newSectionType, setNewSectionType] = useState<SectionType>(SectionType.Hero);
 
   // Sort sections by order
   const sortedSections = [...design.sections].sort((a, b) => a.order - b.order);
 
-  const handleAddSection = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (newSectionTitle.trim() === '') {
-      return;
-    }
-
+  const handleAddSection = () => {
+    // Auto-generate section title based on type
+    const sectionCount = design.sections.filter(s => s.type === newSectionType).length + 1;
+    const formattedType = newSectionType.charAt(0).toUpperCase() + newSectionType.slice(1).replace(/([A-Z])/g, ' $1').trim();
+    const title = `${formattedType} Section`;
+    
     addSection({
       type: newSectionType,
-      title: newSectionTitle.trim(),
+      title: title,
     });
-
-    // Reset the form
-    setNewSectionTitle('');
   };
 
   const handleMoveUp = (sectionId: string) => {
@@ -44,43 +39,34 @@ const SitemapBuilder: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-4 rounded-lg border">
-      <h2 className="text-xl font-bold mb-4">Website Structure</h2>
-      
-      <div className="mb-6">
-        <form onSubmit={handleAddSection} className="flex gap-2 mb-4">
+    <div className="bg-white rounded-lg">
+      <div className="mb-4">
+        <div className="flex gap-3 p-3 border-b border-gray-200">
           <select
             value={newSectionType}
             onChange={(e) => setNewSectionType(e.target.value as SectionType)}
-            className="border rounded p-2 flex-grow-0"
+            className="border rounded p-2 flex-grow text-sm"
           >
             {Object.values(SectionType).map((type) => (
               <option key={type} value={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}
+                {type.charAt(0).toUpperCase() + type.slice(1).replace(/([A-Z])/g, ' $1').trim()}
               </option>
             ))}
           </select>
           
-          <input
-            type="text"
-            value={newSectionTitle}
-            onChange={(e) => setNewSectionTitle(e.target.value)}
-            placeholder="Section Title"
-            className="border rounded p-2 flex-grow"
-          />
-          
           <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            type="button"
+            onClick={handleAddSection}
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm font-medium min-w-[70px]"
           >
             Add
           </button>
-        </form>
+        </div>
       </div>
       
-      <div className="space-y-2">
+      <div className="space-y-2 px-3 pb-4 max-h-[calc(100vh-220px)] overflow-y-auto">
         {sortedSections.length === 0 ? (
-          <p className="text-gray-500 italic">No sections yet. Add your first section above.</p>
+          <p className="text-gray-500 italic text-sm p-3 text-center bg-gray-50 rounded-lg">No sections yet. Add your first section above.</p>
         ) : (
           sortedSections.map((section, index) => (
             <SitemapSection
