@@ -29,7 +29,7 @@ export const LogoIcon: React.FC<LogoIconProps> = ({
       {/* Left shape */}
       <path 
         d="M0.5 11C2.9 2.6 11.5 0.166667 15.5 0V23C12.7 32.6 4.33333 35 0.5 35V11Z" 
-        fill={isDark ? "#ffffff" : `${brandColor}20`} 
+        fill={isDark ? "#ffffff" : `${brandColor}`} 
       />
       {/* Bottom right circle */}
       <circle 
