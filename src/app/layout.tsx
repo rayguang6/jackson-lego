@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Manrope, Archivo } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const manrope = Manrope({ 
+  subsets: ["latin"],
+  variable: '--font-manrope',
+});
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  variable: '--font-archivo',
+});
 
 export const metadata: Metadata = {
   title: "Jackson Lego - Web Design Generator",
@@ -11,12 +19,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${manrope.variable} ${archivo.variable}`}>
+      <body className={archivo.className}>{children}</body>
     </html>
   );
 }

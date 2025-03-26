@@ -1,17 +1,12 @@
-// Section component exports
-export { HeroComponent } from './Hero';
-export { CTAComponent } from './CTA';
-export { GuaranteeComponent } from './Guarantee';
-export { CaseStudiesComponent } from './CaseStudies';
-export { AboutComponent } from './About';
-export { WhoIsThisForComponent } from './WhoIsThisFor';
-export { OfferComponent } from './Offer';
-export { WorkWithUsComponent } from './WorkWithUs';
-export { BeforeAfterComponent } from './BeforeAfter';
-export { FAQsComponent } from './FAQs';
-export { TestimonialsComponent } from './Testimonials';
-export { HowItWorksComponent } from './HowItWorks';
-export { FeaturesOrServicesComponent } from './FeaturesOrServices';
-export { SolutionsComponent } from './Solutions';
-export { ProblemComponent } from './Problem';
-export { SocialProofComponent } from './SocialProof'; 
+// Export all section components from this file
+import HeroComponent from './Hero';
+
+// Named exports for each section
+export { HeroComponent };
+
+// For easier importing of all sections at once
+const sections = {
+  Hero: HeroComponent
+};
+
+export default sections; 
