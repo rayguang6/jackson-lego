@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { Section, StyleGuide, WebsiteDesign } from '../types';
 import { defaultStyleGuide } from '../constants/defaultStyles';
 import { defaultSections } from '../constants/defaultSections';
@@ -8,11 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface DesignContextProps {
   design: WebsiteDesign;
+  styleGuide: StyleGuide;
   addSection: (section: Omit<Section, 'id' | 'order'>) => void;
   removeSection: (sectionId: string) => void;
   updateSection: (section: Section) => void;
   reorderSection: (sectionId: string, newOrder: number) => void;
   updateStyleGuide: (styleGuide: StyleGuide) => void;
+  updatePrimaryColor: (color: string) => void;
   resetDesign: () => void;
 }
 
@@ -39,6 +41,8 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
+
+  const styleGuide = useMemo(() => design.styleGuide, [design.styleGuide]);
 
   const addSection = (sectionData: Omit<Section, 'id' | 'order'>) => {
     const newSection: Section = {
@@ -137,6 +141,20 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
     }));
   };
 
+  const updatePrimaryColor = (color: string) => {
+    setDesign((prevDesign) => ({
+      ...prevDesign,
+      styleGuide: {
+        ...prevDesign.styleGuide,
+        colors: {
+          ...prevDesign.styleGuide.colors,
+          primary: color,
+        },
+      },
+      updatedAt: new Date().toISOString(),
+    }));
+  };
+
   const resetDesign = () => {
     setDesign({
       id: uuidv4(),
@@ -152,11 +170,13 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
     <DesignContext.Provider
       value={{
         design,
+        styleGuide,
         addSection,
         removeSection,
         updateSection,
         reorderSection,
         updateStyleGuide,
+        updatePrimaryColor,
         resetDesign,
       }}
     >

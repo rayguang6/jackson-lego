@@ -4,17 +4,20 @@ import React from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
 
 const StyleGuideEditor: React.FC = () => {
-  const { design, updateStyleGuide } = useDesign();
-  const { styleGuide } = design;
+  const { styleGuide, updatePrimaryColor, updateStyleGuide } = useDesign();
 
   const handleColorChange = (colorKey: keyof typeof styleGuide.colors, value: string) => {
-    updateStyleGuide({
-      ...styleGuide,
-      colors: {
-        ...styleGuide.colors,
-        [colorKey]: value,
-      },
-    });
+    if (colorKey === 'primary') {
+      updatePrimaryColor(value);
+    } else {
+      updateStyleGuide({
+        ...styleGuide,
+        colors: {
+          ...styleGuide.colors,
+          [colorKey]: value,
+        },
+      });
+    }
   };
 
   const handleFontFamilyChange = (value: string) => {
@@ -30,37 +33,74 @@ const StyleGuideEditor: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-4 rounded-lg border">
-      <h2 className="text-xl font-bold mb-4">Style Guide</h2>
+    <div className="bg-white rounded-lg">
+      <h2 className="text-lg font-medium p-3 border-b border-gray-200">Brand Guide</h2>
       
-      <div className="space-y-6">
+      <div className="p-4 space-y-6">
+        {/* Primary Color - Featured */}
+        <div className="mb-6">
+          <h3 className="text-md font-medium mb-3">Primary Brand Color</h3>
+          <div className="flex items-center">
+            <div 
+              className="w-16 h-16 rounded-md shadow-md mr-4" 
+              style={{ backgroundColor: styleGuide.colors.primary }}
+            ></div>
+            <div className="flex flex-col">
+              <div className="flex items-center mb-2">
+                <input
+                  type="color"
+                  value={styleGuide.colors.primary}
+                  onChange={(e) => handleColorChange('primary', e.target.value)}
+                  className="w-10 h-10 mr-2 border cursor-pointer"
+                  aria-label="Choose primary color"
+                />
+                <input
+                  type="text"
+                  value={styleGuide.colors.primary}
+                  onChange={(e) => handleColorChange('primary', e.target.value)}
+                  className="border rounded w-24 px-2 py-1 text-sm"
+                />
+              </div>
+              <p className="text-xs text-gray-500">
+                This color will be used for buttons, accents, and highlights throughout your site.
+              </p>
+            </div>
+          </div>
+        </div>
+        
         {/* Color Palette */}
         <div>
           <h3 className="text-md font-medium mb-3">Color Palette</h3>
           <div className="grid grid-cols-2 gap-4">
-            {Object.entries(styleGuide.colors).map(([key, color]) => (
-              <div key={key} className="flex items-center">
-                <label className="w-24 text-sm capitalize">{key}:</label>
-                <div className="flex items-center">
-                  <input
-                    type="color"
-                    value={color}
-                    onChange={(e) => 
-                      handleColorChange(key as keyof typeof styleGuide.colors, e.target.value)
-                    }
-                    className="w-10 h-10 mr-2 border cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={color}
-                    onChange={(e) => 
-                      handleColorChange(key as keyof typeof styleGuide.colors, e.target.value)
-                    }
-                    className="border rounded w-24 px-2 py-1 text-sm"
-                  />
+            {Object.entries(styleGuide.colors)
+              .filter(([key]) => key !== 'primary') // Skip primary as it's featured above
+              .map(([key, color]) => (
+                <div key={key} className="flex items-center">
+                  <div 
+                    className="w-8 h-8 rounded-md mr-2" 
+                    style={{ backgroundColor: color }}
+                  ></div>
+                  <label className="w-24 text-sm capitalize">{key}:</label>
+                  <div className="flex items-center">
+                    <input
+                      type="color"
+                      value={color}
+                      onChange={(e) => 
+                        handleColorChange(key as keyof typeof styleGuide.colors, e.target.value)
+                      }
+                      className="w-8 h-8 mr-2 border cursor-pointer"
+                    />
+                    <input
+                      type="text"
+                      value={color}
+                      onChange={(e) => 
+                        handleColorChange(key as keyof typeof styleGuide.colors, e.target.value)
+                      }
+                      className="border rounded w-24 px-2 py-1 text-sm"
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
         
@@ -83,10 +123,10 @@ const StyleGuideEditor: React.FC = () => {
               </select>
             </div>
             
-            <div className="mt-3">
+            <div className="mt-4">
               <h4 className="text-sm font-medium mb-2">Preview</h4>
               <div 
-                className="p-3 bg-white rounded border space-y-4"
+                className="p-4 bg-gray-50 rounded border space-y-4"
                 style={{ fontFamily: styleGuide.typography.fontFamily }}
               >
                 <h1 
@@ -119,7 +159,7 @@ const StyleGuideEditor: React.FC = () => {
                 >
                   This is body text. It should be easy to read and have good contrast with the background.
                 </p>
-                <div className="flex space-x-2 mt-4">
+                <div className="flex space-x-3 mt-4">
                   <button 
                     style={{ 
                       backgroundColor: styleGuide.colors.primary,
@@ -132,13 +172,14 @@ const StyleGuideEditor: React.FC = () => {
                   </button>
                   <button 
                     style={{ 
-                      backgroundColor: styleGuide.colors.secondary,
-                      color: 'white',
-                      borderRadius: styleGuide.borderRadius.md
+                      backgroundColor: 'transparent',
+                      color: styleGuide.colors.primary,
+                      borderRadius: styleGuide.borderRadius.md,
+                      border: `1px solid ${styleGuide.colors.primary}`
                     }}
                     className="px-4 py-2"
                   >
-                    Secondary Button
+                    Outlined Button
                   </button>
                 </div>
               </div>
