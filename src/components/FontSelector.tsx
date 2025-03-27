@@ -2,15 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
-
-// Curated list of 5 Google Fonts
-const FONT_OPTIONS = [
-  { name: 'Manrope', value: 'var(--font-manrope), system-ui, sans-serif' },
-  { name: 'Archivo', value: 'var(--font-archivo), system-ui, sans-serif' },
-  { name: 'Inter', value: 'var(--font-inter), system-ui, sans-serif' },
-  { name: 'Merriweather', value: 'var(--font-merriweather), serif' }, 
-  { name: 'Montserrat', value: 'var(--font-montserrat), system-ui, sans-serif' }
-];
+import { FONT_OPTIONS } from '@/lib/fonts';
 
 const FontSelector: React.FC = () => {
   const { styleGuide, updateHeadingFont, updateBodyFont } = useDesign();

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { TemplateVariant } from '@/lib/constants/templateRegistry';
+import { TemplateVariant } from '@/lib/templates/types';
 
 interface TemplateThumbnailProps {
   template: TemplateVariant;
@@ -14,10 +14,24 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
   selected = false,
   onClick
 }) => {
-  const { component: Component, preview, name, theme, description } = template;
+  const { component: Component, preview, name, theme, description, id = '' } = template;
   
   // Scale factor for the thumbnail - make it small enough for the grid
   const scaleFactor = 0.2;
+  
+  // Get the variant from the ID (like v1, v2, etc.)
+  const variant = id.split('-').pop()?.toUpperCase() || '';
+  
+  // Default preview props that will be used for all component types
+  // These provide reasonable defaults for thumbnails
+  const defaultPreviewProps = {
+  };
+  
+  // Combine default props with any specific preview props
+  const combinedProps = {
+    ...defaultPreviewProps,
+    ...(preview || {})
+  };
   
   return (
     <div 
@@ -26,8 +40,13 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
       }`}
       onClick={onClick}
     >
-      {/* Template preview - actual rendered component */}
+      {/* Template preview - rendered component at smaller scale */}
       <div className="bg-gray-100 flex-1 overflow-hidden relative" style={{ height: '160px' }}>
+        {/* Variant badge */}
+        <div className="absolute top-1 right-1 z-10 px-1.5 py-0.5 rounded-sm text-xs font-semibold bg-gray-800 text-white opacity-75">
+          {variant}
+        </div>
+        
         <div className="absolute top-0 left-0 w-full h-full">
           <div 
             className="w-full h-full" 
@@ -36,6 +55,7 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
               position: 'relative'
             }}
           >
+            {/* Apply transform to scale down the component */}
             <div style={{ 
               transform: `scale(${scaleFactor})`, 
               transformOrigin: 'top left',
@@ -44,14 +64,8 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
               left: 0,
               width: `${100 / scaleFactor}%`
             }}>
-              {preview ? (
-                <Component {...preview} />
-              ) : (
-                <div className="text-gray-400 text-xs p-4 text-center w-full">
-                  {name}
-                  <span className="ml-1 text-[10px] text-gray-400">({theme})</span>
-                </div>
-              )}
+              {/* Always render the component with at least the default props */}
+              <Component {...combinedProps} />
             </div>
           </div>
         </div>

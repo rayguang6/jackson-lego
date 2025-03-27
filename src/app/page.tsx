@@ -26,13 +26,13 @@ export default function Home() {
                 Export
               </button>
               <Link 
-                href="/preview/all" 
+                href="/debug" 
                 className="bg-indigo-600 rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-disabled={true}
               >
-                Preview
+                Debug
               </Link> */}
             </div>
           </div>

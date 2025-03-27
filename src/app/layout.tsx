@@ -1,33 +1,7 @@
 import type { Metadata } from "next";
-import { Manrope, Archivo, Inter, Montserrat, Merriweather } from "next/font/google";
 import "./globals.css";
 import { DesignProvider } from "@/lib/contexts/DesignContext";
-
-const manrope = Manrope({ 
-  subsets: ["latin"],
-  variable: '--font-manrope',
-});
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  variable: '--font-archivo',
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: '--font-inter',
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: '--font-montserrat',
-});
-
-const merriweather = Merriweather({
-  weight: ['400', '700'],
-  subsets: ["latin"],
-  variable: '--font-merriweather',
-});
+import { archivo, fontVariables } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Jackson Lego - Web Design Generator",
@@ -40,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${merriweather.variable}`}>
+    <html lang="en" className={fontVariables}>
       <body className={archivo.className}>
         <DesignProvider>
           {children}

@@ -51,20 +51,21 @@ const BrandGuide: React.FC = () => {
         </h3>
         
         <div className="flex flex-col space-y-3">
+          
+          <h2 className="text-lg font-semibold" style={{ fontFamily: headingFont }}>
+            Heading font sample
+          </h2>
+
+          <p className="text-sm" style={{ fontFamily: bodyFont }}>
+            Body Font Sample text with your selected <span style={{ color: primaryColor }}>primary color</span> and body font.
+          </p>
+          
           <button 
             className="px-3 py-1.5 rounded text-white transition-colors text-sm"
             style={{ backgroundColor: primaryColor }}
           >
             Primary Button
           </button>
-          
-          <p className="text-sm" style={{ fontFamily: bodyFont }}>
-            Sample text with your selected <span style={{ color: primaryColor }}>primary color</span> and body font.
-          </p>
-          
-          <p className="text-base font-semibold" style={{ fontFamily: headingFont }}>
-            Heading font sample
-          </p>
         </div>
       </div>
     </div>

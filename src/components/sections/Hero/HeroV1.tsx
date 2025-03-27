@@ -1,27 +1,30 @@
-"use client";
+'use client';
 
 import React from 'react';
 import Image from 'next/image';
 import { useDesign } from '@/lib/contexts/DesignContext';
-import BaseSection from '../../BaseSection';
 import { LogoIcon } from '@/components/icons/LogoIcon';
+import BaseSection from '../BaseSection';
+import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 
-interface HeroLightV1Props {
+interface HeroV1Props {
+  theme?: 'light' | 'dark';
   title?: string;
   subtitle?: string;
   ctaText?: string;
   badgeText?: string;
   badgeIconColor?: string;
-  theme?: 'light' | 'dark';
+  features?: string[];
 }
 
-export const HeroLightV1: React.FC<HeroLightV1Props> = ({
+export const HeroV1: React.FC<HeroV1Props> = ({
+  theme = 'light',
   title = "Multipurpose Page Blocks Designed for Maximum Efficiency",
   subtitle = "Skip design frustration and launch your site fast with pre-designed, proven components.",
   ctaText = "GET INSTANT ACCESS",
   badgeText = "The #1 Community for Game-Changers",
   badgeIconColor,
-  theme = 'light'
+  features = ["Build for Speed", "Proven Design", "Launch Like A Pro"]
 }) => {
   // Add a try/catch to handle cases when not within a DesignProvider
   let contextPrimaryColor = "#EF083A"; // Default to fallback
@@ -82,9 +85,15 @@ export const HeroLightV1: React.FC<HeroLightV1Props> = ({
 
       {/* Title */}
       <h1 style={{ fontFamily: headingFont }} className={`font-manrope text-[48px] leading-[1.2] font-extrabold ${isDark ? 'text-white' : 'text-[#111827]'} mb-4 max-w-[800px]`}>
-        {titleParts[0]}
-        <span style={{ color: primaryColor, fontFamily: headingFont }}>Maximum Efficiency</span>
-        {titleParts[1]}
+        {titleParts.length > 1 ? (
+          <>
+            {titleParts[0]}
+            <span style={{ color: primaryColor, fontFamily: headingFont }}>Maximum Efficiency</span>
+            {titleParts[1]}
+          </>
+        ) : (
+          title
+        )}
       </h1>
 
       {/* Subtitle */}
@@ -107,7 +116,7 @@ export const HeroLightV1: React.FC<HeroLightV1Props> = ({
       {/* Video Thumbnail */}
       <div className="relative w-full max-w-[800px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
         <Image
-          src="/images/video-thumbnail.png"
+          src={TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL}
           alt="Video thumbnail"
           width={800}
           height={450}

@@ -5,7 +5,7 @@ import { useDesign } from '@/lib/contexts/DesignContext';
 import WireframeSection from './WireframeSection';
 import { Section, SectionType } from '@/lib/types';
 // Import the template registry
-import { getTemplate, getTemplateById } from '@/lib/constants/templateRegistry';
+import { getTemplate, getTemplateById } from '@/lib/templates';
 import TemplateSelector from '../TemplateSelector';
 
 const WireframePreview: React.FC = () => {

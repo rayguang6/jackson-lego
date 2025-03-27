@@ -1,12 +1,12 @@
 import React from 'react';
-import { HeroLightV1 } from './variants/HeroLightV1';
-import { HeroV3 } from './variants/HeroV3';
+import { HeroV1 } from './HeroV1';
+import { HeroV3 } from './HeroV3';
 
 // Export the variants
-export { HeroLightV1, HeroV3 };
+export { HeroV1, HeroV3 };
 
-// Placeholder component that uses HeroLightV1 
-export const HeroComponent = HeroLightV1;
+// Placeholder component that uses HeroV1
+export const HeroComponent = HeroV1;
 
 // For backward compatibility with the sections index exports
 export default HeroComponent; 
