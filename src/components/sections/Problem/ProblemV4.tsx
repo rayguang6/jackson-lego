@@ -9,7 +9,7 @@ interface Problem {
   description: string;
 }
 
-interface ProblemV3Props {
+interface ProblemV4Props {
   theme?: 'light' | 'dark';
   badge?: string;
   title?: string;
@@ -17,9 +17,9 @@ interface ProblemV3Props {
   problems?: Problem[];
 }
 
-export const ProblemV3: React.FC<ProblemV3Props> = ({
+export const ProblemV4: React.FC<ProblemV4Props> = ({
   theme = 'light',
-  badge = "PROBLEM",
+  badge = "NEWNEWNEW",
   title = "Are you tired of running into these problems?",
   subtitle = "It's time to take control and design like a pro — fast and easy.",
   problems = [

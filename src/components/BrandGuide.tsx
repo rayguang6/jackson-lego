@@ -11,9 +11,9 @@ const BrandGuide: React.FC = () => {
     updatePrimaryColor(e.target.value);
   };
 
-  const primaryColor = styleGuide.colors.primary;
-  const headingFont = styleGuide.typography.headingFont;
-  const bodyFont = styleGuide.typography.bodyFont;
+  const primaryColor = styleGuide.primaryColor;
+  const headingFont = styleGuide.headingFont;
+  const bodyFont = styleGuide.bodyFont;
 
   return (
     <div className="space-y-6">
@@ -66,6 +66,7 @@ const BrandGuide: React.FC = () => {
           >
             Primary Button
           </button>
+          
         </div>
       </div>
     </div>

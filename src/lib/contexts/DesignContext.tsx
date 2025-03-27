@@ -2,8 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { Section, StyleGuide, WebsiteDesign } from '../types';
-import { defaultStyleGuide } from '../constants/defaultStyles';
-import { brandStyleGuide } from '../constants/brandGuide';
+import { styleGuide as initialStyleGuide } from '../constants/styleGuide';
 import { defaultSections } from '../constants/defaultSections';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,7 +40,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
     id: uuidv4(),
     name: 'New Website Design',
     sections: defaultSections,
-    styleGuide: brandStyleGuide,
+    styleGuide: initialStyleGuide,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
@@ -49,7 +48,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
   // Log initial values
   useEffect(() => {
     console.log('Initial style guide:', design.styleGuide);
-    console.log('Initial body font:', design.styleGuide.typography.bodyFont);
+    console.log('Initial body font:', design.styleGuide.bodyFont);
   }, []);
 
   const styleGuide = useMemo(() => design.styleGuide, [design.styleGuide]);
@@ -156,10 +155,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
       ...prevDesign,
       styleGuide: {
         ...prevDesign.styleGuide,
-        colors: {
-          ...prevDesign.styleGuide.colors,
-          primary: color,
-        },
+        primaryColor: color
       },
       updatedAt: new Date().toISOString(),
     }));
@@ -170,10 +166,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
       ...prevDesign,
       styleGuide: {
         ...prevDesign.styleGuide,
-        typography: {
-          ...prevDesign.styleGuide.typography,
-          headingFont: font,
-        },
+        headingFont: font
       },
       updatedAt: new Date().toISOString(),
     }));
@@ -184,10 +177,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
       ...prevDesign,
       styleGuide: {
         ...prevDesign.styleGuide,
-        typography: {
-          ...prevDesign.styleGuide.typography,
-          bodyFont: font,
-        },
+        bodyFont: font
       },
       updatedAt: new Date().toISOString(),
     }));
@@ -210,7 +200,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
       id: uuidv4(),
       name: 'New Website Design',
       sections: defaultSections,
-      styleGuide: brandStyleGuide,
+      styleGuide: initialStyleGuide,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });

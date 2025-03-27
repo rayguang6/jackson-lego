@@ -13,13 +13,13 @@ import { MyParagraph } from '@/components/common/MyParagraph';
 import { PlayButton } from '@/components/common/PlayButton';
 import { PrimaryButton } from '@/components/common/PrimaryButton';
 
-export const HeroV1: React.FC<HeroProps> = ({
+export const HeroV2: React.FC<HeroProps> = ({
   title = "Multipurpose Page Blocks Designed for ",
   subtitle = defaultHeroProps.subtitle,
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_3
 }) => {
   const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
 
@@ -28,7 +28,7 @@ export const HeroV1: React.FC<HeroProps> = ({
   return (
     <Section 
       theme={theme}
-      className="flex flex-col items-center text-center !pb-0"
+      className="flex flex-col items-center text-center py-0 pb-0"
     >
       {/* Logo */}
       <div className="mb-8">
@@ -57,17 +57,15 @@ export const HeroV1: React.FC<HeroProps> = ({
       <PrimaryButton text={ctaText} theme={theme} className="mb-12" />
 
       {/* Video Thumbnail */}
-      <div className="relative w-full max-w-[1000px] max-h-[400px] rounded-t-lg aspect-video overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+      <div className="relative w-full max-w-[800px] overflow-hidden">
         <Image
           src={videoThumbnailUrl}
           alt="Video thumbnail"
-          fill
-          style={{ objectFit: 'cover' }}
-          className=""
+          width={800}
+          height={450}
+          className="w-full"
         />
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-          <PlayButton size="md" />
-        </div>
+        
       </div>
     </Section>
   );

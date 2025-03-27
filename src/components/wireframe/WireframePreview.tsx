@@ -5,7 +5,7 @@ import { useDesign } from '@/lib/contexts/DesignContext';
 import WireframeSection from './WireframeSection';
 import { Section, SectionType } from '@/lib/types';
 // Import the template registry
-import { getTemplate, getTemplateById } from '@/lib/templates';
+import { getTemplate, getTemplateById, getTemplateByTypeAndVersion } from '@/lib/templates';
 import TemplateSelector from '../TemplateSelector';
 
 const WireframePreview: React.FC = () => {
@@ -157,33 +157,11 @@ const WireframePreview: React.FC = () => {
       template = getTemplateById(section.templateId);
     } else {
       // If no template is selected, use a default one
-      template = getTemplate(section.type, 'light', 'v1');
+      template = getTemplateByTypeAndVersion(section.type, 'light', 'v1');
     }
     
     if (template) {
       const Component = template.component;
-      
-      // For Hero section, pass specific props
-      if (section.type === SectionType.Hero) {
-        return (
-          <Component 
-            theme={template.theme}
-            title="Multipurpose Page Blocks Designed for Maximum Efficiency"
-            subtitle="Skip design frustration and launch your site fast with pre-designed, proven components."
-            badgeText="The #1 Community for Game-Changers" 
-            ctaText="GET INSTANT ACCESS"
-            features={["Build for Speed", "Proven Design", "Launch Like A Pro"]}
-            usersCount="Join 2,000+ Game-Changers Using YourBrand Today"
-          />
-        );
-      }
-      
-      // For other section types, render the component with preview props if available
-      if (template.preview) {
-        return <Component {...template.preview} />;
-      }
-      
-      // If no preview props, render with default props
       return <Component theme={template.theme} />;
     }
     

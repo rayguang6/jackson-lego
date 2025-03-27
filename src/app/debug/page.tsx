@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { DesignProvider } from '@/lib/contexts/DesignContext';
 import { templateRegistry, getTemplate } from '@/lib/templates';
 import { SectionType } from '@/lib/types/index';
 
@@ -76,62 +75,60 @@ export default function DebugPage() {
   };
 
   return (
-    <DesignProvider>
-      <div className="debug-page">
-        {/* Controls */}
-        <div className="debug-controls sticky top-0 z-10 bg-gray-50 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">Template Debug</h1>
+    <div className="debug-page">
+      {/* Controls */}
+      <div className="debug-controls sticky top-0 z-10 bg-gray-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h1 className="text-2xl font-bold text-gray-900">Template Debug</h1>
+            
+            <div className="flex flex-wrap gap-4">
+              {/* Section Type Selector */}
+              <div>
+                <label htmlFor="section-type" className="block text-sm font-medium text-gray-700 mb-1">
+                  Section Type
+                </label>
+                <select
+                  id="section-type"
+                  value={selectedSection}
+                  onChange={(e) => setSelectedSection(e.target.value as SectionType)}
+                  className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  {availableSections.map((section) => (
+                    <option key={section} value={section}>
+                      {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, ' ')}
+                    </option>
+                  ))}
+                </select>
+              </div>
               
-              <div className="flex flex-wrap gap-4">
-                {/* Section Type Selector */}
-                <div>
-                  <label htmlFor="section-type" className="block text-sm font-medium text-gray-700 mb-1">
-                    Section Type
-                  </label>
-                  <select
-                    id="section-type"
-                    value={selectedSection}
-                    onChange={(e) => setSelectedSection(e.target.value as SectionType)}
-                    className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  >
-                    {availableSections.map((section) => (
-                      <option key={section} value={section}>
-                        {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, ' ')}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                
-                {/* Variant Selector */}
-                <div>
-                  <label htmlFor="variant" className="block text-sm font-medium text-gray-700 mb-1">
-                    Variant
-                  </label>
-                  <select
-                    id="variant"
-                    value={selectedVariant}
-                    onChange={(e) => setSelectedVariant(e.target.value)}
-                    className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  >
-                    {availableVariants.map((variant) => (
-                      <option key={variant} value={variant}>
-                        {variant}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {/* Variant Selector */}
+              <div>
+                <label htmlFor="variant" className="block text-sm font-medium text-gray-700 mb-1">
+                  Variant
+                </label>
+                <select
+                  id="variant"
+                  value={selectedVariant}
+                  onChange={(e) => setSelectedVariant(e.target.value)}
+                  className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  {availableVariants.map((variant) => (
+                    <option key={variant} value={variant}>
+                      {variant}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Debug Area */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {renderSelectedComponents()}
-        </div>
       </div>
-    </DesignProvider>
+
+      {/* Debug Area */}
+      <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderSelectedComponents()}
+      </div>
+    </div>
   );
 } 

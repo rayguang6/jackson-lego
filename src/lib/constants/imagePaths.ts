@@ -4,6 +4,7 @@ export const TEMPLATE_IMAGES = {
   HERO: {
     VIDEO_THUMBNAIL: '/images/templates/video-thumbnail.png',
     VIDEO_THUMBNAIL_2: '/images/templates/video-thumbnail-2.png',
+    VIDEO_THUMBNAIL_3: '/images/templates/video-thumbnail-3.png',
     AVATAR_GROUP: '/images/templates/avatar-group.png',
   },
   
@@ -11,11 +12,6 @@ export const TEMPLATE_IMAGES = {
   PROBLEM: {
     SOLUTION_IMAGE: '/images/templates/solution-image.png',
   },
-  
-  // Shared images
-  SHARED: {
-    GRID_PATTERN: '/images/grid-pattern.svg',
-  }
 };
 
 // App images

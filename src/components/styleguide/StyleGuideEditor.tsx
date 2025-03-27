@@ -4,24 +4,23 @@ import React, { useState } from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import { FONT_OPTIONS } from '@/lib/fonts';
 
-// Tab types for the editor
-type EditorTab = 'colors' | 'typography' | 'spacing' | 'preview';
+interface FontOption {
+  name: string;
+  value: string;
+}
 
-const StyleGuideEditor: React.FC = () => {
-  const { styleGuide, updatePrimaryColor, updateStyleGuide, updateHeadingFont, updateBodyFont } = useDesign();
-  const [activeTab, setActiveTab] = useState<EditorTab>('colors');
+const StyleGuideEditor = () => {
+  const { styleGuide, updateStyleGuide, updatePrimaryColor, updateHeadingFont, updateBodyFont } = useDesign();
+  const [activeTab, setActiveTab] = useState<'colors' | 'typography' | 'spacing' | 'preview'>('colors');
 
   // Color change handlers
-  const handleColorChange = (colorKey: keyof typeof styleGuide.colors, value: string) => {
-    if (colorKey === 'primary') {
+  const handleColorChange = (colorType: 'primaryColor' | 'secondaryColor' | 'accentColor' | 'backgroundColor' | 'textColor', value: string) => {
+    if (colorType === 'primaryColor') {
       updatePrimaryColor(value);
     } else {
       updateStyleGuide({
         ...styleGuide,
-        colors: {
-          ...styleGuide.colors,
-          [colorKey]: value,
-        },
+        [colorType]: value,
       });
     }
   };
@@ -43,28 +42,7 @@ const StyleGuideEditor: React.FC = () => {
   ) => {
     updateStyleGuide({
       ...styleGuide,
-      typography: {
-        ...styleGuide.typography,
-        [element]: {
-          ...styleGuide.typography[element],
-          [property]: value,
-        },
-      },
-    });
-  };
-
-  // Spacing and Border Radius handler
-  const handleSpacingChange = (
-    category: 'spacing' | 'borderRadius',
-    key: string,
-    value: string
-  ) => {
-    updateStyleGuide({
-      ...styleGuide,
-      [category]: {
-        ...styleGuide[category],
-        [key]: value,
-      },
+      [`${element}${property.charAt(0).toUpperCase()}${property.slice(1)}`]: value
     });
   };
 
@@ -129,21 +107,20 @@ const StyleGuideEditor: React.FC = () => {
               <div className="flex items-center">
                 <div 
                   className="w-16 h-16 rounded-md shadow-md mr-4" 
-                  style={{ backgroundColor: styleGuide.colors.primary }}
+                  style={{ backgroundColor: styleGuide.primaryColor }}
                 ></div>
                 <div className="flex flex-col">
                   <div className="flex items-center mb-2">
                     <input
                       type="color"
-                      value={styleGuide.colors.primary}
-                      onChange={(e) => handleColorChange('primary', e.target.value)}
+                      value={styleGuide.primaryColor}
+                      onChange={(e) => handleColorChange('primaryColor', e.target.value)}
                       className="w-10 h-10 mr-2 border cursor-pointer"
-                      aria-label="Choose primary color"
                     />
                     <input
                       type="text"
-                      value={styleGuide.colors.primary}
-                      onChange={(e) => handleColorChange('primary', e.target.value)}
+                      value={styleGuide.primaryColor}
+                      onChange={(e) => handleColorChange('primaryColor', e.target.value)}
                       className="border rounded w-24 px-2 py-1 text-sm"
                     />
                   </div>
@@ -154,34 +131,36 @@ const StyleGuideEditor: React.FC = () => {
               </div>
             </div>
             
-            {/* Secondary Colors */}
+            {/* Other Colors */}
             <div>
               <h3 className="text-md font-medium mb-3">Color Palette</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Object.entries(styleGuide.colors)
-                  .filter(([key]) => key !== 'primary') // Skip primary as it's featured above
-                  .map(([key, color]) => (
+                {Object.entries(styleGuide)
+                  .filter(([key]) => key.endsWith('Color') && key !== 'primaryColor')
+                  .map(([key, value]) => (
                     <div key={key} className="flex items-center p-2 rounded-md hover:bg-gray-50">
                       <div 
                         className="w-10 h-10 rounded-md shadow-sm mr-3" 
-                        style={{ backgroundColor: color }}
+                        style={{ backgroundColor: value as string }}
                       ></div>
                       <div>
-                        <label className="text-sm font-medium capitalize block mb-1">{key} Color</label>
+                        <label className="text-sm font-medium capitalize block mb-1">
+                          {key.replace('Color', '')} Color
+                        </label>
                         <div className="flex items-center">
                           <input
                             type="color"
-                            value={color}
+                            value={value as string}
                             onChange={(e) => 
-                              handleColorChange(key as keyof typeof styleGuide.colors, e.target.value)
+                              handleColorChange(key as 'secondaryColor' | 'accentColor' | 'backgroundColor' | 'textColor', e.target.value)
                             }
                             className="w-7 h-7 mr-2 border cursor-pointer rounded"
                           />
                           <input
                             type="text"
-                            value={color}
+                            value={value as string}
                             onChange={(e) => 
-                              handleColorChange(key as keyof typeof styleGuide.colors, e.target.value)
+                              handleColorChange(key as 'secondaryColor' | 'accentColor' | 'backgroundColor' | 'textColor', e.target.value)
                             }
                             className="border rounded w-24 px-2 py-1 text-sm"
                           />
@@ -206,7 +185,7 @@ const StyleGuideEditor: React.FC = () => {
                   <label className="block text-sm font-medium mb-1">Heading Font</label>
                   <div className="relative">
                     <select
-                      value={styleGuide.typography.headingFont}
+                      value={styleGuide.headingFont}
                       onChange={(e) => handleHeadingFontChange(e.target.value)}
                       className="w-full p-2 border rounded text-sm appearance-none"
                     >
@@ -220,20 +199,14 @@ const StyleGuideEditor: React.FC = () => {
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                      </svg>
-                    </div>
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">Used for headings and titles</p>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium mb-1">Body Font</label>
                   <div className="relative">
                     <select
-                      value={styleGuide.typography.bodyFont}
+                      value={styleGuide.bodyFont}
                       onChange={(e) => handleBodyFontChange(e.target.value)}
                       className="w-full p-2 border rounded text-sm appearance-none"
                     >
@@ -247,13 +220,7 @@ const StyleGuideEditor: React.FC = () => {
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                      </svg>
-                    </div>
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">Used for paragraphs and general text</p>
                 </div>
               </div>
             </div>
@@ -271,7 +238,7 @@ const StyleGuideEditor: React.FC = () => {
                       <label className="block text-xs mb-1">Size</label>
                       <input
                         type="text"
-                        value={styleGuide.typography.h1.size}
+                        value={styleGuide.h1Size}
                         onChange={(e) => handleTypographyChange('h1', 'size', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       />
@@ -279,7 +246,7 @@ const StyleGuideEditor: React.FC = () => {
                     <div>
                       <label className="block text-xs mb-1">Weight</label>
                       <select
-                        value={styleGuide.typography.h1.weight}
+                        value={styleGuide.h1Weight}
                         onChange={(e) => handleTypographyChange('h1', 'weight', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       >
@@ -295,7 +262,7 @@ const StyleGuideEditor: React.FC = () => {
                       <label className="block text-xs mb-1">Line Height</label>
                       <input
                         type="text"
-                        value={styleGuide.typography.h1.lineHeight}
+                        value={styleGuide.h1LineHeight}
                         onChange={(e) => handleTypographyChange('h1', 'lineHeight', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       />
@@ -304,10 +271,10 @@ const StyleGuideEditor: React.FC = () => {
                   <div className="mt-2 p-2 bg-gray-50 rounded">
                     <span 
                       style={{ 
-                        fontFamily: styleGuide.typography.headingFont,
-                        fontSize: styleGuide.typography.h1.size,
-                        fontWeight: styleGuide.typography.h1.weight,
-                        lineHeight: styleGuide.typography.h1.lineHeight
+                        fontFamily: styleGuide.headingFont,
+                        fontSize: styleGuide.h1Size,
+                        fontWeight: styleGuide.h1Weight,
+                        lineHeight: styleGuide.h1LineHeight
                       }}
                     >
                       Heading 1 Example
@@ -323,7 +290,7 @@ const StyleGuideEditor: React.FC = () => {
                       <label className="block text-xs mb-1">Size</label>
                       <input
                         type="text"
-                        value={styleGuide.typography.h2.size}
+                        value={styleGuide.h2Size}
                         onChange={(e) => handleTypographyChange('h2', 'size', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       />
@@ -331,7 +298,7 @@ const StyleGuideEditor: React.FC = () => {
                     <div>
                       <label className="block text-xs mb-1">Weight</label>
                       <select
-                        value={styleGuide.typography.h2.weight}
+                        value={styleGuide.h2Weight}
                         onChange={(e) => handleTypographyChange('h2', 'weight', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       >
@@ -347,7 +314,7 @@ const StyleGuideEditor: React.FC = () => {
                       <label className="block text-xs mb-1">Line Height</label>
                       <input
                         type="text"
-                        value={styleGuide.typography.h2.lineHeight}
+                        value={styleGuide.h2LineHeight}
                         onChange={(e) => handleTypographyChange('h2', 'lineHeight', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       />
@@ -356,10 +323,10 @@ const StyleGuideEditor: React.FC = () => {
                   <div className="mt-2 p-2 bg-gray-50 rounded">
                     <span 
                       style={{ 
-                        fontFamily: styleGuide.typography.headingFont,
-                        fontSize: styleGuide.typography.h2.size,
-                        fontWeight: styleGuide.typography.h2.weight,
-                        lineHeight: styleGuide.typography.h2.lineHeight
+                        fontFamily: styleGuide.headingFont,
+                        fontSize: styleGuide.h2Size,
+                        fontWeight: styleGuide.h2Weight,
+                        lineHeight: styleGuide.h2LineHeight
                       }}
                     >
                       Heading 2 Example
@@ -375,7 +342,7 @@ const StyleGuideEditor: React.FC = () => {
                       <label className="block text-xs mb-1">Size</label>
                       <input
                         type="text"
-                        value={styleGuide.typography.body.size}
+                        value={styleGuide.bodySize}
                         onChange={(e) => handleTypographyChange('body', 'size', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       />
@@ -383,7 +350,7 @@ const StyleGuideEditor: React.FC = () => {
                     <div>
                       <label className="block text-xs mb-1">Weight</label>
                       <select
-                        value={styleGuide.typography.body.weight}
+                        value={styleGuide.bodyWeight}
                         onChange={(e) => handleTypographyChange('body', 'weight', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       >
@@ -397,7 +364,7 @@ const StyleGuideEditor: React.FC = () => {
                       <label className="block text-xs mb-1">Line Height</label>
                       <input
                         type="text"
-                        value={styleGuide.typography.body.lineHeight}
+                        value={styleGuide.bodyLineHeight}
                         onChange={(e) => handleTypographyChange('body', 'lineHeight', e.target.value)}
                         className="w-full p-1.5 border rounded text-sm"
                       />
@@ -406,10 +373,10 @@ const StyleGuideEditor: React.FC = () => {
                   <div className="mt-2 p-2 bg-gray-50 rounded">
                     <p 
                       style={{ 
-                        fontFamily: styleGuide.typography.bodyFont,
-                        fontSize: styleGuide.typography.body.size,
-                        fontWeight: styleGuide.typography.body.weight,
-                        lineHeight: styleGuide.typography.body.lineHeight
+                        fontFamily: styleGuide.bodyFont,
+                        fontSize: styleGuide.bodySize,
+                        fontWeight: styleGuide.bodyWeight,
+                        lineHeight: styleGuide.bodyLineHeight
                       }}
                     >
                       This is an example of body text. Your content should be easy to read with good spacing and contrast.
@@ -428,23 +395,28 @@ const StyleGuideEditor: React.FC = () => {
             <div>
               <h3 className="text-md font-medium mb-3">Spacing</h3>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                {Object.entries(styleGuide.spacing).map(([key, value]) => (
-                  <div key={key} className="space-y-1">
-                    <label className="block text-xs font-medium capitalize">
-                      {key}
-                    </label>
-                    <input
-                      type="text"
-                      value={value}
-                      onChange={(e) => handleSpacingChange('spacing', key, e.target.value)}
-                      className="w-full p-1.5 border rounded text-sm"
-                    />
-                    <div 
-                      className="bg-gray-200 mt-1"
-                      style={{ height: '8px', width: value }}
-                    ></div>
-                  </div>
-                ))}
+                {Object.entries(styleGuide)
+                  .filter(([key]) => key.startsWith('spacing'))
+                  .map(([key, value]) => (
+                    <div key={key} className="space-y-1">
+                      <label className="block text-xs font-medium capitalize">
+                        {key.replace('spacing', '')}
+                      </label>
+                      <input
+                        type="text"
+                        value={value as string}
+                        onChange={(e) => updateStyleGuide({
+                          ...styleGuide,
+                          [key]: e.target.value
+                        })}
+                        className="w-full p-1.5 border rounded text-sm"
+                      />
+                      <div 
+                        className="bg-gray-200 mt-1"
+                        style={{ height: '8px', width: value as string }}
+                      ></div>
+                    </div>
+                  ))}
               </div>
             </div>
             
@@ -452,23 +424,28 @@ const StyleGuideEditor: React.FC = () => {
             <div>
               <h3 className="text-md font-medium mb-3">Border Radius</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(styleGuide.borderRadius).map(([key, value]) => (
-                  <div key={key} className="space-y-1">
-                    <label className="block text-xs font-medium capitalize">
-                      {key === 'full' ? 'Rounded (Full)' : `Rounded ${key.toUpperCase()}`}
-                    </label>
-                    <input
-                      type="text"
-                      value={value}
-                      onChange={(e) => handleSpacingChange('borderRadius', key, e.target.value)}
-                      className="w-full p-1.5 border rounded text-sm"
-                    />
-                    <div 
-                      className="bg-gray-200 h-12 w-full mt-1"
-                      style={{ borderRadius: value }}
-                    ></div>
-                  </div>
-                ))}
+                {Object.entries(styleGuide)
+                  .filter(([key]) => key.startsWith('borderRadius'))
+                  .map(([key, value]) => (
+                    <div key={key} className="space-y-1">
+                      <label className="block text-xs font-medium capitalize">
+                        {key === 'borderRadiusFull' ? 'Rounded (Full)' : `Rounded ${key.replace('borderRadius', '').toUpperCase()}`}
+                      </label>
+                      <input
+                        type="text"
+                        value={value as string}
+                        onChange={(e) => updateStyleGuide({
+                          ...styleGuide,
+                          [key]: e.target.value
+                        })}
+                        className="w-full p-1.5 border rounded text-sm"
+                      />
+                      <div 
+                        className="bg-gray-200 h-12 w-full mt-1"
+                        style={{ borderRadius: value as string }}
+                      ></div>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -480,40 +457,40 @@ const StyleGuideEditor: React.FC = () => {
             <div 
               className="p-6 border rounded-md space-y-6"
               style={{ 
-                backgroundColor: styleGuide.colors.background,
-                color: styleGuide.colors.text
+                backgroundColor: styleGuide.backgroundColor,
+                color: styleGuide.textColor
               }}
             >
               <div className="space-y-2">
                 <h1 
                   style={{ 
-                    fontFamily: styleGuide.typography.headingFont,
-                    fontSize: styleGuide.typography.h1.size,
-                    fontWeight: styleGuide.typography.h1.weight,
-                    lineHeight: styleGuide.typography.h1.lineHeight,
-                    color: styleGuide.colors.text
+                    fontFamily: styleGuide.headingFont,
+                    fontSize: styleGuide.h1Size,
+                    fontWeight: styleGuide.h1Weight,
+                    lineHeight: styleGuide.h1LineHeight,
+                    color: styleGuide.textColor
                   }}
                 >
                   Your Website Heading
                 </h1>
                 <h2 
                   style={{ 
-                    fontFamily: styleGuide.typography.headingFont,
-                    fontSize: styleGuide.typography.h2.size,
-                    fontWeight: styleGuide.typography.h2.weight,
-                    lineHeight: styleGuide.typography.h2.lineHeight,
-                    color: styleGuide.colors.text
+                    fontFamily: styleGuide.headingFont,
+                    fontSize: styleGuide.h2Size,
+                    fontWeight: styleGuide.h2Weight,
+                    lineHeight: styleGuide.h2LineHeight,
+                    color: styleGuide.textColor
                   }}
                 >
                   Subheading with secondary text
                 </h2>
                 <p 
                   style={{ 
-                    fontFamily: styleGuide.typography.bodyFont,
-                    fontSize: styleGuide.typography.body.size,
-                    fontWeight: styleGuide.typography.body.weight,
-                    lineHeight: styleGuide.typography.body.lineHeight,
-                    marginTop: styleGuide.spacing.md
+                    fontFamily: styleGuide.bodyFont,
+                    fontSize: styleGuide.bodySize,
+                    fontWeight: styleGuide.bodyWeight,
+                    lineHeight: styleGuide.bodyLineHeight,
+                    marginTop: styleGuide.spacingMd
                   }}
                 >
                   This is body text that demonstrates how your content will look. Good typography enhances readability and user experience. The spacing between elements creates a visual hierarchy.
@@ -523,22 +500,22 @@ const StyleGuideEditor: React.FC = () => {
               <div className="flex flex-wrap gap-3 mt-4">
                 <button 
                   style={{ 
-                    backgroundColor: styleGuide.colors.primary,
+                    backgroundColor: styleGuide.primaryColor,
                     color: '#ffffff',
-                    borderRadius: styleGuide.borderRadius.md,
-                    padding: `${styleGuide.spacing.xs} ${styleGuide.spacing.md}`,
-                    fontFamily: styleGuide.typography.bodyFont
+                    borderRadius: styleGuide.borderRadiusMd,
+                    padding: `${styleGuide.spacingXs} ${styleGuide.spacingMd}`,
+                    fontFamily: styleGuide.bodyFont
                   }}
                 >
                   Primary Button
                 </button>
                 <button 
                   style={{ 
-                    backgroundColor: styleGuide.colors.secondary,
+                    backgroundColor: styleGuide.secondaryColor,
                     color: '#ffffff',
-                    borderRadius: styleGuide.borderRadius.md,
-                    padding: `${styleGuide.spacing.xs} ${styleGuide.spacing.md}`,
-                    fontFamily: styleGuide.typography.bodyFont
+                    borderRadius: styleGuide.borderRadiusMd,
+                    padding: `${styleGuide.spacingXs} ${styleGuide.spacingMd}`,
+                    fontFamily: styleGuide.bodyFont
                   }}
                 >
                   Secondary Button
@@ -546,29 +523,29 @@ const StyleGuideEditor: React.FC = () => {
                 <button 
                   style={{ 
                     backgroundColor: 'transparent',
-                    color: styleGuide.colors.primary,
-                    borderRadius: styleGuide.borderRadius.md,
-                    border: `1px solid ${styleGuide.colors.primary}`,
-                    padding: `${styleGuide.spacing.xs} ${styleGuide.spacing.md}`,
-                    fontFamily: styleGuide.typography.bodyFont
+                    color: styleGuide.primaryColor,
+                    borderRadius: styleGuide.borderRadiusMd,
+                    border: `1px solid ${styleGuide.primaryColor}`,
+                    padding: `${styleGuide.spacingXs} ${styleGuide.spacingMd}`,
+                    fontFamily: styleGuide.bodyFont
                   }}
                 >
-                  Outlined Button
+                  Outline Button
                 </button>
               </div>
               
               <div 
                 style={{ 
-                  backgroundColor: styleGuide.colors.accent + '15',
-                  borderRadius: styleGuide.borderRadius.lg,
-                  padding: styleGuide.spacing.md,
-                  marginTop: styleGuide.spacing.lg
+                  backgroundColor: styleGuide.accentColor + '15',
+                  borderRadius: styleGuide.borderRadiusLg,
+                  padding: styleGuide.spacingMd,
+                  marginTop: styleGuide.spacingLg
                 }}
               >
                 <p 
                   style={{ 
-                    fontFamily: styleGuide.typography.bodyFont,
-                    fontSize: styleGuide.typography.body.size
+                    fontFamily: styleGuide.bodyFont,
+                    fontSize: styleGuide.bodySize
                   }}
                 >
                   This is an example of a callout or accent box with your brand colors.

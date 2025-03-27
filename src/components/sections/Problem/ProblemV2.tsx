@@ -3,6 +3,7 @@
 import React from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import { StarIcon } from '@/components/icons';
+import { Section } from '@/components/common/MySection';
 
 interface Problem {
   highlight: string;
@@ -44,9 +45,9 @@ export const ProblemV2: React.FC<ProblemV2Props> = ({
   ]
 }) => {
   const { styleGuide } = useDesign();
-  const primaryColor = styleGuide.colors.primary || "#EF083A";
-  const headingFont = styleGuide.typography.headingFont || "var(--font-manrope)";
-  const bodyFont = styleGuide.typography.bodyFont || "var(--font-archivo)";
+  const primaryColor = styleGuide.primaryColor || "#EF083A";
+  const headingFont = styleGuide.headingFont || "var(--font-manrope)";
+  const bodyFont = styleGuide.bodyFont || "var(--font-archivo)";
 
   const isDark = theme === 'dark';
 
@@ -90,8 +91,11 @@ export const ProblemV2: React.FC<ProblemV2Props> = ({
   };
 
   return (
-    <section className={`w-full ${colors.background} py-[100px] relative overflow-hidden`}>
-      <div className="max-w-[1010px] mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <Section 
+      theme={theme}
+      className="py-[100px] relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-[30px]">
           {/* Badge */}
           <div className={`
@@ -172,6 +176,6 @@ export const ProblemV2: React.FC<ProblemV2Props> = ({
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }; 

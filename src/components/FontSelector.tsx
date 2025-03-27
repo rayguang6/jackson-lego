@@ -14,8 +14,8 @@ const FontSelector: React.FC = () => {
   useEffect(() => {
     try {
       // Try to match by name in the value string
-      const headingFontValue = styleGuide.typography.headingFont.toLowerCase();
-      const bodyFontValue = styleGuide.typography.bodyFont.toLowerCase();
+      const headingFontValue = styleGuide.headingFont.toLowerCase();
+      const bodyFontValue = styleGuide.bodyFont.toLowerCase();
       
       // Find matching fonts
       const headingFont = FONT_OPTIONS.find(
@@ -30,7 +30,7 @@ const FontSelector: React.FC = () => {
       if (headingFont) setHeadingValue(headingFont.value);
       if (bodyFont) setBodyValue(bodyFont.value);
       
-      console.log('Current body font:', styleGuide.typography.bodyFont);
+      console.log('Current body font:', styleGuide.bodyFont);
       console.log('Selected body font:', bodyFont?.value || bodyValue);
     } catch (error) {
       console.error('Error matching fonts:', error);

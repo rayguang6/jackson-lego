@@ -14,7 +14,7 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
   selected = false,
   onClick
 }) => {
-  const { component: Component, preview, name, theme, description, id = '' } = template;
+  const { component: Component, theme, id } = template;
   
   // Scale factor for the thumbnail - make it small enough for the grid
   const scaleFactor = 0.2;
@@ -22,15 +22,9 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
   // Get the variant from the ID (like v1, v2, etc.)
   const variant = id.split('-').pop()?.toUpperCase() || '';
   
-  // Default preview props that will be used for all component types
-  // These provide reasonable defaults for thumbnails
+  // Default preview props
   const defaultPreviewProps = {
-  };
-  
-  // Combine default props with any specific preview props
-  const combinedProps = {
-    ...defaultPreviewProps,
-    ...(preview || {})
+    theme
   };
   
   return (
@@ -64,18 +58,18 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
               left: 0,
               width: `${100 / scaleFactor}%`
             }}>
-              {/* Always render the component with at least the default props */}
-              <Component {...combinedProps} />
+              {/* Render the component with default props */}
+              <Component {...defaultPreviewProps} />
             </div>
           </div>
         </div>
       </div>
       
-      {/* Template name and theme badge */}
+      {/* Template info */}
       <div className="p-2 bg-white">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-gray-900 truncate flex-1">
-            {name}
+            {id.split('-').join(' ').toUpperCase()}
           </p>
           <span className={`text-[10px] px-1.5 py-0.5 rounded ${
             theme === 'light' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-900 text-gray-100'
@@ -83,11 +77,6 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
             {theme}
           </span>
         </div>
-        <p className="text-xs text-gray-500 truncate mt-1">
-          {description.length > 35 
-            ? description.substring(0, 35) + '...' 
-            : description}
-        </p>
       </div>
     </div>
   );

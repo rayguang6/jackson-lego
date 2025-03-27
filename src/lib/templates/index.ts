@@ -1,7 +1,7 @@
 import { SectionType } from '../types';
 import { TemplateRegistry, TemplateVariant, SectionTemplates } from './types';
-import { heroTemplates } from './sections/hero';
-import { problemTemplates } from './sections/problem';
+import { heroTemplates } from '@/components/sections/Hero/register';
+import { problemTemplates } from '@/components/sections/Problem/register';
 
 // Function to ensure templates have IDs
 function ensureTemplateIds(
@@ -123,4 +123,7 @@ export function getTemplate(
   if (!themeTemplates) return null;
   
   return themeTemplates[version] || null;
-} 
+}
+
+export * from './types';
+export * from './registry'; 

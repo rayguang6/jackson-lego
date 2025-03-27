@@ -1,18 +1,11 @@
 import { ReactNode } from 'react';
 import { SectionType } from '../types';
 
-// Template metadata
+// Template metadata - simplified to essential fields
 export interface TemplateVariant {
-  // ID is required for proper template identification
-  id: string;  
-  name: string;
+  id: string;  // e.g., 'hero-v1'
   component: React.ComponentType<any>;
-  description: string;
   theme: 'light' | 'dark';
-  // Preview props for the component
-  preview?: {
-    [key: string]: any;
-  };
 }
 
 // Section template collection
