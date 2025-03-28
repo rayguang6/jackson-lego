@@ -7,6 +7,7 @@ import { ProblemProps,defaultProblemProps } from './types';
 import { Badge } from '@/components/common/Badge';
 import { MyParagraph } from '@/components/common/MyParagraph';
 import { SectionHeading, Highlight } from '@/components/common/SectionHeading';
+import { styleGuide } from '@/lib/constants/styleGuide';
 
 
 
@@ -54,18 +55,21 @@ export const ProblemV1: React.FC<ProblemProps> = ({
               <div 
               key={index}
               className={`
-                flex flex-row items-center px-8 py-4 rounded-lg gap-5
-                transition-all duration-200 hover:scale-[1.02]
-                ${isDark ? 'bg-white' : 'bg-gray-100'}
+                flex items-start gap-6 p-6 rounded-[10px]
+                ${isDark ? 'bg-white border-white/[0.05]' : 'bg-white border-[#E4E4E7]'}
+                border
+                ${isDark ? '' : 'shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]'}
               `}
             >
-              <span className="text-[24px]" role="img" aria-label="icon">
-                ❌
-              </span>
-              <SectionHeading theme={theme} className="!text-[16px] font-semibold p-4 !text-black">
-                <Highlight>{problem.title}</Highlight>
-                {'       '}{problem.description}
-              </SectionHeading>
+              <div className="flex-shrink-0 text-xl leading-none mt-1">❌</div>
+              <div className="flex-1">
+                <span style={{ color: primaryColor }} className="font-semibold">
+                  {problem.title}
+                </span>
+                <span className={'font-normal'} style={{ color: styleGuide.textColor }}>
+                {' '}{problem.description}
+                </span>
+              </div>
             </div>
           ))}
           </div>

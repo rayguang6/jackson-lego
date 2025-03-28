@@ -6,7 +6,6 @@ import { LogoIcon } from '@/components/icons/LogoIcon';
 import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
 import { useDesign } from '@/lib/contexts/DesignContext';
-import { styleGuide } from '@/lib/constants/styleGuide';
 import { Badge } from '@/components/common/Badge';
 import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { SectionHeading } from '@/components/common/SectionHeading';
@@ -54,13 +53,13 @@ export const HeroV3: React.FC<HeroProps> = ({
             <SectionHeading
               children={title}
               theme={theme}
-              className="text-left !text-[56px] !leading-[1.2] max-w-[1000px] !px-0"
+              className="text-left !leading-[1.2] max-w-[1000px] !px-0 mt-8"
             />
 
-            <MyParagraph theme={theme} className="max-w-[1000px]" text={subtitle} />
+            <MyParagraph theme={theme} className="max-w-[1000px] mt-8" text={subtitle} />
 
             {/* Feature List */}
-            <div className="flex gap-4 mb-8">
+            <div className="flex gap-4 mt-2">
               {features?.map((feature, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <div className="w-5 h-5 flex items-center justify-center">
@@ -74,12 +73,12 @@ export const HeroV3: React.FC<HeroProps> = ({
             </div>
 
             {/* CTA Button */}
-            <div className="mb-8">
+            <div className="mt-8">
               <PrimaryButton text={ctaText} theme={theme} />
             </div>
 
             {/* Users Count */}
-            <div className="flex flex-col gap-2">
+            <div className="mt-8 flex flex-col gap-2">
               <div className="h-8">
                 <Image 
                   src={TEMPLATE_IMAGES.HERO.AVATAR_GROUP}

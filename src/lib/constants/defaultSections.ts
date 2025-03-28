@@ -1,12 +1,12 @@
 import { Section, SectionType } from '../types';
 
 export const defaultSections: Section[] = [
-  {
-    id: 'hero-1',
-    type: SectionType.Hero,
-    title: 'Hero Section',
-    order: 0,
-  },
+  // {
+  //   id: 'hero-1',
+  //   type: SectionType.Hero,
+  //   title: 'Hero Section',
+  //   order: 0,
+  // },
   {
     id: 'problem-1',
     type: SectionType.Problem,

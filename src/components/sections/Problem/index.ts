@@ -8,7 +8,7 @@ import { ProblemV4 } from './ProblemV4';
 export { ProblemV1, ProblemV2, ProblemV3, ProblemV4 };
 
 // Default component
-export const ProblemComponent = ProblemV1;
+export const ProblemComponent = ProblemV3;
 
 // For backward compatibility with the sections index exports
 export default ProblemComponent; 

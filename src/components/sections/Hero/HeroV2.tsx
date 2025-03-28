@@ -28,7 +28,7 @@ export const HeroV2: React.FC<HeroProps> = ({
   return (
     <MySection 
       theme={theme}
-      className="flex flex-col items-center text-center py-0 pb-0"
+      className="flex flex-col items-center text-center py-0 !pb-0"
     >
       {/* Logo */}
       <div className="mb-8">
@@ -45,19 +45,19 @@ export const HeroV2: React.FC<HeroProps> = ({
       />
 
       {/* Title */}
-      <SectionHeading theme={theme} className="max-w-[1000px]">
+      <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
         {title}{' '}
         <Highlight>Maximum Efficiency</Highlight>
       </SectionHeading>
 
 
-      <MyParagraph theme={theme} className="max-w-[1000px]" text={subtitle} />
+      <MyParagraph theme={theme} className="max-w-[1000px] mt-8" text={subtitle} />
 
       {/* CTA Button */}
-      <PrimaryButton text={ctaText} theme={theme} className="mb-12" />
+      <PrimaryButton text={ctaText} theme={theme} className="mt-8" />
 
       {/* Video Thumbnail */}
-      <div className="relative w-full max-w-[800px] overflow-hidden">
+      <div className="relative w-full max-w-[1000px] max-h-[400px] overflow-hidden mt-16">
         <Image
           src={videoThumbnailUrl}
           alt="Video thumbnail"

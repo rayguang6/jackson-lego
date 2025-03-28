@@ -27,7 +27,7 @@ const SitemapSection: React.FC<SitemapSectionProps> = ({
           <span className="text-gray-600">{section.order + 1}</span>
         </div>
         <div>
-          <h3 className="font-medium">{section.title}</h3>
+          <h3 className="font-medium text-gray-800">{section.title}</h3>
           <p className="text-sm text-gray-500">{section.type}</p>
         </div>
       </div>

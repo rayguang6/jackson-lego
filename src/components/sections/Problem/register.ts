@@ -3,6 +3,7 @@ import { SectionTemplates } from '@/lib/templates/types';
 import { ProblemV1 } from './ProblemV1';
 import { ProblemV2 } from './ProblemV2';
 import { ProblemV3 } from './ProblemV3';
+import { ProblemV4 } from './ProblemV4';
 
 // Register all Problem templates
 export const problemTemplates: SectionTemplates = {
@@ -21,6 +22,11 @@ export const problemTemplates: SectionTemplates = {
       id: 'problem-v3',
       component: ProblemV3,
       theme: 'light'
+    },
+    v4: {
+      id: 'problem-v4',
+      component: ProblemV4,
+      theme: 'light'
     }
   },
   dark: {
@@ -37,6 +43,11 @@ export const problemTemplates: SectionTemplates = {
     v3: {
       id: 'problem-v3',
       component: ProblemV3,
+      theme: 'dark'
+    },
+    v4: {
+      id: 'problem-v4',
+      component: ProblemV4,
       theme: 'dark'
     }
   }

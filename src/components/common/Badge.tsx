@@ -22,7 +22,7 @@ export const Badge: React.FC<BadgeProps> = ({
   const isDark = theme === 'dark';
 
   return (
-    <div className={`inline-flex items-center ${isDark ? 'bg-zinc-800' : 'bg-white'} rounded-full px-4 py-2 mb-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]`}>
+    <div className={`border inline-flex items-center ${isDark ? 'border-white/[0.25]' : 'bg-white border-[#E4E4E7]'} rounded-full px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)]`}>
       <StarIcon color={primaryColor} />
       <span style={{ fontFamily: bodyFont }} className={`ml-2 font-archivo text-sm font-medium ${isDark ? 'text-white' : 'text-[#111827]'}`}>{text}</span>
     </div>

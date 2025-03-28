@@ -16,7 +16,7 @@ const BrandGuide: React.FC = () => {
   const bodyFont = styleGuide.bodyFont;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-gray-800">
       <div>
         <h2 className="text-lg font-semibold mb-4">Brand Colors</h2>
         <div className="space-y-4">

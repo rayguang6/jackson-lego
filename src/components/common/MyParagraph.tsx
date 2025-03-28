@@ -2,27 +2,40 @@
 
 import React from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
-import { styleGuide } from '@/lib/constants/styleGuide';
+import { getTypographyClass } from '@/utils/typography';
 
-interface MyParagraphProps {
+interface ParagraphProps {
   text: string;
   theme?: 'light' | 'dark';
   className?: string;
+  size?: 'body' | 'small' | 'xs';
 }
 
-export const MyParagraph: React.FC<MyParagraphProps> = ({
+export const MyParagraph: React.FC<ParagraphProps> = ({
   text,
   theme = 'light',
-  className = ''
+  className = '',
+  size = 'body',
 }) => {
   const { styleGuide } = useDesign();
-  const bodyFont = styleGuide?.headingFont || styleGuide.headingFont;
-
   const isDark = theme === 'dark';
+  const textColor = isDark ? 'text-gray-300' : 'text-gray-600';
+
+  const baseTypography = getTypographyClass({
+    size,
+    weight: 'regular',
+    lineHeight: 'relaxed'
+  });
 
   return (
-    <p style={{ fontFamily: bodyFont }} className={`font-archivo text-[20px] leading-[1.6] font-normal ${isDark ? 'text-gray-300' : 'text-[#4B5563]'} mb-8 ${className}`}>
-        {text} 
-      </p> 
+    <p
+      className={`
+        ${baseTypography}
+        ${textColor}
+        ${className}
+      `}
+    >
+      {text}
+    </p>
   );
 };
