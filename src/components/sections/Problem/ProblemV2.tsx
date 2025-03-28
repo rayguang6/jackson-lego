@@ -3,7 +3,7 @@
 import React from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import { StarIcon } from '@/components/icons';
-import { Section } from '@/components/common/MySection';
+import { MySection } from '@/components/common/MySection';
 
 interface Problem {
   highlight: string;
@@ -91,7 +91,7 @@ export const ProblemV2: React.FC<ProblemV2Props> = ({
   };
 
   return (
-    <Section 
+    <MySection 
       theme={theme}
       className="py-[100px] relative overflow-hidden"
     >
@@ -176,6 +176,6 @@ export const ProblemV2: React.FC<ProblemV2Props> = ({
           </div>
         </div>
       </div>
-    </Section>
+    </MySection>
   );
 }; 

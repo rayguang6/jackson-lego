@@ -6,7 +6,7 @@ import { LogoIcon } from '@/components/icons/LogoIcon';
 import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
 import { useDesign } from '@/lib/contexts/DesignContext';
-import { Section } from '@/components/common/MySection';
+import { MySection } from '@/components/common/MySection';
 import { Badge } from '@/components/common/Badge';
 import { SectionHeading, Highlight } from '@/components/common/SectionHeading';
 import { MyParagraph } from '@/components/common/MyParagraph';
@@ -26,7 +26,7 @@ export const HeroV2: React.FC<HeroProps> = ({
   const isDark = theme === 'dark';
   
   return (
-    <Section 
+    <MySection 
       theme={theme}
       className="flex flex-col items-center text-center py-0 pb-0"
     >
@@ -67,6 +67,6 @@ export const HeroV2: React.FC<HeroProps> = ({
         />
         
       </div>
-    </Section>
+    </MySection>
   );
 }; 

@@ -10,7 +10,7 @@ interface SectionProps {
   noPadding?: boolean;
 }
 
-export const Section: React.FC<SectionProps> = ({
+export const MySection: React.FC<SectionProps> = ({
   children,
   theme = 'light',
   className = '',

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import { StarIcon } from '@/components/icons';
+import { MySection } from '@/components/common/MySection';
 
 interface Problem {
   title: string;
@@ -84,9 +85,9 @@ export const ProblemV3: React.FC<ProblemV3Props> = ({
   };
 
   return (
-    <section 
+    <MySection 
+      theme={theme} 
       className={`w-full ${colors.background} py-[100px] relative overflow-hidden`}
-      style={{ backgroundColor: !isDark ? containerBg : undefined }}
     >
       <div className="max-w-[1010px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex flex-col items-center gap-[30px]">
@@ -150,6 +151,6 @@ export const ProblemV3: React.FC<ProblemV3Props> = ({
           </div>
         </div>
       </div>
-    </section>
+    </MySection>
   );
 }; 

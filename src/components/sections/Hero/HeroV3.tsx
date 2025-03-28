@@ -10,7 +10,7 @@ import { styleGuide } from '@/lib/constants/styleGuide';
 import { Badge } from '@/components/common/Badge';
 import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { SectionHeading } from '@/components/common/SectionHeading';
-import { Section } from '@/components/common/MySection';
+import { MySection } from '@/components/common/MySection';
 import { MyParagraph } from '@/components/common/MyParagraph';
 
 export const HeroV3: React.FC<HeroProps> = ({
@@ -29,7 +29,7 @@ export const HeroV3: React.FC<HeroProps> = ({
   const isDark = theme === 'dark';
   
   return (
-    <Section 
+    <MySection 
       theme={theme}
       className="">
 
@@ -110,6 +110,6 @@ export const HeroV3: React.FC<HeroProps> = ({
           </div>
         </div>
       </div>
-    </Section>
+    </MySection>
   );
 }; 

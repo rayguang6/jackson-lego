@@ -24,7 +24,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   return (
     <h2 
       style={{ fontFamily: headingFont }} 
-      className={`font-manrope leading-[1.2] mb-4 text-[60px] font-bold
+      className={`font-manrope text-[60px] font-bold
         ${isDark ? 'text-white' : 'text-gray-900'}
         ${className}
       `}
