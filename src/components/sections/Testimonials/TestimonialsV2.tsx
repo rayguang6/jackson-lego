@@ -9,6 +9,22 @@ import { Badge } from '@/components/common/Badge';
 import { SectionHeading } from '@/components/common/SectionHeading';
 import { MyParagraph } from '@/components/common/MyParagraph';
 
+// Custom placeholder avatar component
+const UserAvatar = ({ author, index, isDark }: { author: string; index: number; isDark: boolean }) => {
+  const colors = ['#EF083A', '#3267FF', '#9061F9', '#2DA94F', '#FF8C42'];
+  const avatarColor = colors[index % colors.length];
+  const initials = author.split(' ').map(name => name[0]).join('').toUpperCase().substring(0, 2);
+  
+  return (
+    <div 
+      className="w-20 h-20 rounded-full flex items-center justify-center text-white text-xl font-bold"
+      style={{ backgroundColor: avatarColor }}
+    >
+      {initials}
+    </div>
+  );
+};
+
 export const TestimonialsV2: React.FC<TestimonialsProps> = ({
   title = defaultTestimonialsProps.title,
   subtitle = defaultTestimonialsProps.subtitle,
@@ -71,12 +87,11 @@ export const TestimonialsV2: React.FC<TestimonialsProps> = ({
                 {/* Client Info */}
                 <div className="flex flex-col items-center mb-6">
                   <div className="w-20 h-20 rounded-full overflow-hidden mb-4">
-                    <Image 
-                      src={testimonial.avatarUrl || `/images/testimonial-avatar-${index + 1}.jpg`}
-                      alt={testimonial.author}
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-cover"
+                    {/* Use custom avatar component instead of missing images */}
+                    <UserAvatar 
+                      author={testimonial.author} 
+                      index={index}
+                      isDark={isDark}
                     />
                   </div>
                   <h3 
