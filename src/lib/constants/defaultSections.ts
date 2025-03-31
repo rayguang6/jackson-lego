@@ -1,12 +1,12 @@
 import { Section, SectionType } from '../types';
 
 export const defaultSections: Section[] = [
-  // {
-  //   id: 'hero-1',
-  //   type: SectionType.Hero,
-  //   title: 'Hero Section',
-  //   order: 0,
-  // },
+  {
+    id: 'hero-1',
+    type: SectionType.Hero,
+    title: 'Hero Section',
+    order: 0,
+  },
   {
     id: 'problem-1',
     type: SectionType.Problem,
@@ -36,17 +36,24 @@ export const defaultSections: Section[] = [
     type: SectionType.Testimonials,
     title: 'Testimonials Section',
     order: 5,
+    templateId: 'testimonials-light-v2',
+  },
+  {
+    id: 'features-1',
+    type: SectionType.FeaturesOrServices,
+    title: 'Features or Services Section',
+    order: 6,
   },
   {
     id: 'social-proof-1',
-    type: SectionType.SocialProof,
-    title: 'Social Proof Section',
-    order: 6,
+    type: SectionType.CTA,
+    title: 'Call to Action Section',
+    order: 7,
   },
   {
     id: 'cta-1',
     type: SectionType.CTA,
     title: 'Call to Action Section',
-    order: 7,
+    order: 8,
   },
 ]; 

@@ -1,2 +1,4 @@
+export * from './LogoIcon';
 export * from './StarIcon';
-export * from './LogoIcon'; 
+export * from './CheckIcon'; 
+export * from './GridIcon'; 

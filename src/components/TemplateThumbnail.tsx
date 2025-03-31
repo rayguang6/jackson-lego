@@ -16,8 +16,8 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
 }) => {
   const { component: Component, theme, id } = template;
   
-  // Scale factor for the thumbnail - make it small enough for the grid
-  const scaleFactor = 0.2;
+  // Scale factor for the thumbnail - increase from 0.2 to 0.3 for better visibility
+  const scaleFactor = 0.35;
   
   // Get the variant from the ID (like v1, v2, etc.)
   const variant = id.split('-').pop()?.toUpperCase() || '';
@@ -29,15 +29,15 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
   
   return (
     <div 
-      className={`border rounded-md overflow-hidden cursor-pointer hover:border-indigo-500 transition-colors h-full flex flex-col ${
-        selected ? 'ring-2 ring-indigo-500' : ''
+      className={`border rounded-lg overflow-hidden cursor-pointer hover:border-indigo-500 transition-colors h-full flex flex-col shadow-sm ${
+        selected ? 'ring-2 ring-indigo-500 shadow-md' : 'hover:shadow-md'
       }`}
       onClick={onClick}
     >
       {/* Template preview - rendered component at smaller scale */}
-      <div className="bg-gray-100 flex-1 overflow-hidden relative" style={{ height: '160px' }}>
+      <div className="bg-gray-100 flex-1 overflow-hidden relative" style={{ height: '300px' }}>
         {/* Variant badge */}
-        <div className="absolute top-1 right-1 z-10 px-1.5 py-0.5 rounded-sm text-xs font-semibold bg-gray-800 text-white opacity-75">
+        <div className="absolute top-2 right-2 z-10 px-2 py-1 rounded-md text-sm font-semibold bg-gray-800 text-white opacity-80">
           {variant}
         </div>
         
@@ -66,12 +66,12 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
       </div>
       
       {/* Template info */}
-      <div className="p-2 bg-white">
+      <div className="p-3 bg-white border-t">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-gray-900 truncate flex-1">
+          <p className="text-sm font-medium text-gray-900 flex-1">
             {id.split('-').join(' ').toUpperCase()}
           </p>
-          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+          <span className={`text-xs px-2 py-1 rounded-full ${
             theme === 'light' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-900 text-gray-100'
           }`}>
             {theme}

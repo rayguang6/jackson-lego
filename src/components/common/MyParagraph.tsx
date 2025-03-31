@@ -34,6 +34,7 @@ export const MyParagraph: React.FC<ParagraphProps> = ({
         ${textColor}
         ${className}
       `}
+      style={{ fontFamily: styleGuide.bodyFont }}
     >
       {text}
     </p>

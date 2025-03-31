@@ -1,8 +1,11 @@
+import { solutionsTemplates } from '@/components/sections/Solutions/register';
 import { SectionType } from '../types';
 import { TemplateRegistry, TemplateVariant, SectionTemplates } from './types';
 import { heroTemplates } from '@/components/sections/Hero/register';
 import { problemTemplates } from '@/components/sections/Problem/register';
-
+import { howItWorksTemplates } from '@/components/sections/HowItWorks/register';
+import { featuresOrServicesTemplates } from '@/components/sections/FeaturesOrServices/register';
+import { testimonialsTemplates } from '@/components/sections/Testimonials/register';
 // Function to ensure templates have IDs
 function ensureTemplateIds(
   sectionType: SectionType, 
@@ -49,10 +52,10 @@ export const templateRegistry: TemplateRegistry = {
   [SectionType.WorkWithUs]: emptySection,
   [SectionType.BeforeAfter]: emptySection,
   [SectionType.FAQs]: emptySection,
-  [SectionType.Testimonials]: emptySection,
-  [SectionType.HowItWorks]: emptySection,
-  [SectionType.FeaturesOrServices]: emptySection,
-  [SectionType.Solutions]: emptySection,
+  [SectionType.Testimonials]: ensureTemplateIds(SectionType.Testimonials, testimonialsTemplates),
+  [SectionType.HowItWorks]: ensureTemplateIds(SectionType.HowItWorks, howItWorksTemplates),
+  [SectionType.FeaturesOrServices]: ensureTemplateIds(SectionType.FeaturesOrServices, featuresOrServicesTemplates),
+  [SectionType.Solutions]: ensureTemplateIds(SectionType.Solutions, solutionsTemplates),
   [SectionType.SocialProof]: emptySection,
 };
 
@@ -111,7 +114,7 @@ export function getTemplateById(templateId: string): TemplateVariant | null {
 /**
  * Get template by section type, theme and version
  */
-export function getTemplate(
+export function getTemplateByTypeAndVersion(
   sectionType: SectionType,
   theme: 'light' | 'dark' = 'light',
   version: string = 'v1'
@@ -123,6 +126,17 @@ export function getTemplate(
   if (!themeTemplates) return null;
   
   return themeTemplates[version] || null;
+}
+
+/**
+ * Alias for getTemplateByTypeAndVersion for backward compatibility
+ */
+export function getTemplate(
+  sectionType: SectionType,
+  theme: 'light' | 'dark' = 'light',
+  version: string = 'v1'
+): TemplateVariant | null {
+  return getTemplateByTypeAndVersion(sectionType, theme, version);
 }
 
 export * from './types';

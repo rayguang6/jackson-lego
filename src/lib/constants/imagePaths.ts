@@ -12,6 +12,13 @@ export const TEMPLATE_IMAGES = {
   PROBLEM: {
     SOLUTION_IMAGE: '/images/templates/solution-image.png',
   },
+
+  // Solutions section
+  SOLUTIONS: {
+    SOLUTION_IMAGE_1: '/images/templates/solution-image-1.png',
+    SOLUTION_IMAGE_2: '/images/templates/solution-image-2.png',
+    SOLUTION_IMAGE_3: '/images/templates/solution-image-3.png',
+  },
 };
 
 // App images

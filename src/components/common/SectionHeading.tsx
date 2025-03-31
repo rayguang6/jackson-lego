@@ -41,6 +41,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         ${textColor}
         ${className}
       `}
+      style={{ fontFamily: styleGuide.headingFont }}
     >
       {children}
     </HeadingTag>

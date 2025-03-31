@@ -2,11 +2,19 @@ import { SectionType } from '../types';
 import { TemplateVariant, SectionTemplates, TemplateRegistry } from './types';
 import { heroTemplates } from '@/components/sections/Hero/register';
 import { problemTemplates } from '@/components/sections/Problem/register';
+import { solutionsTemplates } from '@/components/sections/Solutions/register';
+import { featuresOrServicesTemplates } from '@/components/sections/FeaturesOrServices/register';
+import { testimonialsTemplates } from '@/components/sections/Testimonials/register';
+import { howItWorksTemplates } from '@/components/sections/HowItWorks/register';
 
 // Main template registry
 export const templateRegistry: TemplateRegistry = {
   [SectionType.Hero]: heroTemplates,
   [SectionType.Problem]: problemTemplates,
+  [SectionType.Solutions]: solutionsTemplates,
+  [SectionType.FeaturesOrServices]: featuresOrServicesTemplates,
+  [SectionType.Testimonials]: testimonialsTemplates,
+  [SectionType.HowItWorks]: howItWorksTemplates,
   
   // Add empty collections for other section types to start with
   [SectionType.CTA]: { light: {}, dark: {} },
@@ -18,10 +26,6 @@ export const templateRegistry: TemplateRegistry = {
   [SectionType.WorkWithUs]: { light: {}, dark: {} },
   [SectionType.BeforeAfter]: { light: {}, dark: {} },
   [SectionType.FAQs]: { light: {}, dark: {} },
-  [SectionType.Testimonials]: { light: {}, dark: {} },
-  [SectionType.HowItWorks]: { light: {}, dark: {} },
-  [SectionType.FeaturesOrServices]: { light: {}, dark: {} },
-  [SectionType.Solutions]: { light: {}, dark: {} },
   [SectionType.SocialProof]: { light: {}, dark: {} },
 };
 

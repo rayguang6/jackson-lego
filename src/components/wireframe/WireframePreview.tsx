@@ -325,11 +325,11 @@ const WireframePreview: React.FC = () => {
       {/* Improved Template selector modal with semi-transparent background */}
       {templateSelectorSection && (
         <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-6 overflow-auto"
           onClick={() => closeTemplateSelector()}
         >
           <div 
-            className="relative"
+            className="relative max-h-[90vh] max-w-[95vw]"
             onClick={(e) => e.stopPropagation()}
           >
             <TemplateSelector 
