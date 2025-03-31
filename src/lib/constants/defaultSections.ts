@@ -39,21 +39,15 @@ export const defaultSections: Section[] = [
     templateId: 'testimonials-light-v2',
   },
   {
-    id: 'features-1',
-    type: SectionType.FeaturesOrServices,
-    title: 'Features or Services Section',
-    order: 6,
-  },
-  {
     id: 'social-proof-1',
-    type: SectionType.CTA,
-    title: 'Call to Action Section',
-    order: 7,
+    type: SectionType.SocialProof,
+    title: 'Social Proof Section',
+    order: 6,
   },
   {
     id: 'cta-1',
     type: SectionType.CTA,
     title: 'Call to Action Section',
-    order: 8,
+    order: 7,
   },
 ]; 
