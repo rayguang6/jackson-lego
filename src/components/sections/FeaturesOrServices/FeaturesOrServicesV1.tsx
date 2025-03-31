@@ -19,8 +19,14 @@ export const FeaturesOrServicesV1: React.FC<FeaturesOrServicesProps> = ({
   services = defaultFeaturesOrServicesProps.services,
   theme = defaultFeaturesOrServicesProps.theme
 }) => {
-  const { primaryColor, headingFont, bodyFont, textColor } = useDesign().styleGuide;
+  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
+  
+  // Define colors based on theme
+  const textColor = isDark ? '#FFFFFF' : '#1F2937'; // white for dark, gray-800 for light
+  const borderColor = isDark ? 'border-gray-700' : 'border-gray-100';
+  const serviceBgColor = isDark ? 'bg-gray-800' : 'bg-white';
+  const serviceTextColor = isDark ? 'text-white' : 'text-gray-700';
   
   return (
     <MySection theme={theme} className="py-24">
@@ -46,7 +52,7 @@ export const FeaturesOrServicesV1: React.FC<FeaturesOrServicesProps> = ({
           {services.slice(0, 4).map((service, index) => (
             <div 
               key={index} 
-              className={`border border-gray-100 rounded-3xl p-8 flex flex-col ${index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-10`}
+              className={`border ${borderColor} rounded-3xl p-8 ${serviceBgColor} flex flex-col ${index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-10 transition-colors`}
             >
               <div className="w-full md:w-2/5 aspect-video md:aspect-auto rounded-2xl overflow-hidden">
                 <Image 
@@ -65,8 +71,8 @@ export const FeaturesOrServicesV1: React.FC<FeaturesOrServicesProps> = ({
                   {service.title}
                 </h3>
                 <p 
-                  className="text-lg mb-8"
-                  style={{ color: textColor, fontFamily: bodyFont }}
+                  className={`text-lg mb-8 ${serviceTextColor}`}
+                  style={{ fontFamily: bodyFont }}
                 >
                   {service.description}
                 </p>
@@ -81,7 +87,8 @@ export const FeaturesOrServicesV1: React.FC<FeaturesOrServicesProps> = ({
                         className="flex-shrink-0 mt-0.5"
                       />
                       <span 
-                        style={{ color: textColor, fontFamily: bodyFont }}
+                        className={serviceTextColor}
+                        style={{ fontFamily: bodyFont }}
                       >
                         {point}
                       </span>
