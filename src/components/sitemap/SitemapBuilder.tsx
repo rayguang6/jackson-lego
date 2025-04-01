@@ -6,35 +6,34 @@ import { useDesign } from '@/lib/contexts/DesignContext';
 import SitemapSection from './SitemapSection';
 
 const SitemapBuilder: React.FC = () => {
-  const { design, addSection, removeSection, reorderSection } = useDesign();
+  const design = useDesign();
   const [newSectionType, setNewSectionType] = useState<SectionType>(SectionType.Hero);
 
   // Sort sections by order
-  const sortedSections = [...design.sections].sort((a, b) => a.order - b.order);
+  const sortedSections = [...design.design.sections].sort((a, b) => a.order - b.order);
 
   const handleAddSection = () => {
-    // Auto-generate section title based on type
-    const sectionCount = design.sections.filter(s => s.type === newSectionType).length + 1;
+    // Generate a descriptive title for the sitemap display
     const formattedType = newSectionType.charAt(0).toUpperCase() + newSectionType.slice(1).replace(/([A-Z])/g, ' $1').trim();
     const title = `${formattedType} Section`;
     
-    addSection({
+    design.addSection({
       type: newSectionType,
       title: title,
     });
   };
 
   const handleMoveUp = (sectionId: string) => {
-    const section = design.sections.find((s) => s.id === sectionId);
+    const section = design.design.sections.find((s: Section) => s.id === sectionId);
     if (section && section.order > 0) {
-      reorderSection(sectionId, section.order - 1);
+      design.reorderSection(sectionId, section.order - 1);
     }
   };
 
   const handleMoveDown = (sectionId: string) => {
-    const section = design.sections.find((s) => s.id === sectionId);
-    if (section && section.order < design.sections.length - 1) {
-      reorderSection(sectionId, section.order + 1);
+    const section = design.design.sections.find((s: Section) => s.id === sectionId);
+    if (section && section.order < design.design.sections.length - 1) {
+      design.reorderSection(sectionId, section.order + 1);
     }
   };
 
@@ -72,7 +71,7 @@ const SitemapBuilder: React.FC = () => {
             <SitemapSection
               key={section.id}
               section={section}
-              onRemove={removeSection}
+              onRemove={design.removeSection}
               onMoveUp={handleMoveUp}
               onMoveDown={handleMoveDown}
               isFirst={index === 0}

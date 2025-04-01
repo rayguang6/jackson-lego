@@ -39,8 +39,8 @@ const PreviewContent = () => {
     
     if (template) {
       const Component = template.component;
-      // Pass both theme and styleGuide to ensure proper styling
-      return <Component theme={template.theme} styleGuide={design.styleGuide} {...section} />;
+      // Only pass theme and styleGuide, let the template use its own default props
+      return <Component theme={template.theme} styleGuide={design.styleGuide} />;
     }
     
     return null;
