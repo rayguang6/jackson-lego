@@ -3,10 +3,10 @@
 import React from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import { MySection } from '@/components/common/MySection';
-import { HowItWorksProps,defaultHowItWorksProps } from './types';
+import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/common/Badge';
 import { MyParagraph } from '@/components/common/MyParagraph';
-import { SectionHeading, Highlight } from '@/components/common/SectionHeading';
+import { SectionHeading } from '@/components/common/SectionHeading';
 
 export const HowItWorksV1: React.FC<HowItWorksProps> = ({
   theme = defaultHowItWorksProps.theme,
@@ -15,61 +15,88 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
   badgeText = defaultHowItWorksProps.badgeText,
   features = defaultHowItWorksProps.features,
 }) => {
-
-  const { primaryColor, headingFont, bodyFont, textColor } = useDesign().styleGuide;
+  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
 
+  const StepCard = ({ number, title, description, isHighlighted = false }: { 
+    number: number; 
+    title: string; 
+    description: string;
+    isHighlighted?: boolean;
+  }) => {
+    return (
+      <div 
+        className={`
+          flex items-center gap-6 p-5 rounded-[10px] relative
+          ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-[#E4E4E7]'}
+          border shadow-md
+          w-full max-w-[460px]
+        `}
+      >
+        <div 
+          className="w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0"
+          style={{ backgroundColor: primaryColor }}
+        >
+          <span className="text-white font-extrabold text-xl font-manrope">{number}</span>
+        </div>
+        
+        <div className="flex-1">
+          <p 
+            className={`font-medium text-xl mb-1 ${isDark ? 'text-white' : 'text-[#18181B]'}`} 
+            style={{ fontFamily: headingFont, lineHeight: '1.4' }}
+          >
+            {title}
+          </p>
+          <p 
+            className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+            style={{ fontFamily: bodyFont }}
+          >
+            {description}
+          </p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <MySection 
       theme={theme}
       className="py-24"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-8">  
           {/* Badge */}
           <Badge 
             text={badgeText}
             theme={theme}
+            icon="star"
           />
 
           {/* Title */}
           <SectionHeading
             theme={theme}
-            children={title}
-            className='text-center !text-[36px] max-w-[500px]'
-          />
+            className="text-center max-w-[600px]"
+          >
+            {title}
+          </SectionHeading>
 
           {/* Subtitle */}
           <MyParagraph
             theme={theme}
             text={subtitle}
+            className="text-center max-w-[600px]"
           />
 
-          {/* Problems Grid */}
-          <div className="w-full max-w-[700px] flex flex-col gap-6">
+          {/* Steps */}
+          <div className="w-full flex flex-col items-center gap-6 mt-6">
             {features?.map((feature, index) => (
-              <div 
-              key={index}
-              className={`
-                flex items-start gap-6 p-6 rounded-[10px]
-                ${isDark ? 'bg-white border-white/[0.05]' : 'bg-white border-[#E4E4E7]'}
-                border
-                ${isDark ? '' : 'shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]'}
-              `}
-            >
-              <div className="flex-shrink-0 text-xl leading-none mt-1">🔑</div>
-              <div className="flex-1">
-                <span style={{ color: primaryColor }} className="font-semibold">
-                  {feature.title}
-                </span>
-                <br />
-                <span className={'font-normal'} style={{ color: textColor }}>
-                {' '}{feature.description}
-                </span>
-              </div>
-            </div>
-          ))}
+              <StepCard
+                key={index}
+                number={index + 1}
+                title={feature.title.replace(/\d+\.\s+/, '')} // Remove the numbering from the title
+                description={feature.description}
+              />
+            ))}
           </div>
         </div>
       </div>

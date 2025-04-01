@@ -1,10 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 import { Section, StyleGuide, WebsiteDesign } from '../types';
-import { styleGuide as initialStyleGuide } from '../constants/styleGuide';
-import { defaultSections } from '../constants/defaultSections';
-import { v4 as uuidv4 } from 'uuid';
+import { useDesignStore } from '../store/designStore';
 
 interface DesignContextProps {
   design: WebsiteDesign;
@@ -22,9 +20,46 @@ interface DesignContextProps {
 }
 
 const DesignContext = createContext<DesignContextProps | undefined>(undefined);
+export { DesignContext };
 
 export const useDesign = () => {
   const context = useContext(DesignContext);
+  
+  // If we're in a server-side rendering context and context is undefined,
+  // return a minimal object with just the styleGuide
+  if (typeof window === 'undefined' && !context) {
+    return {
+      styleGuide: {
+        primaryColor: '#000000',
+        secondaryColor: '#000000',
+        accentColor: '#000000',
+        backgroundColor: '#ffffff',
+        backgroundColorDark: '#000000',
+        textColor: '#000000',
+        headingFont: 'Arial',
+        bodyFont: 'Arial',
+        h1Size: '48px',
+        h1Weight: '700',
+        h1LineHeight: '1.2',
+        h2Size: '36px',
+        h2Weight: '600',
+        h2LineHeight: '1.3',
+        bodySize: '16px',
+        bodyWeight: '400',
+        bodyLineHeight: '1.5',
+        spacingXs: '8px',
+        spacingSm: '16px',
+        spacingMd: '24px',
+        spacingLg: '32px',
+        spacingXl: '48px',
+        borderRadiusSm: '4px',
+        borderRadiusMd: '8px',
+        borderRadiusLg: '16px',
+        borderRadiusFull: '9999px',
+      }
+    };
+  }
+  
   if (!context) {
     throw new Error('useDesign must be used within a DesignProvider');
   }
@@ -36,191 +71,23 @@ interface DesignProviderProps {
 }
 
 export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
-  const [design, setDesign] = useState<WebsiteDesign>({
-    id: uuidv4(),
-    name: 'New Website Design',
-    sections: defaultSections,
-    styleGuide: initialStyleGuide,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-
-  // Log initial values
-  useEffect(() => {
-    console.log('Initial style guide:', design.styleGuide);
-    console.log('Initial body font:', design.styleGuide.bodyFont);
-  }, []);
-
-  const styleGuide = useMemo(() => design.styleGuide, [design.styleGuide]);
-
-  const addSection = (sectionData: Omit<Section, 'id' | 'order'>) => {
-    const newSection: Section = {
-      id: uuidv4(),
-      ...sectionData,
-      order: design.sections.length,
-    };
-
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      sections: [...prevDesign.sections, newSection],
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const removeSection = (sectionId: string) => {
-    setDesign((prevDesign) => {
-      // Filter out the removed section
-      const newSections = prevDesign.sections.filter((s) => s.id !== sectionId);
-      
-      // Reorder the remaining sections
-      const reorderedSections = newSections.map((section, index) => ({
-        ...section,
-        order: index,
-      }));
-      
-      return {
-        ...prevDesign,
-        sections: reorderedSections,
-        updatedAt: new Date().toISOString(),
-      };
-    });
-  };
-
-  const updateSection = (updatedSection: Section) => {
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      sections: prevDesign.sections.map((section) =>
-        section.id === updatedSection.id ? updatedSection : section
-      ),
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const reorderSection = (sectionId: string, newOrder: number) => {
-    setDesign((prevDesign) => {
-      const sectionToMove = prevDesign.sections.find((s) => s.id === sectionId);
-      
-      if (!sectionToMove) return prevDesign;
-      
-      const currentOrder = sectionToMove.order;
-      
-      // Bound the new order within valid limits
-      const boundedNewOrder = Math.max(0, Math.min(prevDesign.sections.length - 1, newOrder));
-      
-      // If the order hasn't changed, return the current state
-      if (currentOrder === boundedNewOrder) return prevDesign;
-      
-      // Create new array with updated orders
-      const updatedSections = prevDesign.sections.map((section) => {
-        // The section being moved
-        if (section.id === sectionId) {
-          return { ...section, order: boundedNewOrder };
-        }
-        
-        // Adjust other sections' orders
-        if (currentOrder < boundedNewOrder) {
-          // Moving down: decrement orders for sections between current and new position
-          if (section.order > currentOrder && section.order <= boundedNewOrder) {
-            return { ...section, order: section.order - 1 };
-          }
-        } else {
-          // Moving up: increment orders for sections between new and current position
-          if (section.order >= boundedNewOrder && section.order < currentOrder) {
-            return { ...section, order: section.order + 1 };
-          }
-        }
-        
-        // Leave other sections unchanged
-        return section;
-      });
-      
-      return {
-        ...prevDesign,
-        sections: updatedSections,
-        updatedAt: new Date().toISOString(),
-      };
-    });
-  };
-
-  const updateStyleGuide = (styleGuide: StyleGuide) => {
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      styleGuide,
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const updatePrimaryColor = (color: string) => {
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      styleGuide: {
-        ...prevDesign.styleGuide,
-        primaryColor: color
-      },
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const updateHeadingFont = (font: string) => {
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      styleGuide: {
-        ...prevDesign.styleGuide,
-        headingFont: font
-      },
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const updateBodyFont = (font: string) => {
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      styleGuide: {
-        ...prevDesign.styleGuide,
-        bodyFont: font
-      },
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const updateSectionTemplate = (sectionId: string, templateId: string) => {
-    setDesign((prevDesign) => ({
-      ...prevDesign,
-      sections: prevDesign.sections.map((section) =>
-        section.id === sectionId 
-          ? { ...section, templateId } 
-          : section
-      ),
-      updatedAt: new Date().toISOString(),
-    }));
-  };
-
-  const resetDesign = () => {
-    setDesign({
-      id: uuidv4(),
-      name: 'New Website Design',
-      sections: defaultSections,
-      styleGuide: initialStyleGuide,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
-  };
+  const store = useDesignStore();
 
   return (
     <DesignContext.Provider
       value={{
-        design,
-        styleGuide,
-        addSection,
-        removeSection,
-        updateSection,
-        reorderSection,
-        updateStyleGuide,
-        updatePrimaryColor,
-        updateHeadingFont,
-        updateBodyFont,
-        updateSectionTemplate,
-        resetDesign,
+        design: store.design,
+        styleGuide: store.design.styleGuide,
+        addSection: store.addSection,
+        removeSection: store.removeSection,
+        updateSection: store.updateSection,
+        reorderSection: store.reorderSection,
+        updateStyleGuide: store.updateStyleGuide,
+        updatePrimaryColor: store.updatePrimaryColor,
+        updateHeadingFont: store.updateHeadingFont,
+        updateBodyFont: store.updateBodyFont,
+        updateSectionTemplate: store.updateSectionTemplate,
+        resetDesign: store.resetDesign,
       }}
     >
       {children}

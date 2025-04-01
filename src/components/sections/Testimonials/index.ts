@@ -1,8 +1,9 @@
 import React from 'react';
+import { TestimonialsV1 } from './TestimonialsV1';
 import { TestimonialsV2 } from './TestimonialsV2';
 
 // Export the variants
-export { TestimonialsV2 };
+export { TestimonialsV1, TestimonialsV2 };
 
 // Placeholder component that uses TestimonialsV2
 export const TestimonialsComponent = TestimonialsV2;

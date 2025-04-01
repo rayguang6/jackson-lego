@@ -44,10 +44,10 @@ export const defaultSections: Section[] = [
     title: 'Social Proof Section',
     order: 6,
   },
-  {
-    id: 'cta-1',
-    type: SectionType.CTA,
-    title: 'Call to Action Section',
-    order: 7,
-  },
+  // {
+  //   id: 'cta-1',
+  //   type: SectionType.CTA,
+  //   title: 'Call to Action Section',
+  //   order: 7,
+  // },
 ]; 

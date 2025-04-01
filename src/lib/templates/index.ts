@@ -6,6 +6,7 @@ import { problemTemplates } from '@/components/sections/Problem/register';
 import { howItWorksTemplates } from '@/components/sections/HowItWorks/register';
 import { featuresOrServicesTemplates } from '@/components/sections/FeaturesOrServices/register';
 import { testimonialsTemplates } from '@/components/sections/Testimonials/register';
+
 // Function to ensure templates have IDs
 function ensureTemplateIds(
   sectionType: SectionType, 

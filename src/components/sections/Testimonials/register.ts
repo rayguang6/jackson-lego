@@ -1,5 +1,6 @@
 import { SectionType } from '@/lib/types';
 import { SectionTemplates } from '@/lib/templates/types';
+import { TestimonialsV1 } from './TestimonialsV1';
 import { TestimonialsV2 } from './TestimonialsV2';
 
 // Register all Testimonials templates
@@ -7,7 +8,7 @@ export const testimonialsTemplates: SectionTemplates = {
   light: {
     v1: {
       id: 'testimonials-light-v1',
-      component: TestimonialsV2,
+      component: TestimonialsV1,
       theme: 'light'
     },
     v2: {
@@ -19,7 +20,7 @@ export const testimonialsTemplates: SectionTemplates = {
   dark: {
     v1: {
       id: 'testimonials-dark-v1',
-      component: TestimonialsV2,
+      component: TestimonialsV1,
       theme: 'dark'
     },
     v2: {

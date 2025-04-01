@@ -10,6 +10,8 @@ export interface HowItWorksProps {
     title: string;
     description: string;
   }[];
+  buttonText?: string;
+  buttonUrl?: string;
 }
 
 // Default values that can be used by any Hero variant
@@ -31,5 +33,7 @@ export const defaultHowItWorksProps: HowItWorksProps = {
             title: "3. Launch Fast",
             description: "Quickly publish your site.",
         }   
-  ]
+  ],
+  buttonText: "GET INSTANT ACCESS",
+  buttonUrl: "#"
 }; 
