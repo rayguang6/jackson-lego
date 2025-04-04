@@ -1,6 +1,6 @@
 import { create, StateCreator } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { WebsiteDesign, Section, StyleGuide } from '../types';
+import { WebsiteDesign, Section, StyleGuide, SectionType } from '../types';
 import { styleGuide as initialStyleGuide } from '../constants/styleGuide';
 import { defaultSections } from '../constants/defaultSections';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +17,8 @@ interface DesignStore {
   updateBodyFont: (font: string) => void;
   updateSectionTemplate: (sectionId: string, templateId: string) => void;
   resetDesign: () => void;
+  resetStyleGuide: () => void;
+  resetSections: () => void;
 }
 
 type DesignStorePersist = (
@@ -181,6 +183,24 @@ export const useDesignStore = create<DesignStore>()(
         set({
           design: getInitialState(),
         }),
+
+      resetStyleGuide: () =>
+        set((state: DesignStore) => ({
+          design: {
+            ...state.design,
+            styleGuide: initialStyleGuide,
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      resetSections: () =>
+        set((state: DesignStore) => ({
+          design: {
+            ...state.design,
+            sections: defaultSections,
+            updatedAt: new Date().toISOString(),
+          },
+        })),
     }),
     {
       name: 'jackson-lego-design-store',

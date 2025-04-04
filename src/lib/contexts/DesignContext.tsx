@@ -17,6 +17,8 @@ interface DesignContextProps {
   updateBodyFont: (font: string) => void;
   updateSectionTemplate: (sectionId: string, templateId: string) => void;
   resetDesign: () => void;
+  resetStyleGuide: () => void;
+  resetSections: () => void;
 }
 
 const DesignContext = createContext<DesignContextProps | undefined>(undefined);
@@ -88,6 +90,8 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
         updateBodyFont: store.updateBodyFont,
         updateSectionTemplate: store.updateSectionTemplate,
         resetDesign: store.resetDesign,
+        resetStyleGuide: store.resetStyleGuide,
+        resetSections: store.resetSections,
       }}
     >
       {children}

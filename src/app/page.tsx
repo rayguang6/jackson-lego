@@ -3,11 +3,46 @@
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { DesignProvider } from '@/lib/contexts/DesignContext';
+import { useDesign } from '@/lib/contexts/DesignContext';
 import TabPanel from '@/components/TabPanel';
 import SitemapBuilder from '@/components/sitemap/SitemapBuilder';
 import WireframePreview from '@/components/wireframe/WireframePreview';
 import BrandGuide from '@/components/BrandGuide';
 import ExportButton from '@/components/ExportButton';
+
+// New Design button component
+const NewDesignButton = () => {
+  const design = useDesign() as any;
+  
+  const handleNewDesign = () => {
+    if (confirm('Start a completely new design? This will reset everything to defaults.')) {
+      design.resetDesign();
+    }
+  };
+  
+  return (
+    <button
+      onClick={handleNewDesign}
+      className="inline-flex items-center px-4 py-2 border border-red-300 rounded-md text-sm font-medium bg-white text-red-600 hover:bg-red-50"
+    >
+      <svg
+        className="-ml-1 mr-2 h-4 w-4"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+        />
+      </svg>
+      New Design
+    </button>
+  );
+};
 
 export default function Home() {
   const [isStructurePanelOpen, setIsStructurePanelOpen] = useState(true);
@@ -18,61 +53,62 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-full mx-auto px-4 py-3">
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold text-gray-900">Jackson Lego</h1>
-            <div className="flex space-x-2">
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/preview"
+      <DesignProvider>
+        <header className="bg-white shadow-sm">
+          <div className="max-w-full mx-auto px-4 py-3">
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-bold text-gray-900">Jackson Lego</h1>
+              <div className="flex space-x-2">
+                <div className="flex items-center gap-4">
+                  <Link
+                    href="/preview"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium bg-white text-gray-700 hover:bg-gray-50"
+                  >
+                    <svg
+                      className="-ml-1 mr-2 h-4 w-4 text-gray-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                    Preview
+                  </Link>
+                  <ExportButton />
+                  <NewDesignButton />
+                </div>
+                {/* <button className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  Export
+                </button>
+                <Link 
+                  href="/debug" 
+                  className="bg-indigo-600 rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium bg-white text-gray-700 hover:bg-gray-50"
+                  aria-disabled={true}
                 >
-                  <svg
-                    className="-ml-1 mr-2 h-4 w-4 text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                  Preview
-                </Link>
-                <ExportButton />
+                  Debug
+                </Link> */}
               </div>
-              {/* <button className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                Export
-              </button>
-              <Link 
-                href="/debug" 
-                className="bg-indigo-600 rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-disabled={true}
-              >
-                Debug
-              </Link> */}
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="max-w-full mx-auto py-4 flex">
-        <DesignProvider>
+        <div className="max-w-full mx-auto py-4 flex">
           <div className={`transition-all duration-300 ease-in-out flex-shrink-0 ${isStructurePanelOpen ? 'w-80' : 'w-12'} bg-white border-r border-gray-200 relative`}>
             <div className={`flex items-center p-3 border-b border-gray-200 ${isStructurePanelOpen ? 'justify-between' : 'justify-center'}`}>
               {isStructurePanelOpen && (
@@ -118,8 +154,8 @@ export default function Home() {
           <div className="flex-grow px-6">
             <WireframePreview />
           </div>
-        </DesignProvider>
-      </div>
+        </div>
+      </DesignProvider>
     </main>
   );
 }
