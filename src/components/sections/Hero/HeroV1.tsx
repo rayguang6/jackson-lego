@@ -19,7 +19,7 @@ export const HeroV1: React.FC<HeroProps> = ({
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1
 }) => {
   const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
 

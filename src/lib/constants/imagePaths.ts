@@ -2,7 +2,7 @@
 export const TEMPLATE_IMAGES = {
   // Hero section
   HERO: {
-    VIDEO_THUMBNAIL: '/images/templates/video-thumbnail.png',
+    VIDEO_THUMBNAIL_1: '/images/templates/video-thumbnail-4.png',
     VIDEO_THUMBNAIL_2: '/images/templates/video-thumbnail-2.png',
     VIDEO_THUMBNAIL_3: '/images/templates/video-thumbnail-3.png',
     AVATAR_GROUP: '/images/templates/avatar-group.png',

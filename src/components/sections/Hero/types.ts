@@ -18,6 +18,6 @@ export const defaultHeroProps: HeroProps = {
   ctaText: "GET INSTANT ACCESS",
   badgeText: "The #1 Community for Game-Changers",
   theme: 'light',
-  videoThumbnailUrl: TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL,
+  videoThumbnailUrl: TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1,
   features: ["Build for Speed", "Proven, High Impact Design", "Launch Like A Pro"]
 }; 

@@ -21,10 +21,23 @@ const extractImageUrls = (html: string): string[] => {
     const matches = [...html.matchAll(pattern)];
     matches.forEach(match => {
       const url = match[1];
-      // Handle srcSet format (take the first URL)
-      const cleanUrl = url.split(',')[0].split(' ')[0];
-      if (cleanUrl.startsWith('/') || cleanUrl.startsWith('http')) {
-        urls.add(cleanUrl);
+      
+      // For srcSet, we need to handle multiple URLs
+      if (pattern.toString().includes('srcSet')) {
+        // Split the srcSet value by commas to get individual URL descriptors
+        const srcSetParts = url.split(',');
+        srcSetParts.forEach(part => {
+          // Extract just the URL (before the size descriptor)
+          const srcUrl = part.trim().split(' ')[0];
+          if (srcUrl && (srcUrl.startsWith('/') || srcUrl.startsWith('http'))) {
+            urls.add(srcUrl);
+          }
+        });
+      } else {
+        // Handle regular URLs
+        if (url && (url.startsWith('/') || url.startsWith('http'))) {
+          urls.add(url);
+        }
       }
     });
   });
@@ -184,6 +197,8 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
           updateBodyFont: () => {},
           updateSectionTemplate: () => {},
           resetDesign: () => {},
+          resetStyleGuide: () => {},
+          resetSections: () => {},
         };
 
         // Get the section data from the design store to ensure we have all content
@@ -199,7 +214,8 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
             DesignContext.Provider,
             { value: mockStore },
             React.createElement(Component, {
-              ...sectionData, // Pass all section data from the store
+              // Only pass theme and styleGuide like the preview page does
+              // This prevents section titles from showing up
               theme: template.theme,
               styleGuide: design.styleGuide
             })
@@ -215,25 +231,44 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
             const { blob, filename } = await downloadImage(imageUrl);
             allImages.push({ url: imageUrl, blob, filename });
             
-            // Update image src to point to images directory
-            updatedHtml = updatedHtml.replace(
-              new RegExp(imageUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 
-              `images/${filename}`
-            );
+            // Get the original URL by cleaning the Next.js URL
+            const cleanUrl = cleanNextImageUrl(imageUrl);
+            
+            // Create two patterns for replacement
+            // 1. The exact URL pattern
+            const exactUrlPattern = new RegExp(imageUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+            
+            // 2. Any URL containing this image path (for srcSet and other variations)
+            const partialUrlPattern = new RegExp(`[^"']*${cleanUrl.split('/').pop()?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^"']*`, 'g');
+            
+            // Replace all instances
+            updatedHtml = updatedHtml.replace(exactUrlPattern, `images/${filename}`);
+            
+            // For srcSet URLs, we need to replace each URL with our local path
+            // This specific replacement handles srcSet values like "url1 1x, url2 2x"
+            if (updatedHtml.includes('srcSet')) {
+              // Create a regex that matches srcSet attribute values
+              const srcSetPattern = /(srcSet=["'])(.*?)(["'])/g;
+              updatedHtml = updatedHtml.replace(srcSetPattern, (match, prefix, srcSetValue, suffix) => {
+                // Replace each URL in the srcSet with our local path
+                const updatedSrcSet = srcSetValue.replace(partialUrlPattern, `images/${filename}`);
+                return `${prefix}${updatedSrcSet}${suffix}`;
+              });
+            }
           } catch (error) {
             console.error(`Failed to process image ${imageUrl}:`, error);
           }
         }
-        
-        return `
-          <section 
-            class="section ${section.type.toLowerCase()}-section"
-            data-section-id="${section.id}"
-            data-template-id="${section.templateId || `${section.type}-v1`}"
-          >
-            ${updatedHtml}
-          </section>
-        `;
+        return `${updatedHtml}`;
+        // return `
+        //   <section 
+        //     class="section ${section.type.toLowerCase()}-section"
+        //     data-section-id="${section.id}"
+        //     data-template-id="${section.templateId || `${section.type}-v1`}"
+        //   >
+        //     ${updatedHtml}
+        //   </section>
+        // `;
       } catch (error) {
         console.error(`Error rendering section:`, error);
         return '';

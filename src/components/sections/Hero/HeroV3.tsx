@@ -19,7 +19,7 @@ export const HeroV3: React.FC<HeroProps> = ({
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
   features = defaultHeroProps.features,
-  videoThumbnailUrl = defaultHeroProps.videoThumbnailUrl
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_3
 }) => {
   const { styleGuide } = useDesign();
   const primaryColor = styleGuide?.primaryColor || styleGuide.primaryColor;
@@ -98,7 +98,7 @@ export const HeroV3: React.FC<HeroProps> = ({
           <div className="relative w-full rounded-[20px] overflow-hidden flex items-center justify-center">
             <div className={`relative h-full rounded-[15px] overflow-hidden `}>
               <Image
-                src={TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_2}
+                src={videoThumbnailUrl}
                 alt="Video thumbnail"
                 width={500}
                 height={500}
