@@ -13,6 +13,7 @@ interface DesignStore {
   reorderSection: (sectionId: string, newOrder: number) => void;
   updateStyleGuide: (styleGuide: StyleGuide) => void;
   updatePrimaryColor: (color: string) => void;
+  updateSecondaryColor: (color: string) => void;
   updateHeadingFont: (font: string) => void;
   updateBodyFont: (font: string) => void;
   updateSectionTemplate: (sectionId: string, templateId: string) => void;
@@ -139,6 +140,18 @@ export const useDesignStore = create<DesignStore>()(
             styleGuide: {
               ...state.design.styleGuide,
               primaryColor: color,
+            },
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      updateSecondaryColor: (color: string) =>
+        set((state: DesignStore) => ({
+          design: {
+            ...state.design,
+            styleGuide: {
+              ...state.design.styleGuide,
+              secondaryColor: color,
             },
             updatedAt: new Date().toISOString(),
           },

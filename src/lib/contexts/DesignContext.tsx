@@ -13,6 +13,7 @@ interface DesignContextProps {
   reorderSection: (sectionId: string, newOrder: number) => void;
   updateStyleGuide: (styleGuide: StyleGuide) => void;
   updatePrimaryColor: (color: string) => void;
+  updateSecondaryColor: (color: string) => void;
   updateHeadingFont: (font: string) => void;
   updateBodyFont: (font: string) => void;
   updateSectionTemplate: (sectionId: string, templateId: string) => void;
@@ -86,6 +87,7 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
         reorderSection: store.reorderSection,
         updateStyleGuide: store.updateStyleGuide,
         updatePrimaryColor: store.updatePrimaryColor,
+        updateSecondaryColor: store.updateSecondaryColor,
         updateHeadingFont: store.updateHeadingFont,
         updateBodyFont: store.updateBodyFont,
         updateSectionTemplate: store.updateSectionTemplate,
