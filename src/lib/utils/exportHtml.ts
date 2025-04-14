@@ -121,6 +121,15 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
     // Create CSS variables for the style guide
     const cssVariables = `
       :root {
+        /* Font family declarations */
+        --font-merriweather: 'Merriweather', serif;
+        --font-montserrat: 'Montserrat', sans-serif;
+        --font-poppins: 'Poppins', sans-serif;
+        --font-inter: 'Inter', sans-serif;
+        --font-archivo: 'Archivo', sans-serif;
+        --font-manrope: 'Manrope', sans-serif;
+
+        /* Color variables */
         --primary-color: ${design.styleGuide.primaryColor};
         --secondary-color: ${design.styleGuide.secondaryColor};
         --accent-color: ${design.styleGuide.accentColor};
@@ -128,8 +137,9 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
         --background-color-dark: ${design.styleGuide.backgroundColorDark};
         --text-color: ${design.styleGuide.textColor};
         
-        --heading-font: ${design.styleGuide.headingFont};
-        --body-font: ${design.styleGuide.bodyFont};
+        /* Font variables that reference the font family declarations */
+        --heading-font: var(${design.styleGuide.headingFont});
+        --body-font: var(${design.styleGuide.bodyFont});
         
         --h1-size: ${design.styleGuide.h1Size};
         --h1-weight: ${design.styleGuide.h1Weight};
@@ -193,6 +203,7 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
           reorderSection: () => {},
           updateStyleGuide: () => {},
           updatePrimaryColor: () => {},
+          updateSecondaryColor: () => {},
           updateHeadingFont: () => {},
           updateBodyFont: () => {},
           updateSectionTemplate: () => {},
