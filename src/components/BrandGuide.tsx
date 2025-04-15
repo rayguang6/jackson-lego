@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesign } from '../lib/contexts/DesignContext';
 import FontSelector from './FontSelector';
 
 interface DesignHook {
@@ -313,8 +313,8 @@ const BrandGuide: React.FC = () => {
   const bodyFont = styleGuide.bodyFont;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-shrink-0 bg-white py-4 mb-4 flex justify-between items-center">
+    <div className="space-y-8 text-gray-800">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Brand Colors</h2>
         {resetStyleGuide && (
           <button
@@ -326,257 +326,255 @@ const BrandGuide: React.FC = () => {
         )}
       </div>
       
-      <div className="flex-grow space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          {colorConfigs.map(config => (
-            <div 
-              key={config.id}
-              ref={cardRefs.current[config.id] || (cardRefs.current[config.id] = React.createRef<HTMLDivElement | null>())}
-              className="rounded-lg p-4 cursor-pointer transition-all duration-200 bg-white border border-gray-200"
-              onClick={() => openColorPicker(config.id)}
-            >
-              <div className="mb-2">
-                <h3 className="font-medium">{config.label}</h3>
-                <p className="text-sm text-gray-500 font-mono">{config.value.toUpperCase()}</p>
-              </div>
-              <div 
-                className="w-full h-24 rounded-md" 
-                style={{ backgroundColor: config.value }}
-              />
-            </div>
-          ))}
-        </div>
-        
-        {/* Use createPortal to render the popup in the document body */}
-        {isBrowser && activeColorId && activeColor && createPortal(
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {colorConfigs.map(config => (
           <div 
-            ref={popupRef}
-            className="fixed z-[100] bg-white rounded-lg shadow-xl border border-gray-200 p-5 overflow-y-auto"
-            style={{ 
-              top: `${popupPosition.top}px`, 
-              left: `${popupPosition.left}px`,
-              width: '380px',
-              maxHeight: '80vh', // Reduced from 90vh to ensure more margin
-              overflowY: 'auto',
-              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
-            }}
+            key={config.id}
+            ref={cardRefs.current[config.id] || (cardRefs.current[config.id] = React.createRef<HTMLDivElement | null>())}
+            className="rounded-lg p-4 cursor-pointer transition-all duration-200 bg-white border border-gray-200"
+            onClick={() => openColorPicker(config.id)}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="font-medium text-lg">Color picker</h4>
-              <button 
-                onClick={() => setActiveColorId(null)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                ✕
-              </button>
+            <div className="mb-2">
+              <h3 className="font-medium">{config.label}</h3>
+              <p className="text-sm text-gray-500 font-mono">{config.value.toUpperCase()}</p>
+            </div>
+            <div 
+              className="w-full h-24 rounded-md" 
+              style={{ backgroundColor: config.value }}
+            />
+          </div>
+        ))}
+      </div>
+      
+      {/* Use createPortal to render the popup in the document body */}
+      {isBrowser && activeColorId && activeColor && createPortal(
+        <div 
+          ref={popupRef}
+          className="fixed z-[100] bg-white rounded-lg shadow-xl border border-gray-200 p-5 overflow-y-auto"
+          style={{ 
+            top: `${popupPosition.top}px`, 
+            left: `${popupPosition.left}px`,
+            width: '380px',
+            maxHeight: '80vh', // Reduced from 90vh to ensure more margin
+            overflowY: 'auto',
+            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
+          }}
+        >
+          <div className="flex justify-between items-center mb-4">
+            <h4 className="font-medium text-lg">Color picker</h4>
+            <button 
+              onClick={() => setActiveColorId(null)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+          </div>
+          
+          {/* Color picker area */}
+          <div className="mb-4">
+            {/* Hidden native color input that can be triggered */}
+            <input
+              ref={colorInputRef}
+              type="color"
+              value={activeColor.value}
+              onChange={handleNativeColorPickerChange}
+              className="opacity-0 absolute h-0 w-0"
+            />
+            
+            {/* Color preview area - clicking this will open the native color picker */}
+            <div 
+              className="w-full h-40 rounded-md mb-3 cursor-pointer border border-gray-200"
+              style={{ background: activeColor.value }}
+              onClick={() => colorInputRef.current?.click()}
+            >
+              <div className="flex items-center justify-center h-full text-white text-sm">
+                Click to open color picker
+              </div>
             </div>
             
-            {/* Color picker area */}
+            {/* Hex input */}
             <div className="mb-4">
-              {/* Hidden native color input that can be triggered */}
+              <label className="block text-sm text-gray-500 mb-1">Hex</label>
+              <input 
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                value={activeColor.value.toUpperCase()}
+                onChange={(e) => handleColorChange(e.target.value)}
+              />
+            </div>
+            
+            {/* Color palette - NEW SECTION */}
+            <div className="mb-6">
+              <h5 className="text-sm font-medium mb-2">Presets</h5>
+              <div className="grid grid-cols-8 gap-2">
+                {[
+                  '#FF4996', // Pink
+                  '#FE7D74', // Coral
+                  '#FFCC00', // Yellow
+                  '#8CE201', // Lime
+                  '#16D5A2', // Teal
+                  '#5ABDF0', // Sky Blue
+                  '#5961F8', // Blue
+                  '#9F62F6'  // Purple
+                ].map((color, index) => (
+                  <div
+                    key={`palette-${index}`}
+                    className="w-8 h-8 rounded-md cursor-pointer border border-gray-100 hover:border-gray-300 transition-colors"
+                    style={{ backgroundColor: color }}
+                    onClick={() => handleColorChange(color)}
+                    title={color}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            {/* Main color only */}
+            <div className="w-full">
+              <div 
+                className="w-full h-16 rounded-md mb-1" 
+                style={{ backgroundColor: activeColor.value }}
+              />
+              <div className="bg-gray-100 px-1 py-0.5 text-xs text-center">
+                Main
+              </div>
+            </div>
+          </div>
+          
+          {/* Name & Shades */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <h5 className="text-sm font-medium mb-2">Naming</h5>
               <input
-                ref={colorInputRef}
-                type="color"
-                value={activeColor.value}
-                onChange={handleNativeColorPickerChange}
-                className="opacity-0 absolute h-0 w-0"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 mb-6"
+                placeholder="Color name"
+                value={colorName}
+                onChange={handleColorNameChange}
               />
               
-              {/* Color preview area - clicking this will open the native color picker */}
-              <div 
-                className="w-full h-40 rounded-md mb-3 cursor-pointer border border-gray-200"
-                style={{ background: activeColor.value }}
-                onClick={() => colorInputRef.current?.click()}
-              >
-                <div className="flex items-center justify-center h-full text-white text-sm">
-                  Click to open color picker
-                </div>
-              </div>
-              
-              {/* Hex input */}
-              <div className="mb-4">
-                <label className="block text-sm text-gray-500 mb-1">Hex</label>
-                <input 
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  value={activeColor.value.toUpperCase()}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                />
-              </div>
-              
-              {/* Color palette - NEW SECTION */}
-              <div className="mb-6">
-                <h5 className="text-sm font-medium mb-2">Presets</h5>
-                <div className="grid grid-cols-8 gap-2">
-                  {[
-                    '#FF4996', // Pink
-                    '#FE7D74', // Coral
-                    '#FFCC00', // Yellow
-                    '#8CE201', // Lime
-                    '#16D5A2', // Teal
-                    '#5ABDF0', // Sky Blue
-                    '#5961F8', // Blue
-                    '#9F62F6'  // Purple
-                  ].map((color, index) => (
-                    <div
-                      key={`palette-${index}`}
-                      className="w-8 h-8 rounded-md cursor-pointer border border-gray-100 hover:border-gray-300 transition-colors"
-                      style={{ backgroundColor: color }}
-                      onClick={() => handleColorChange(color)}
-                      title={color}
+              <h5 className="text-sm font-medium mb-2">Shades</h5>
+              <div className="space-y-2">
+                <div className="text-xs text-gray-500 mb-1">Pastel</div>
+                {activeColorShades.slice(0, 3).map((shade, index) => (
+                  <div 
+                    key={`light-${index}`}
+                    className={`flex items-center space-x-2 p-2 rounded-md cursor-pointer ${
+                      selectedShade === index ? 'bg-gray-100' : ''
+                    }`}
+                    onClick={() => {
+                      setSelectedShade(index);
+                      handleColorChange(shade);
+                    }}
+                  >
+                    <div 
+                      className="w-6 h-6 rounded-md" 
+                      style={{ backgroundColor: shade }}
                     />
-                  ))}
-                </div>
-              </div>
-              
-              {/* Main color only */}
-              <div className="w-full">
+                    <span className="text-sm">
+                      {colorName} • {index === 0 ? 'Lightest' : index === 1 ? 'Lighter' : 'Light'}
+                    </span>
+                  </div>
+                ))}
+                
+                <div className="text-xs text-gray-500 mb-1 mt-3">Mid-Tone</div>
                 <div 
-                  className="w-full h-16 rounded-md mb-1" 
-                  style={{ backgroundColor: activeColor.value }}
-                />
-                <div className="bg-gray-100 px-1 py-0.5 text-xs text-center">
-                  Main
-                </div>
-              </div>
-            </div>
-            
-            {/* Name & Shades */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h5 className="text-sm font-medium mb-2">Naming</h5>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 mb-6"
-                  placeholder="Color name"
-                  value={colorName}
-                  onChange={handleColorNameChange}
-                />
-                
-                <h5 className="text-sm font-medium mb-2">Shades</h5>
-                <div className="space-y-2">
-                  <div className="text-xs text-gray-500 mb-1">Pastel</div>
-                  {activeColorShades.slice(0, 3).map((shade, index) => (
-                    <div 
-                      key={`light-${index}`}
-                      className={`flex items-center space-x-2 p-2 rounded-md cursor-pointer ${
-                        selectedShade === index ? 'bg-gray-100' : ''
-                      }`}
-                      onClick={() => {
-                        setSelectedShade(index);
-                        handleColorChange(shade);
-                      }}
-                    >
-                      <div 
-                        className="w-6 h-6 rounded-md" 
-                        style={{ backgroundColor: shade }}
-                      />
-                      <span className="text-sm">
-                        {colorName} • {index === 0 ? 'Lightest' : index === 1 ? 'Lighter' : 'Light'}
-                      </span>
-                    </div>
-                  ))}
-                  
-                  <div className="text-xs text-gray-500 mb-1 mt-3">Mid-Tone</div>
-                  <div 
-                    className={`flex items-center space-x-2 p-2 rounded-md cursor-pointer ${
-                      selectedShade === 3 ? 'bg-gray-800 text-white' : ''
-                    }`}
-                    onClick={() => {
-                      setSelectedShade(3);
-                      handleColorChange(activeColorShades[3]);
-                    }}
-                  >
-                    <div 
-                      className="w-6 h-6 rounded-md" 
-                      style={{ backgroundColor: activeColorShades[3] }}
-                    />
-                    <span className="text-sm flex-1">{colorName}</span>
-                    {selectedShade === 3 && (
-                      <span className="text-xs bg-gray-700 px-2 py-0.5 rounded">Base</span>
-                    )}
-                  </div>
-                  
-                  <div 
-                    className={`flex items-center space-x-2 p-2 rounded-md cursor-pointer ${
-                      selectedShade === 4 ? 'bg-gray-100' : ''
-                    }`}
-                    onClick={() => {
-                      setSelectedShade(4);
-                      handleColorChange(activeColorShades[4]);
-                    }}
-                  >
-                    <div 
-                      className="w-6 h-6 rounded-md" 
-                      style={{ backgroundColor: activeColorShades[4] }}
-                    />
-                    <span className="text-sm">{colorName} • Dark</span>
-                  </div>
-                </div>
-                
-                <button 
-                  className="w-full mt-4 flex items-center justify-center space-x-2 py-2 border border-gray-200 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
-                  onClick={handleColorShuffle}
+                  className={`flex items-center space-x-2 p-2 rounded-md cursor-pointer ${
+                    selectedShade === 3 ? 'bg-gray-800 text-white' : ''
+                  }`}
+                  onClick={() => {
+                    setSelectedShade(3);
+                    handleColorChange(activeColorShades[3]);
+                  }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
-                  <span>Shuffle</span>
-                </button>
+                  <div 
+                    className="w-6 h-6 rounded-md" 
+                    style={{ backgroundColor: activeColorShades[3] }}
+                  />
+                  <span className="text-sm flex-1">{colorName}</span>
+                  {selectedShade === 3 && (
+                    <span className="text-xs bg-gray-700 px-2 py-0.5 rounded">Base</span>
+                  )}
+                </div>
+                
+                <div 
+                  className={`flex items-center space-x-2 p-2 rounded-md cursor-pointer ${
+                    selectedShade === 4 ? 'bg-gray-100' : ''
+                  }`}
+                  onClick={() => {
+                    setSelectedShade(4);
+                    handleColorChange(activeColorShades[4]);
+                  }}
+                >
+                  <div 
+                    className="w-6 h-6 rounded-md" 
+                    style={{ backgroundColor: activeColorShades[4] }}
+                  />
+                  <span className="text-sm">{colorName} • Dark</span>
+                </div>
               </div>
               
-              <div>
-                {/* Selection menu placeholder - in a real implementation this would be populated with more options */}
-              </div>
-            </div>
-            
-            <div className="mt-4 flex justify-end">
               <button 
-                className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm cursor-pointer"
-                onClick={() => setActiveColorId(null)}
+                className="w-full mt-4 flex items-center justify-center space-x-2 py-2 border border-gray-200 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={handleColorShuffle}
               >
-                Select
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Shuffle</span>
               </button>
             </div>
-          </div>,
-          document.body
-        )}
-        
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Typography</h2>
-          <FontSelector />
-        </div>
-        
-        <div className="mt-6 p-4 rounded-lg border border-gray-200 bg-white">
-          <h3 className="text-lg font-semibold mb-4" style={{ color: styleGuide.primaryColor, fontFamily: headingFont }}>
-            Preview
-          </h3>
+            
+            <div>
+              {/* Selection menu placeholder - in a real implementation this would be populated with more options */}
+            </div>
+          </div>
           
-          <div className="p-4 rounded-lg" style={{ backgroundColor: styleGuide.primaryColor + '10' }}>
-            <div className="flex flex-col space-y-4">
-              <h2 className="text-xl font-semibold" style={{ fontFamily: headingFont }}>
-                Heading font sample
-              </h2>
+          <div className="mt-4 flex justify-end">
+            <button 
+              className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm cursor-pointer"
+              onClick={() => setActiveColorId(null)}
+            >
+              Select
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
+      
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Typography</h2>
+        <FontSelector />
+      </div>
+      
+      <div className="mt-6 p-4 rounded-lg border border-gray-200 bg-white">
+        <h3 className="text-lg font-semibold mb-4" style={{ color: styleGuide.primaryColor, fontFamily: headingFont }}>
+          Preview
+        </h3>
+        
+        <div className="p-4 rounded-lg" style={{ backgroundColor: styleGuide.primaryColor + '10' }}>
+          <div className="flex flex-col space-y-4">
+            <h2 className="text-xl font-semibold" style={{ fontFamily: headingFont }}>
+              Heading font sample
+            </h2>
 
-              <p style={{ fontFamily: bodyFont }}>
-                Body Font Sample text with your selected <span style={{ color: styleGuide.primaryColor }}>primary color</span> and body font.
-              </p>
+            <p style={{ fontFamily: bodyFont }}>
+              Body Font Sample text with your selected <span style={{ color: styleGuide.primaryColor }}>primary color</span> and body font.
+            </p>
+            
+            <div className="flex space-x-3 mt-2">
+              <button 
+                className="px-4 py-2 rounded-md text-white transition-colors"
+                style={{ backgroundColor: styleGuide.primaryColor }}
+              >
+                Primary Button
+              </button>
               
-              <div className="flex space-x-3 mt-2">
-                <button 
-                  className="px-4 py-2 rounded-md text-white transition-colors"
-                  style={{ backgroundColor: styleGuide.primaryColor }}
-                >
-                  Primary Button
-                </button>
-                
-                <button 
-                  className="px-4 py-2 rounded-md text-white transition-colors"
-                  style={{ backgroundColor: styleGuide.secondaryColor }}
-                >
-                  Secondary Button
-                </button>
-              </div>
+              <button 
+                className="px-4 py-2 rounded-md text-white transition-colors"
+                style={{ backgroundColor: styleGuide.secondaryColor }}
+              >
+                Secondary Button
+              </button>
             </div>
           </div>
         </div>

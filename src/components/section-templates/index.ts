@@ -1,9 +1,9 @@
 // Export all section components from this file
-import HeroComponent from './Hero';
-import ProblemComponent from './Problem'; 
-import HowItWorksComponent from './HowItWorks';
-import FeaturesOrServicesComponent from './FeaturesOrServices';
-import TestimonialsComponent from './Testimonials';
+import HeroComponent from './S01-Hero';
+import ProblemComponent from './S03-Problem'; 
+import HowItWorksComponent from './S06-HowItWorks';
+import FeaturesOrServicesComponent from './S05-FeaturesOrServices';
+import TestimonialsComponent from './S07-Testimonials';
 
 // Named exports for each section
 export { HeroComponent, ProblemComponent, HowItWorksComponent, FeaturesOrServicesComponent, TestimonialsComponent };

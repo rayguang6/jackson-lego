@@ -18,7 +18,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tabs, defaultTab }) => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 flex-shrink-0">
         <nav className="flex">
           {tabs.map((tab) => (
             <button
@@ -39,7 +39,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tabs, defaultTab }) => {
           ))}
         </nav>
       </div>
-      <div className="pt-6 flex-grow">
+      <div className="pt-6 flex-grow overflow-y-auto px-4">
         {tabs.find((tab) => tab.id === activeTabId)?.content}
       </div>
     </div>

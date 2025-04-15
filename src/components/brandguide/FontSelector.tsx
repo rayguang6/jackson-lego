@@ -72,8 +72,8 @@ const FontSelector: React.FC = () => {
       const windowWidth = window.innerWidth;
       
       // Position popup
-      let top = rect.top + window.scrollY;
-      let left = rect.left + window.scrollX;
+      let top = rect.top + window.scrollY - 100;
+      let left = rect.right + window.scrollX;
       
       // Adjust if it would go off-screen
       const popupWidth = 300;

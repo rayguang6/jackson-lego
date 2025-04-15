@@ -1,4 +1,4 @@
-import { Manrope, Archivo, Inter, Montserrat, Merriweather, Poppins } from "next/font/google";
+import { Manrope, Archivo, Inter, Montserrat, Merriweather, Poppins, Roboto } from "next/font/google";
 
 // Font configurations
 export const manrope = Manrope({ 
@@ -33,8 +33,14 @@ export const poppins = Poppins({
   variable: '--font-poppins',
 });
 
+export const roboto = Roboto({
+  weight: ['400', '500', '700'],
+  subsets: ["latin"],
+  variable: '--font-roboto',
+});
+
 // Helper to combine all font variables for the html element
-export const fontVariables = `${manrope.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${merriweather.variable} ${poppins.variable}`;
+export const fontVariables = `${manrope.variable} ${archivo.variable} ${inter.variable} ${montserrat.variable} ${merriweather.variable} ${poppins.variable} ${roboto.variable}`;
 
 // Font options for font selector component
 export const FONT_OPTIONS = [
@@ -43,5 +49,6 @@ export const FONT_OPTIONS = [
   { name: 'Inter', value: 'var(--font-inter), system-ui, sans-serif' },
   { name: 'Merriweather', value: 'var(--font-merriweather), serif' }, 
   { name: 'Montserrat', value: 'var(--font-montserrat), system-ui, sans-serif' },
-  { name: 'Poppins', value: 'var(--font-poppins), system-ui, sans-serif' }
+  { name: 'Poppins', value: 'var(--font-poppins), system-ui, sans-serif' },
+  { name: 'Roboto', value: 'var(--font-roboto), system-ui, sans-serif' }
 ]; 
