@@ -1,11 +1,12 @@
-import { solutionsTemplates } from '@/components/sections/Solutions/register';
+import { heroTemplates } from '@/components/section-templates/Hero/register';
+import { problemTemplates } from '@/components/section-templates/Problem/register';
+import { howItWorksTemplates } from '@/components/section-templates/HowItWorks/register';
+import { featuresOrServicesTemplates } from '@/components/section-templates/FeaturesOrServices/register';
+import { testimonialsTemplates } from '@/components/section-templates/Testimonials/register';
 import { SectionType } from '../types';
 import { TemplateRegistry, TemplateVariant, SectionTemplates } from './types';
-import { heroTemplates } from '@/components/sections/Hero/register';
-import { problemTemplates } from '@/components/sections/Problem/register';
-import { howItWorksTemplates } from '@/components/sections/HowItWorks/register';
-import { featuresOrServicesTemplates } from '@/components/sections/FeaturesOrServices/register';
-import { testimonialsTemplates } from '@/components/sections/Testimonials/register';
+import { solutionsTemplates } from '@/components/section-templates/Solutions/register';
+
 
 // Function to ensure templates have IDs
 function ensureTemplateIds(
@@ -40,24 +41,24 @@ const emptySection: SectionTemplates = { light: {}, dark: {} };
 
 // Combine all section templates into a single registry with auto-generated IDs
 export const templateRegistry: TemplateRegistry = {
-  [SectionType.Hero]: ensureTemplateIds(SectionType.Hero, heroTemplates),
-  [SectionType.Problem]: ensureTemplateIds(SectionType.Problem, problemTemplates),
+  [SectionType.S01_Hero]: ensureTemplateIds(SectionType.S01_Hero, heroTemplates),
+  [SectionType.S03_Problem]: ensureTemplateIds(SectionType.S03_Problem, problemTemplates),
   
   // Empty section types (to be implemented later)
-  [SectionType.CTA]: emptySection,
-  [SectionType.Guarantee]: emptySection,
-  [SectionType.CaseStudies]: emptySection,
-  [SectionType.About]: emptySection,
-  [SectionType.WhoIsThisFor]: emptySection,
-  [SectionType.Offer]: emptySection,
-  [SectionType.WorkWithUs]: emptySection,
-  [SectionType.BeforeAfter]: emptySection,
-  [SectionType.FAQs]: emptySection,
-  [SectionType.Testimonials]: ensureTemplateIds(SectionType.Testimonials, testimonialsTemplates),
-  [SectionType.HowItWorks]: ensureTemplateIds(SectionType.HowItWorks, howItWorksTemplates),
-  [SectionType.FeaturesOrServices]: ensureTemplateIds(SectionType.FeaturesOrServices, featuresOrServicesTemplates),
-  [SectionType.Solutions]: ensureTemplateIds(SectionType.Solutions, solutionsTemplates),
-  [SectionType.SocialProof]: emptySection,
+  [SectionType.S16_CTA]: emptySection,
+  [SectionType.S15_Guarantee]: emptySection,
+  [SectionType.S14_CaseStudies]: emptySection,
+  [SectionType.S13_About]: emptySection,
+  [SectionType.S12_WhoIsThisFor]: emptySection,
+  [SectionType.S11_Offer]: emptySection,
+  [SectionType.S10_WorkWithUs]: emptySection,
+  [SectionType.S09_BeforeAfter]: emptySection,
+  [SectionType.S08_FAQs]: emptySection,
+  [SectionType.S07_Testimonials]: ensureTemplateIds(SectionType.S07_Testimonials, testimonialsTemplates),
+  [SectionType.S06_HowItWorks]: ensureTemplateIds(SectionType.S06_HowItWorks, howItWorksTemplates),
+  [SectionType.S05_FeaturesOrServices]: ensureTemplateIds(SectionType.S05_FeaturesOrServices, featuresOrServicesTemplates),
+  [SectionType.S04_Solutions]: ensureTemplateIds(SectionType.S04_Solutions, solutionsTemplates),
+  [SectionType.S02_SocialProof]: emptySection,
 };
 
 // Helper functions

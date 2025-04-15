@@ -6,11 +6,9 @@ import { DesignProvider } from '@/lib/contexts/DesignContext';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import TabPanel from '@/components/TabPanel';
 import SitemapBuilder from '@/components/sitemap/SitemapBuilder';
-import WireframePreview from '@/components/wireframe/WireframePreview';
-import BrandGuide from '@/components/BrandGuide';
+import WireframePreview from '@/components/website-builder/WireframePreview';
+import BrandGuide from '@/components/brandguide/BrandGuide';
 import ExportButton from '@/components/ExportButton';
-
-
 
 export default function Home() {
   const [isStructurePanelOpen, setIsStructurePanelOpen] = useState(true);
@@ -54,7 +52,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="h-screen bg-gray-50 overflow-hidden ">
       <DesignProvider>
         {/* Top Nav Bar */}
         <header className="bg-white shadow-sm">
@@ -100,8 +98,10 @@ export default function Home() {
           </div>
         </header>
 
+        {/* Main Content */}
         <div className="flex h-[calc(100vh-64px)]">
-          <div className={`transition-all duration-300 ease-in-out flex-shrink-0 ${isStructurePanelOpen ? 'w-96 lg:w-1/4 max-w-md' : 'w-12'} bg-white border-r border-gray-200 relative overflow-visible`}>
+          {/* Left Panel */}
+          <div className={`transition-all duration-300 ease-in-out flex-shrink-0 ${isStructurePanelOpen ? 'w-96 lg:w-1/4 max-w-md' : 'w-12'} bg-white border-r border-gray-200 relative overflow-hidden`}>
             <div className={`sticky top-0 flex items-center p-4 border-b border-gray-200 bg-white z-10 ${isStructurePanelOpen ? 'justify-between' : 'justify-center'}`}>
               {isStructurePanelOpen && (
                 <h2 className="text-lg font-medium text-gray-900 transition-opacity duration-300">Structure</h2>
@@ -124,8 +124,8 @@ export default function Home() {
             </div>
             
             {isStructurePanelOpen && (
-              <div className="overflow-y-auto h-[calc(100vh-120px)]">
-                <div className="p-4 pb-24">
+              <div className="h-[calc(100vh-120px)] flex flex-col overflow-y-auto overscroll-none">
+                <div className="p-4 pb-24 h-full">
                   <TabPanel
                     tabs={[
                       {

@@ -4,7 +4,7 @@ import React, { createContext, useContext, ReactNode } from 'react';
 import { Section, StyleGuide, WebsiteDesign } from '../types';
 import { useDesignStore } from '../store/designStore';
 
-interface DesignContextProps {
+export interface DesignContextProps {
   design: WebsiteDesign;
   styleGuide: StyleGuide;
   addSection: (section: Omit<Section, 'id' | 'order'>) => void;
@@ -29,9 +29,45 @@ export const useDesign = () => {
   const context = useContext(DesignContext);
   
   // If we're in a server-side rendering context and context is undefined,
-  // return a minimal object with just the styleGuide
+  // return a complete mock object that implements DesignContextProps
   if (typeof window === 'undefined' && !context) {
-    return {
+    const ssrFallback: DesignContextProps = {
+      design: {
+        id: '',
+        name: '',
+        sections: [],
+        styleGuide: {
+          primaryColor: '#000000',
+          secondaryColor: '#000000',
+          accentColor: '#000000',
+          backgroundColor: '#ffffff',
+          backgroundColorDark: '#000000',
+          textColor: '#000000',
+          headingFont: 'Arial',
+          bodyFont: 'Arial',
+          fontFamily: 'Arial',
+          h1Size: '48px',
+          h1Weight: '700',
+          h1LineHeight: '1.2',
+          h2Size: '36px',
+          h2Weight: '600',
+          h2LineHeight: '1.3',
+          bodySize: '16px',
+          bodyWeight: '400',
+          bodyLineHeight: '1.5',
+          spacingXs: '8px',
+          spacingSm: '16px',
+          spacingMd: '24px',
+          spacingLg: '32px',
+          spacingXl: '48px',
+          borderRadiusSm: '4px',
+          borderRadiusMd: '8px',
+          borderRadiusLg: '16px',
+          borderRadiusFull: '9999px',
+        },
+        createdAt: '',
+        updatedAt: ''
+      },
       styleGuide: {
         primaryColor: '#000000',
         secondaryColor: '#000000',
@@ -41,6 +77,7 @@ export const useDesign = () => {
         textColor: '#000000',
         headingFont: 'Arial',
         bodyFont: 'Arial',
+        fontFamily: 'Arial',
         h1Size: '48px',
         h1Weight: '700',
         h1LineHeight: '1.2',
@@ -59,8 +96,22 @@ export const useDesign = () => {
         borderRadiusMd: '8px',
         borderRadiusLg: '16px',
         borderRadiusFull: '9999px',
-      }
+      },
+      addSection: () => {},
+      removeSection: () => {},
+      updateSection: () => {},
+      reorderSection: () => {},
+      updateStyleGuide: () => {},
+      updatePrimaryColor: () => {},
+      updateSecondaryColor: () => {},
+      updateHeadingFont: () => {},
+      updateBodyFont: () => {},
+      updateSectionTemplate: () => {},
+      resetDesign: () => {},
+      resetStyleGuide: () => {},
+      resetSections: () => {}
     };
+    return ssrFallback;
   }
   
   if (!context) {

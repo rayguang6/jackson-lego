@@ -5,7 +5,7 @@ import { templateRegistry, getTemplate } from '@/lib/templates';
 import { SectionType } from '@/lib/types/index';
 
 export default function DebugPage() {
-  const [selectedSection, setSelectedSection] = useState<SectionType>(SectionType.Hero);
+  const [selectedSection, setSelectedSection] = useState<SectionType>(SectionType.S01_Hero);
   const [selectedVariant, setSelectedVariant] = useState<string>('v1');
   
   // Get all section types that have variants

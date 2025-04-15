@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={fontVariables}>
+    <html lang="en" className={fontVariables} style={{ backgroundColor: '#F5F5F5', height: '100vh' }}>
       <body className={archivo.className}>
         <DesignProvider>
           {children}

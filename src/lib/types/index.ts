@@ -2,22 +2,22 @@
 
 // Section types
 export enum SectionType {
-  Hero = 'hero',
-  CTA = 'cta',
-  Guarantee = 'guarantee',
-  CaseStudies = 'case-studies',
-  About = 'about',
-  WhoIsThisFor = 'who-is-this-for',
-  Offer = 'offer',
-  WorkWithUs = 'work-with-us',
-  BeforeAfter = 'before-after',
-  FAQs = 'faqs',
-  Testimonials = 'testimonials',
-  HowItWorks = 'how-it-works',
-  FeaturesOrServices = 'features-or-services',
-  Solutions = 'solutions',
-  Problem = 'problem',
-  SocialProof = 'social-proof',
+  S01_Hero = 's01-hero',
+  S02_SocialProof = 's02-social-proof',
+  S03_Problem = 's03-problem',
+  S04_Solutions = 's04-solutions',
+  S05_FeaturesOrServices = 's05-features-or-services',
+  S06_HowItWorks = 's06-how-it-works',
+  S07_Testimonials = 's07-testimonials',
+  S08_FAQs = 's08-faqs',
+  S09_BeforeAfter = 's09-before-after',
+  S10_WorkWithUs = 's10-work-with-us',
+  S11_Offer = 's11-offer',
+  S12_WhoIsThisFor = 's12-who-is-this-for',
+  S13_About = 's13-about',
+  S14_CaseStudies = 's14-case-studies',
+  S15_Guarantee = 's15-guarantee',
+  S16_CTA = 's16-cta',
 }
 
 // Common shared props that most sections might need

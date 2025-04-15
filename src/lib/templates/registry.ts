@@ -1,32 +1,32 @@
+import { heroTemplates } from '@/components/section-templates/Hero/register';
+import { problemTemplates } from '@/components/section-templates/Problem/register';
+import { solutionsTemplates } from '@/components/section-templates/Solutions/register';
+import { featuresOrServicesTemplates } from '@/components/section-templates/FeaturesOrServices/register';
+import { testimonialsTemplates } from '@/components/section-templates/Testimonials/register';
+import { howItWorksTemplates } from '@/components/section-templates/HowItWorks/register';
 import { SectionType } from '../types';
-import { TemplateVariant, SectionTemplates, TemplateRegistry } from './types';
-import { heroTemplates } from '@/components/sections/Hero/register';
-import { problemTemplates } from '@/components/sections/Problem/register';
-import { solutionsTemplates } from '@/components/sections/Solutions/register';
-import { featuresOrServicesTemplates } from '@/components/sections/FeaturesOrServices/register';
-import { testimonialsTemplates } from '@/components/sections/Testimonials/register';
-import { howItWorksTemplates } from '@/components/sections/HowItWorks/register';
+import { TemplateVariant, TemplateRegistry } from './types';
 
 // Main template registry
 export const templateRegistry: TemplateRegistry = {
-  [SectionType.Hero]: heroTemplates,
-  [SectionType.Problem]: problemTemplates,
-  [SectionType.Solutions]: solutionsTemplates,
-  [SectionType.FeaturesOrServices]: featuresOrServicesTemplates,
-  [SectionType.Testimonials]: testimonialsTemplates,
-  [SectionType.HowItWorks]: howItWorksTemplates,
+  [SectionType.S01_Hero]: heroTemplates,
+  [SectionType.S03_Problem]: problemTemplates,
+  [SectionType.S04_Solutions]: solutionsTemplates,
+  [SectionType.S05_FeaturesOrServices]: featuresOrServicesTemplates,
+  [SectionType.S07_Testimonials]: testimonialsTemplates,
+  [SectionType.S06_HowItWorks]: howItWorksTemplates,
   
   // Add empty collections for other section types to start with
-  [SectionType.CTA]: { light: {}, dark: {} },
-  [SectionType.Guarantee]: { light: {}, dark: {} },
-  [SectionType.CaseStudies]: { light: {}, dark: {} },
-  [SectionType.About]: { light: {}, dark: {} },
-  [SectionType.WhoIsThisFor]: { light: {}, dark: {} },
-  [SectionType.Offer]: { light: {}, dark: {} },
-  [SectionType.WorkWithUs]: { light: {}, dark: {} },
-  [SectionType.BeforeAfter]: { light: {}, dark: {} },
-  [SectionType.FAQs]: { light: {}, dark: {} },
-  [SectionType.SocialProof]: { light: {}, dark: {} },
+  [SectionType.S16_CTA]: { light: {}, dark: {} },
+  [SectionType.S15_Guarantee]: { light: {}, dark: {} },
+  [SectionType.S14_CaseStudies]: { light: {}, dark: {} },
+  [SectionType.S13_About]: { light: {}, dark: {} },
+  [SectionType.S12_WhoIsThisFor]: { light: {}, dark: {} },
+  [SectionType.S11_Offer]: { light: {}, dark: {} },
+  [SectionType.S10_WorkWithUs]: { light: {}, dark: {} },
+  [SectionType.S09_BeforeAfter]: { light: {}, dark: {} },
+  [SectionType.S08_FAQs]: { light: {}, dark: {} },
+  [SectionType.S02_SocialProof]: { light: {}, dark: {} },
 };
 
 // Helper functions for template discovery and selection
