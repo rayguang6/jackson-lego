@@ -28,7 +28,7 @@ const ExportButton: React.FC = () => {
       className={`inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium ${
         isExporting
           ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-          : 'bg-white text-gray-700 hover:bg-gray-50'
+          : 'bg-white text-gray-700 hover:bg-gray-50 cursor-pointer'
       }`}
     >
       {isExporting ? 'Exporting...' : 'Export HTML'}

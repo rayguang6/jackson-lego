@@ -25,7 +25,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tabs, defaultTab }) => {
               key={tab.id}
               onClick={() => setActiveTabId(tab.id)}
               className={`
-                px-5 py-3 text-center font-medium text-sm mr-4
+                px-5 py-3 text-center font-medium text-sm mr-4 cursor-pointer
                 ${
                   activeTabId === tab.id
                     ? 'text-blue-600 border-b-2 border-blue-600'

@@ -10,39 +10,7 @@ import WireframePreview from '@/components/wireframe/WireframePreview';
 import BrandGuide from '@/components/BrandGuide';
 import ExportButton from '@/components/ExportButton';
 
-// New Design button component
-const NewDesignButton = () => {
-  const design = useDesign() as any;
-  
-  const handleNewDesign = () => {
-    if (confirm('Start a completely new design? This will reset everything to defaults.')) {
-      design.resetDesign();
-    }
-  };
-  
-  return (
-    <button
-      onClick={handleNewDesign}
-      className="inline-flex items-center px-4 py-2 border border-red-300 rounded-md text-sm font-medium bg-white text-red-600 hover:bg-red-50"
-    >
-      <svg
-        className="-ml-1 mr-2 h-4 w-4"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-        />
-      </svg>
-      New Design
-    </button>
-  );
-};
+
 
 export default function Home() {
   const [isStructurePanelOpen, setIsStructurePanelOpen] = useState(true);
@@ -51,14 +19,50 @@ export default function Home() {
     setIsStructurePanelOpen(prev => !prev);
   }, []);
 
+  // New Design button component
+  const NewDesignButton = () => {
+    const design = useDesign() as any;
+    
+    const handleNewDesign = () => {
+      if (confirm('Start a completely new design? This will reset everything to defaults.')) {
+        design.resetDesign();
+      }
+    };
+    
+    return (
+      <button
+        onClick={handleNewDesign}
+        className="inline-flex items-center px-4 py-2 border border-blue-500 rounded-md text-sm font-medium bg-white text-blue-500 hover:bg-blue-50 cursor-pointer"
+      >
+        <svg
+          className="-ml-1 mr-2 h-4 w-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+        New Design
+      </button>
+    );
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
       <DesignProvider>
+        {/* Top Nav Bar */}
         <header className="bg-white shadow-sm">
           <div className="max-w-full mx-auto px-6 py-4">
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-bold text-gray-900">Jackson Lego</h1>
               <div className="flex space-x-3">
+                {/* 3 Buttons */}
                 <div className="flex items-center gap-4">
                   <Link
                     href="/preview"
@@ -104,7 +108,7 @@ export default function Home() {
               )}
               <button 
                 onClick={togglePanel}
-                className="p-1.5 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0"
+                className="p-1.5 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0 cursor-pointer"
                 aria-label={isStructurePanelOpen ? "Collapse panel" : "Expand panel"}
               >
                 {isStructurePanelOpen ? (

@@ -1,4 +1,4 @@
-export * from './sectionTypes';
+// export * from './sectionTypes';
 
 // Section types
 export enum SectionType {

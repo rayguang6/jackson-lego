@@ -319,7 +319,7 @@ const BrandGuide: React.FC = () => {
         {resetStyleGuide && (
           <button
             onClick={handleResetStyle}
-            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors cursor-pointer"
           >
             Reset Style
           </button>
@@ -514,7 +514,7 @@ const BrandGuide: React.FC = () => {
               </div>
               
               <button 
-                className="w-full mt-4 flex items-center justify-center space-x-2 py-2 border border-gray-200 rounded-md text-sm hover:bg-gray-50 transition-colors"
+                className="w-full mt-4 flex items-center justify-center space-x-2 py-2 border border-gray-200 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
                 onClick={handleColorShuffle}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -531,7 +531,7 @@ const BrandGuide: React.FC = () => {
           
           <div className="mt-4 flex justify-end">
             <button 
-              className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm cursor-pointer"
               onClick={() => setActiveColorId(null)}
             >
               Select
