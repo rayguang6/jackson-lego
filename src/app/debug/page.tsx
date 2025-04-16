@@ -1,75 +1,179 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { templateRegistry, getTemplate } from '@/lib/templates';
+import { templateRegistry } from '@/lib/templates';
 import { SectionType } from '@/lib/types/index';
 
+// Type for legacy template structure - for type checking only
+interface LegacyTemplates {
+  light?: Record<string, any>;
+  dark?: Record<string, any>;
+  variants?: any[];
+}
+
 export default function DebugPage() {
-  const [selectedSection, setSelectedSection] = useState<SectionType>(SectionType.S01_Hero);
-  const [selectedVariant, setSelectedVariant] = useState<string>('v1');
+  const [selectedSection, setSelectedSection] = useState<SectionType | 'all'>('all');
+  const [selectedVariant, setSelectedVariant] = useState<string | 'all'>('all');
   
   // Get all section types that have variants
   const availableSections = Object.entries(templateRegistry)
-    .filter(([_, templates]) => 
-      Object.keys(templates.light).length > 0 || Object.keys(templates.dark).length > 0
-    )
+    .filter(([_, templates]) => {
+      // Handle both new structure (variants array) and old structure (light/dark objects)
+      if (Array.isArray(templates.variants) && templates.variants.length > 0) {
+        return true;
+      }
+      // Cast to legacy structure for type checking
+      const legacyTemplates = templates as unknown as LegacyTemplates;
+      return (legacyTemplates.light && Object.keys(legacyTemplates.light).length > 0) || 
+             (legacyTemplates.dark && Object.keys(legacyTemplates.dark).length > 0);
+    })
     .map(([sectionType]) => sectionType as SectionType);
 
-  // Get available variants for the selected section (combined from both themes)
-  const lightVariants = Object.keys(templateRegistry[selectedSection]?.light || {});
-  const darkVariants = Object.keys(templateRegistry[selectedSection]?.dark || {});
-  const availableVariants = [...new Set([...lightVariants, ...darkVariants])];
+  // Get all available variants from all sections
+  const getAllVariants = () => {
+    const allVariants: string[] = [];
+    
+    Object.values(templateRegistry).forEach(templates => {
+      // Handle new structure (variants array)
+      if (Array.isArray(templates.variants) && templates.variants.length > 0) {
+        templates.variants.forEach(variant => {
+          const idParts = variant.id.split('-');
+          const variantId = idParts.find(part => part.startsWith('v')) || 'v1';
+          if (!allVariants.includes(variantId)) {
+            allVariants.push(variantId);
+          }
+        });
+      } else {
+        // Handle legacy structure
+        const legacyTemplates = templates as unknown as LegacyTemplates;
+        if (legacyTemplates.light) {
+          Object.keys(legacyTemplates.light).forEach(variant => {
+            if (!allVariants.includes(variant)) {
+              allVariants.push(variant);
+            }
+          });
+        }
+        if (legacyTemplates.dark) {
+          Object.keys(legacyTemplates.dark).forEach(variant => {
+            if (!allVariants.includes(variant)) {
+              allVariants.push(variant);
+            }
+          });
+        }
+      }
+    });
+    
+    return allVariants;
+  };
+
+  // Get available variants for the selected section (handle both structures)
+  const getAvailableVariants = () => {
+    if (selectedSection === 'all') {
+      return getAllVariants();
+    }
+    
+    const templates = templateRegistry[selectedSection as SectionType];
+    
+    if (!templates) return [];
+    
+    // Handle new structure (variants array)
+    if (Array.isArray(templates.variants) && templates.variants.length > 0) {
+      const allVariants = templates.variants;
+      // Extract unique variant IDs (without theme suffix)
+      const variantIds = allVariants.map(variant => {
+        const idParts = variant.id.split('-');
+        // Handle different ID formats (e.g., "hero-v1-light" or "hero-light-v1")
+        return idParts.find(part => part.startsWith('v')) || 'v1';
+      });
+      return [...new Set(variantIds)];
+    }
+    
+    // Handle legacy structure (light/dark objects)
+    const legacyTemplates = templates as unknown as LegacyTemplates;
+    const lightVariants = Object.keys(legacyTemplates.light || {});
+    const darkVariants = Object.keys(legacyTemplates.dark || {});
+    return [...new Set([...lightVariants, ...darkVariants])];
+  };
+  
+  const availableVariants = getAvailableVariants();
   
   // If no variants available for the current selection, reset to first available
   useEffect(() => {
-    if (!availableVariants.includes(selectedVariant) && availableVariants.length > 0) {
+    if (selectedVariant !== 'all' && !availableVariants.includes(selectedVariant) && availableVariants.length > 0) {
       setSelectedVariant(availableVariants[0]);
     }
   }, [selectedSection, availableVariants, selectedVariant]);
 
-  // Render both light and dark modes of the selected component
-  const renderSelectedComponents = () => {
-    const lightTemplate = getTemplate(selectedSection, 'light', selectedVariant);
-    const darkTemplate = getTemplate(selectedSection, 'dark', selectedVariant);
+  // Get all templates matching current filters
+  const getFilteredTemplates = () => {
+    const allTemplates: Array<{section: SectionType, template: any}> = [];
     
-    if (!lightTemplate && !darkTemplate) {
-      return <div className="p-8 text-center text-gray-500">No template available for this selection</div>;
+    // Iterate over all sections or just the selected one
+    const sectionsToProcess = selectedSection === 'all' 
+      ? availableSections 
+      : [selectedSection as SectionType];
+    
+    sectionsToProcess.forEach(section => {
+      const templates = templateRegistry[section];
+      if (!templates) return;
+      
+      // Handle new structure (variants array)
+      if (Array.isArray(templates.variants) && templates.variants.length > 0) {
+        templates.variants.forEach(template => {
+          const idParts = template.id.split('-');
+          const variantId = idParts.find(part => part.startsWith('v')) || 'v1';
+          
+          if (selectedVariant === 'all' || variantId === selectedVariant) {
+            allTemplates.push({ section, template });
+          }
+        });
+      } else {
+        // Handle legacy structure
+        const legacyTemplates = templates as unknown as LegacyTemplates;
+        ['light', 'dark'].forEach(theme => {
+          const themeTemplates = legacyTemplates[theme as 'light' | 'dark'] || {};
+          
+          Object.entries(themeTemplates).forEach(([variant, template]) => {
+            if (selectedVariant === 'all' || variant === selectedVariant) {
+              allTemplates.push({ section, template });
+            }
+          });
+        });
+      }
+    });
+    
+    return allTemplates;
+  };
+
+  // Render a single template
+  const renderTemplate = (section: SectionType, template: any, index: number) => {
+    const { theme, component: Component } = template;
+    const sectionName = section.charAt(0).toUpperCase() + section.slice(1).replace(/_/g, ' ');
+    const variant = template.id.split('-').find((part: string) => part.startsWith('v')) || 'v1';
+    
+    return (
+      <div key={`${template.id}-${index}`} className="border rounded-lg overflow-hidden shadow-md mb-8">
+        <div className={`p-3 font-medium ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-800 text-white'}`}>
+          {sectionName} - {variant} - {theme}
+        </div>
+        <div>
+          {React.createElement(Component, { theme })}
+        </div>
+      </div>
+    );
+  };
+
+  // Render templates based on current filters
+  const renderTemplates = () => {
+    const filteredTemplates = getFilteredTemplates();
+    
+    if (filteredTemplates.length === 0) {
+      return <div className="p-8 text-center text-gray-500">No templates available for the selected filters</div>;
     }
 
     return (
-      <div>
-        {/* Component Info */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">
-            {selectedSection.charAt(0).toUpperCase() + selectedSection.slice(1).replace(/-/g, ' ')} - {selectedVariant}
-          </h2>
-          <p className="text-gray-500">
-            {lightTemplate?.description || darkTemplate?.description}
-          </p>
-        </div>
-
-        {/* Templates Debug Stack - Vertical Layout */}
-        <div className="flex flex-col gap-8">
-          {/* Light Template */}
-          {lightTemplate && (
-            <div className="border rounded-lg overflow-hidden shadow-md">
-              <div className="bg-gray-100 p-2 font-medium text-sm">Light Theme</div>
-              <div>
-                {React.createElement(lightTemplate.component, { theme: 'light' })}
-              </div>
-            </div>
-          )}
-          
-          {/* Dark Template */}
-          {darkTemplate && (
-            <div className="border rounded-lg overflow-hidden shadow-md">
-              <div className="bg-gray-800 text-white p-2 font-medium text-sm">Dark Theme</div>
-              <div>
-                {React.createElement(darkTemplate.component, { theme: 'dark' })}
-              </div>
-            </div>
-          )}
-        </div>
+      <div className="flex flex-col">
+        {filteredTemplates.map((item, index) => renderTemplate(item.section, item.template, index))}
       </div>
     );
   };
@@ -91,12 +195,13 @@ export default function DebugPage() {
                 <select
                   id="section-type"
                   value={selectedSection}
-                  onChange={(e) => setSelectedSection(e.target.value as SectionType)}
+                  onChange={(e) => setSelectedSection(e.target.value as SectionType | 'all')}
                   className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
+                  <option value="all">All Sections</option>
                   {availableSections.map((section) => (
                     <option key={section} value={section}>
-                      {section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, ' ')}
+                      {section.charAt(0).toUpperCase() + section.slice(1).replace(/_/g, ' ')}
                     </option>
                   ))}
                 </select>
@@ -113,6 +218,7 @@ export default function DebugPage() {
                   onChange={(e) => setSelectedVariant(e.target.value)}
                   className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
+                  <option value="all">All Variants</option>
                   {availableVariants.map((variant) => (
                     <option key={variant} value={variant}>
                       {variant}
@@ -127,7 +233,7 @@ export default function DebugPage() {
 
       {/* Debug Area */}
       <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {renderSelectedComponents()}
+        {renderTemplates()}
       </div>
     </div>
   );

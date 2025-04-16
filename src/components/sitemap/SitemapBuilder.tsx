@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Section, SectionType } from '@/lib/types';
+import { WebsiteSection, SectionType } from '@/lib/types';
 import { useDesign } from '@/lib/contexts/DesignContext';
 import SitemapSection from './SitemapSection';
 import { DesignContextProps } from '@/lib/contexts/DesignContext';
@@ -18,21 +18,22 @@ const SitemapBuilder: React.FC = () => {
     const formattedType = newSectionType.charAt(0).toUpperCase() + newSectionType.slice(1).replace(/([A-Z])/g, ' $1').trim();
     const title = `${formattedType} Section`;
     
-    addSection({
-      type: newSectionType,
-      title: title,
-    });
+    // Get default template ID for this section type
+    const defaultTemplateId = `${newSectionType}-light-v1`;
+    
+    // Pass both required parameters
+    addSection(newSectionType, defaultTemplateId);
   };
 
   const handleMoveUp = (sectionId: string) => {
-    const section = design.sections.find((s: Section) => s.id === sectionId);
+    const section = design.sections.find((s: WebsiteSection) => s.id === sectionId);
     if (section && section.order > 0) {
       reorderSection(sectionId, section.order - 1);
     }
   };
 
   const handleMoveDown = (sectionId: string) => {
-    const section = design.sections.find((s: Section) => s.id === sectionId);
+    const section = design.sections.find((s: WebsiteSection) => s.id === sectionId);
     if (section && section.order < design.sections.length - 1) {
       reorderSection(sectionId, section.order + 1);
     }

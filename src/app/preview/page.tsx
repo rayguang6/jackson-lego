@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { getTemplateById, getTemplateByTypeAndVersion } from '@/lib/templates';
+import { getTemplate, parseTemplateId } from '@/lib/templates';
+import { ThemeType, VersionType, SectionType } from '@/lib/types';
 import { useDesignStore } from '@/lib/store/designStore';
 
 const PreviewContent = () => {
@@ -30,17 +31,34 @@ const PreviewContent = () => {
     let template;
     
     if (section.templateId) {
-      // If a template is selected, use it directly
-      template = getTemplateById(section.templateId);
+      // Parse the template ID safely
+      const templateInfo = parseTemplateId(section.templateId);
+      
+      if (templateInfo) {
+        // Use the parsed information to get the template
+        template = getTemplate(
+          section.type, 
+          templateInfo.version, 
+          templateInfo.theme
+        );
+      } else {
+        // Fallback to default if parsing failed
+        template = getTemplate(section.type, VersionType.v1, ThemeType.light);
+      }
     } else {
-      // If no template is selected, use a default one
-      template = getTemplateByTypeAndVersion(section.type, 'light', 'v1');
+      // If no template is selected, use default v1/light
+      template = getTemplate(section.type, VersionType.v1, ThemeType.light);
     }
     
     if (template) {
       const Component = template.component;
-      // Only pass theme and styleGuide, let the template use its own default props
-      return <Component theme={template.theme} styleGuide={design.styleGuide} />;
+      // Pass the section ID and content to ensure unique instances
+      return <Component 
+        theme={template.theme}
+        sectionId={section.id}
+        styleGuide={design.styleGuide}
+        content={section.content}
+      />;
     }
     
     return null;

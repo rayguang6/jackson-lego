@@ -20,7 +20,9 @@ const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
   const scaleFactor = 0.35;
   
   // Get the variant from the ID (like v1, v2, etc.)
-  const variant = id.split('-').pop()?.toUpperCase() || '';
+  // Parse ID format: 'sectionType-version-theme' to extract version
+  const idParts = id.split('-');
+  const variant = idParts.find(part => part.startsWith('v'))?.toUpperCase() || '';
   
   // Default preview props
   const defaultPreviewProps = {

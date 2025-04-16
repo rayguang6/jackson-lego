@@ -1,5 +1,6 @@
-import { WebsiteDesign } from '../types';
-import { getTemplateById, getTemplateByTypeAndVersion } from '@/lib/templates';
+import { WebsiteDesign, SectionType } from '../types';
+import { getTemplate, parseTemplateId } from '@/lib/templates';
+import { ThemeType, VersionType } from '@/lib/types';
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import { useDesignStore } from '@/lib/store/designStore';
@@ -170,18 +171,27 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
       let template;
     
       if (section.templateId) {
-        template = getTemplateById(section.templateId);
-        if (!template) {
-          console.error(`Template not found for ID: ${section.templateId}`);
-          return '';
+        // Parse the template ID safely
+        const templateInfo = parseTemplateId(section.templateId);
+      
+        if (templateInfo) {
+          // Use the parsed information to get the template
+          template = getTemplate(
+            section.type, 
+            templateInfo.version, 
+            templateInfo.theme
+          );
+        } else {
+          // Fallback to default if parsing failed
+          template = getTemplate(section.type as SectionType, VersionType.v1, ThemeType.light);
         }
       } else if (section.type) {
-        template = getTemplateByTypeAndVersion(section.type, 'light', 'v1') || 
-                  getTemplateByTypeAndVersion(section.type, 'dark', 'v1');
-                  
+        // Use default template
+        template = getTemplate(section.type as SectionType, VersionType.v1, ThemeType.light);
+        
         if (!template) {
-          console.error(`Template not found for type: ${section.type}`);
-          return '';
+          // Try dark theme as fallback
+          template = getTemplate(section.type as SectionType, VersionType.v1, ThemeType.dark);
         }
       }
         
@@ -225,10 +235,11 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
             DesignContext.Provider,
             { value: mockStore },
             React.createElement(Component, {
-              // Only pass theme and styleGuide like the preview page does
-              // This prevents section titles from showing up
+              // Pass section-specific props to ensure unique content
               theme: template.theme,
-              styleGuide: design.styleGuide
+              styleGuide: design.styleGuide,
+              sectionId: section.id,
+              content: section.content || {}
             })
           )
         );

@@ -1,18 +1,15 @@
-import { SectionType } from '../types';
+import { SectionType, ThemeType, VersionType } from '../types';
 
 // Template metadata - simplified to essential fields
 export interface TemplateVariant {
-  id: string;  // e.g., 'hero-v1'
+  id: string;  
   component: React.ComponentType<any>;
-  theme: 'light' | 'dark';
+  theme: ThemeType // 'light' | 'dark';
 }
 
-// will have list of template variants  Hero v1 light, hero v1 dark ...
-export interface SectionTemplates {
-  // light: Record<string, TemplateVariant>;
-  // dark: Record<string, TemplateVariant>;
-  variants: TemplateVariant[];
-}
+export interface SectionTemplatesVariants {
+  [ThemeType.light]: Partial<Record<VersionType, TemplateVariant>>;
+  [ThemeType.dark]: Partial<Record<VersionType, TemplateVariant>>;
+} 
 
-// Template registry map type
-export type TemplateRegistry = Record<SectionType, SectionTemplates>; 
+export type SectionTemplateRegistry = Record<SectionType, SectionTemplatesVariants>;  

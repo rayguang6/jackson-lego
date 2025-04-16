@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Section } from '@/lib/types';
+import { WebsiteSection } from '@/lib/types';
 
 interface SitemapSectionProps {
-  section: Section;
+  section: WebsiteSection;
   onRemove: (id: string) => void;
   onMoveUp: (id: string) => void;
   onMoveDown: (id: string) => void;

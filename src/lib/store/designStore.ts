@@ -1,22 +1,35 @@
+// src/lib/store/designStore.ts
 import { create, StateCreator } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { WebsiteDesign, Section, StyleGuide, SectionType } from '../types';
+import { WebsiteDesign, StyleGuide, SectionType, WebsiteSection } from '../types';
 import { styleGuide as initialStyleGuide } from '../constants/styleGuide';
 import { defaultSections } from '../constants/defaultSections';
 import { v4 as uuidv4 } from 'uuid';
 
 interface DesignStore {
   design: WebsiteDesign;
-  addSection: (section: Omit<Section, 'id' | 'order'>) => void;
+  
+  // Section operations
+  addSection: (type: SectionType, templateId: string) => void; // Changed signature
   removeSection: (sectionId: string) => void;
-  updateSection: (section: Section) => void;
+  updateSection: (section: WebsiteSection) => void;
   reorderSection: (sectionId: string, newOrder: number) => void;
+  
+  // Content operations - new!
+  updateSectionContent: (sectionId: string, content: Record<string, any>) => void;
+  updateSectionField: (sectionId: string, fieldPath: string, value: any) => void;
+  
+  // Style operations
   updateStyleGuide: (styleGuide: StyleGuide) => void;
   updatePrimaryColor: (color: string) => void;
   updateSecondaryColor: (color: string) => void;
   updateHeadingFont: (font: string) => void;
   updateBodyFont: (font: string) => void;
+  
+  // Template operations
   updateSectionTemplate: (sectionId: string, templateId: string) => void;
+  
+  // Reset operations
   resetDesign: () => void;
   resetStyleGuide: () => void;
   resetSections: () => void;
@@ -40,29 +53,35 @@ export const useDesignStore = create<DesignStore>()(
   (persist as DesignStorePersist)(
     (set) => ({
       design: getInitialState(),
-
-      addSection: (sectionData: Omit<Section, 'id' | 'order'>) =>
-        set((state: DesignStore) => {
-          const newSection: Section = {
+      
+      // Update to match the interface
+      addSection: (type: SectionType, templateId: string) => 
+        set((state) => {  
+          const theme = templateId.includes('dark') ? 'dark' : 'light';
+          const newSection: WebsiteSection = {
             id: uuidv4(),
-            ...sectionData,
+            type,
+            title: `${type.charAt(0).toUpperCase() + type.slice(1)} Section`,
             order: state.design.sections.length,
+            templateId,
+            theme,
+            content:{}
           };
-
+          
           return {
             design: {
               ...state.design,
               sections: [...state.design.sections, newSection],
-              updatedAt: new Date().toISOString(),
-            },
+              updatedAt: new Date().toISOString()
+            }
           };
         }),
-
+      
       removeSection: (sectionId: string) =>
-        set((state: DesignStore) => {
+        set((state) => {
           const newSections = state.design.sections
-            .filter((s: Section) => s.id !== sectionId)
-            .map((section: Section, index: number) => ({
+            .filter((s) => s.id !== sectionId)
+            .map((section, index) => ({
               ...section,
               order: index,
             }));
@@ -76,8 +95,8 @@ export const useDesignStore = create<DesignStore>()(
           };
         }),
 
-      updateSection: (updatedSection: Section) =>
-        set((state: DesignStore) => ({
+      updateSection: (updatedSection: WebsiteSection) =>
+        set((state) => ({
           design: {
             ...state.design,
             sections: state.design.sections.map((section) =>
@@ -86,9 +105,66 @@ export const useDesignStore = create<DesignStore>()(
             updatedAt: new Date().toISOString(),
           },
         })),
+        
+      // Add the new content operations
+      updateSectionContent: (sectionId: string, content: Record<string, any>) =>
+        set((state) => ({
+          design: {
+            ...state.design,
+            sections: state.design.sections.map((section) =>
+              section.id === sectionId
+                ? { ...section, content }
+                : section
+            ),
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+        
+      updateSectionField: (sectionId: string, fieldPath: string, value: any) =>
+        set((state) => {
+          const updatedSections = state.design.sections.map(section => {
+            if (section.id !== sectionId) return section;
+            
+            // Create a deep copy of the content
+            const updatedContent = JSON.parse(JSON.stringify(section.content || {}));
+            
+            // Handle dot notation path
+            const pathParts = fieldPath.split('.');
+            let current = updatedContent;
+            
+            // Navigate to the target object
+            for (let i = 0; i < pathParts.length - 1; i++) {
+              const part = pathParts[i];
+              // Handle array indices
+              if (!isNaN(Number(part))) {
+                current = current[pathParts[i-1]][Number(part)];
+              } else {
+                if (!current[part]) current[part] = {};
+                current = current[part];
+              }
+            }
+            
+            // Set the value on the target property
+            current[pathParts[pathParts.length - 1]] = value;
+            
+            return {
+              ...section,
+              content: updatedContent
+            };
+          });
+          
+          return {
+            design: {
+              ...state.design,
+              sections: updatedSections,
+              updatedAt: new Date().toISOString()
+            }
+          };
+        }),
 
+      // Keep other operations as they were...
       reorderSection: (sectionId: string, newOrder: number) =>
-        set((state: DesignStore) => {
+        set((state) => {
           const sectionToMove = state.design.sections.find((s) => s.id === sectionId);
           if (!sectionToMove) return state;
 
@@ -125,7 +201,7 @@ export const useDesignStore = create<DesignStore>()(
         }),
 
       updateStyleGuide: (styleGuide: StyleGuide) =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             styleGuide,
@@ -133,8 +209,9 @@ export const useDesignStore = create<DesignStore>()(
           },
         })),
 
+      // Other methods remain the same...
       updatePrimaryColor: (color: string) =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             styleGuide: {
@@ -146,7 +223,7 @@ export const useDesignStore = create<DesignStore>()(
         })),
 
       updateSecondaryColor: (color: string) =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             styleGuide: {
@@ -158,7 +235,7 @@ export const useDesignStore = create<DesignStore>()(
         })),
 
       updateHeadingFont: (font: string) =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             styleGuide: {
@@ -170,7 +247,7 @@ export const useDesignStore = create<DesignStore>()(
         })),
 
       updateBodyFont: (font: string) =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             styleGuide: {
@@ -182,7 +259,7 @@ export const useDesignStore = create<DesignStore>()(
         })),
 
       updateSectionTemplate: (sectionId: string, templateId: string) =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             sections: state.design.sections.map((section) =>
@@ -198,7 +275,7 @@ export const useDesignStore = create<DesignStore>()(
         }),
 
       resetStyleGuide: () =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             styleGuide: initialStyleGuide,
@@ -207,7 +284,7 @@ export const useDesignStore = create<DesignStore>()(
         })),
 
       resetSections: () =>
-        set((state: DesignStore) => ({
+        set((state) => ({
           design: {
             ...state.design,
             sections: defaultSections,
@@ -219,4 +296,4 @@ export const useDesignStore = create<DesignStore>()(
       name: 'jackson-lego-design-store',
     }
   )
-); 
+);

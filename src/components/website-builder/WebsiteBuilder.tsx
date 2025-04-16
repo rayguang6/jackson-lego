@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
-import { Section, SectionType } from '@/lib/types';
+import { WebsiteSection, SectionType, ThemeType, VersionType } from '@/lib/types';
 // Import the template registry
-import { getTemplateById, getTemplateByTypeAndVersion } from '@/lib/templates';
+import { getTemplate, parseTemplateId } from '@/lib/templates';
 import TemplateSelector from './TemplateSelector';
 
 const WebsiteBuilder: React.FC = () => {
   const { design, removeSection, reorderSection } = useDesign();
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
-  const [templateSelectorSection, setTemplateSelectorSection] = useState<Section | null>(null);
+  const [templateSelectorSection, setTemplateSelectorSection] = useState<WebsiteSection | null>(null);
 
   // Sort sections by order
   const sortedSections = [...design.sections].sort((a, b) => a.order - b.order);
@@ -42,7 +42,7 @@ const WebsiteBuilder: React.FC = () => {
     }
   };
 
-  const openTemplateSelector = (section: Section) => {
+  const openTemplateSelector = (section: WebsiteSection) => {
     setTemplateSelectorSection(section);
   };
 
@@ -61,21 +61,40 @@ const WebsiteBuilder: React.FC = () => {
     );
   };
 
-  // Render an actual component or skeleton based on section type
-  const renderActualTemplate = (section: Section) => {
+  // Render an actual component based on section type
+  const renderActualTemplate = (section: WebsiteSection) => {
     let template;
     
     if (section.templateId) {
-      // If a template is selected, use it directly
-      template = getTemplateById(section.templateId);
+      // Parse the template ID safely
+      const templateInfo = parseTemplateId(section.templateId);
+      
+      if (templateInfo) {
+        // Use the parsed information to get the template
+        template = getTemplate(
+          section.type, 
+          templateInfo.version, 
+          templateInfo.theme
+        );
+      } else {
+        // Fallback to default if parsing failed
+        template = getTemplate(section.type, VersionType.v1, ThemeType.light);
+      }
     } else {
-      // If no template is selected, use v1 as the default
-      template = getTemplateByTypeAndVersion(section.type, 'light', 'v1');
+      // If no template is selected, use v1/light as the default
+      template = getTemplate(section.type, VersionType.v1, ThemeType.light);
     }
     
     if (template) {
       const Component = template.component;
-      return <Component theme={template.theme} />;
+      
+      // Pass the section ID to ensure unique instances can have different content
+      return <Component 
+        theme={template.theme} 
+        sectionId={section.id}
+        styleGuide={design.styleGuide}
+        content={section.content} 
+      />;
     }
     
     // If no template is found, render a skeleton

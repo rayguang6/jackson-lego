@@ -1,12 +1,26 @@
-import { Section, SectionType } from '../types';
+import { SectionType, ThemeType, VersionType, WebsiteSection } from '../types';
+import { generateTemplateId } from '../templates';
 import { v4 as uuidv4 } from 'uuid';
-export const defaultSections: Section[] = [
+
+export const defaultSections: WebsiteSection[] = [
   {
     id: uuidv4(),
     type: SectionType.S01_Hero,
     title: 'Hero Section',
     order: 0,
+    templateId: generateTemplateId(SectionType.S01_Hero, VersionType.v1, ThemeType.light),
+    theme: ThemeType.light,
+    content: {},
   },
+  {
+    id: uuidv4(),
+    type: SectionType.S01_Hero,
+    title: 'Hero Section 2',
+    order: 1,
+    templateId: generateTemplateId(SectionType.S01_Hero, VersionType.v1, ThemeType.dark),
+    theme: ThemeType.dark,
+    content: {},
+  }
   // {
   //   id: uuidv4(),
   //   type: SectionType.S03_Problem,

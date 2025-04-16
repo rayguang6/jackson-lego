@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDesign } from '@/lib/contexts/DesignContext';
-import { Section, SectionType } from '@/lib/types';
+import { WebsiteSection, SectionType, ThemeType, VersionType } from '@/lib/types';
 import { getTemplatesForSectionType } from '@/lib/templates';
 import { TemplateVariant } from '@/lib/templates/types';
 import TemplateThumbnail from './TemplateThumbnail';
 
 interface TemplateSelectorProps {
-  section: Section;
+  section: WebsiteSection;
   onClose?: () => void;
 }
 

@@ -1,15 +1,16 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode } from 'react';
-import { Section, StyleGuide, WebsiteDesign } from '../types';
+import { WebsiteSection, StyleGuide, WebsiteDesign, SectionType } from '../types';
 import { useDesignStore } from '../store/designStore';
+import { styleGuide } from '../constants/styleGuide';
 
 export interface DesignContextProps {
   design: WebsiteDesign;
   styleGuide: StyleGuide;
-  addSection: (section: Omit<Section, 'id' | 'order'>) => void;
+  addSection: (type: SectionType, templateId: string) => void; // Changed signature
   removeSection: (sectionId: string) => void;
-  updateSection: (section: Section) => void;
+  updateSection: (section: WebsiteSection) => void;
   reorderSection: (sectionId: string, newOrder: number) => void;
   updateStyleGuide: (styleGuide: StyleGuide) => void;
   updatePrimaryColor: (color: string) => void;
@@ -36,67 +37,11 @@ export const useDesign = () => {
         id: '',
         name: '',
         sections: [],
-        styleGuide: {
-          primaryColor: '#000000',
-          secondaryColor: '#000000',
-          accentColor: '#000000',
-          backgroundColor: '#ffffff',
-          backgroundColorDark: '#000000',
-          textColor: '#000000',
-          headingFont: 'Arial',
-          bodyFont: 'Arial',
-          fontFamily: 'Arial',
-          h1Size: '48px',
-          h1Weight: '700',
-          h1LineHeight: '1.2',
-          h2Size: '36px',
-          h2Weight: '600',
-          h2LineHeight: '1.3',
-          bodySize: '16px',
-          bodyWeight: '400',
-          bodyLineHeight: '1.5',
-          spacingXs: '8px',
-          spacingSm: '16px',
-          spacingMd: '24px',
-          spacingLg: '32px',
-          spacingXl: '48px',
-          borderRadiusSm: '4px',
-          borderRadiusMd: '8px',
-          borderRadiusLg: '16px',
-          borderRadiusFull: '9999px',
-        },
+        styleGuide: styleGuide,
         createdAt: '',
         updatedAt: ''
       },
-      styleGuide: {
-        primaryColor: '#000000',
-        secondaryColor: '#000000',
-        accentColor: '#000000',
-        backgroundColor: '#ffffff',
-        backgroundColorDark: '#000000',
-        textColor: '#000000',
-        headingFont: 'Arial',
-        bodyFont: 'Arial',
-        fontFamily: 'Arial',
-        h1Size: '48px',
-        h1Weight: '700',
-        h1LineHeight: '1.2',
-        h2Size: '36px',
-        h2Weight: '600',
-        h2LineHeight: '1.3',
-        bodySize: '16px',
-        bodyWeight: '400',
-        bodyLineHeight: '1.5',
-        spacingXs: '8px',
-        spacingSm: '16px',
-        spacingMd: '24px',
-        spacingLg: '32px',
-        spacingXl: '48px',
-        borderRadiusSm: '4px',
-        borderRadiusMd: '8px',
-        borderRadiusLg: '16px',
-        borderRadiusFull: '9999px',
-      },
+      styleGuide: styleGuide,
       addSection: () => {},
       removeSection: () => {},
       updateSection: () => {},
@@ -132,11 +77,11 @@ export const DesignProvider: React.FC<DesignProviderProps> = ({ children }) => {
       value={{
         design: store.design,
         styleGuide: store.design.styleGuide,
-        addSection: store.addSection,
-        removeSection: store.removeSection,
-        updateSection: store.updateSection,
-        reorderSection: store.reorderSection,
-        updateStyleGuide: store.updateStyleGuide,
+        addSection: (type: SectionType, templateId: string) => store.addSection(type, templateId),
+        removeSection: (sectionId: string) => store.removeSection(sectionId),
+        updateSection: (section: WebsiteSection) => store.updateSection(section),
+        reorderSection: (sectionId: string, newOrder: number) => store.reorderSection(sectionId, newOrder),
+        updateStyleGuide: (styleGuide: StyleGuide) => store.updateStyleGuide(styleGuide),
         updatePrimaryColor: store.updatePrimaryColor,
         updateSecondaryColor: store.updateSecondaryColor,
         updateHeadingFont: store.updateHeadingFont,

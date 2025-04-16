@@ -1,48 +1,25 @@
-// export * from './sectionTypes';
+export enum ThemeType {
+  light = 'light',
+  dark = 'dark',
+}
+
+export enum VersionType {
+  v1 = 'v1',
+  v2 = 'v2',
+  v3 = 'v3',
+  v4 = 'v4',
+  v5 = 'v5', 
+  v6 = 'v6',
+  v7 = 'v7',
+  v8 = 'v8',
+  v9 = 'v9',
+  v10 = 'v10'
+}
 
 // Section types
 export enum SectionType {
   S01_Hero = 'hero',
-  // S02_SocialProof = 's02-social-proof',
-  // S03_Problem = 'problem',
-  // S04_Solutions = 'solutions',
-  // S05_FeaturesOrServices = 'features-or-services',
-  // S06_HowItWorks = 'how-it-works',
-  // S07_Testimonials = 'testimonials',
-  // S08_FAQs = 'faqs',
-  // S09_BeforeAfter = 'before-after',
-  // S10_WorkWithUs = 'work-with-us',
-  // S11_Offer = 'offer',
-  // S12_WhoIsThisFor = 'who-is-this-for',
-  // S13_About = 'about',
-  // S14_CaseStudies = 'case-studies',
-  // S15_Guarantee = 'guarantee',
   S16_CTA = 'cta',
-}
-
-// Base interface for all section props
-export interface BaseSectionProps {
-  // Common props for all sections
-  theme?: 'light' | 'dark';
-  title?: string;
-  subtitle?: string;
-  badge?: string;
-  badgeText?: string;
-  ctaText?: string;
-  ctaUrl?: string;
-  features?: string[];
-  
-  // Component-specific props can be handled through extensions
-  [key: string]: any; // Allow additional props to be passed
-}
-
-// Section interface
-export interface Section {
-  id: string;
-  type: SectionType;
-  title: string;
-  order: number;
-  templateId?: string;
 }
 
 // Template interface
@@ -93,12 +70,28 @@ export interface StyleGuide {
   borderRadiusFull: string;
 }
 
-// Complete website design
+
+// The complete website design
 export interface WebsiteDesign {
   id: string;
   name: string;
-  sections: Section[];
+  sections: WebsiteSection[];  // Ordered list of all sections
   styleGuide: StyleGuide;
   createdAt: string;
   updatedAt: string;
+}
+
+// A single section in the website
+export interface WebsiteSection {
+  id: string;
+  type: SectionType;        // Hero, Features, etc.
+  title: string;            // Display name for UI
+  order: number;            // Position in layout
+  
+  // Template information
+  templateId: string;       // "hero-dark-v3"
+  theme: ThemeType;         // Theme variant using ThemeType enum
+  
+  // The actual content for this specific section instance
+  content: Record<string, any>;  // Section-specific content
 }
