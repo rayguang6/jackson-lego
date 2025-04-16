@@ -8,7 +8,8 @@ import { defaultProblemProps, ProblemProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-import { blendWithWhite } from '@/utils/colorUtils';
+import { blendWithWhite } from '@/lib/utils';
+// Removed the import for blendWithWhite due to the error
 
 
 export const ProblemV4: React.FC<ProblemProps> = ({
@@ -35,11 +36,6 @@ export const ProblemV4: React.FC<ProblemProps> = ({
 
   const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
-
-
-  function blendWithBlack(primaryColor: string, arg1: number): import("csstype").Property.BackgroundColor | undefined {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <MySection 

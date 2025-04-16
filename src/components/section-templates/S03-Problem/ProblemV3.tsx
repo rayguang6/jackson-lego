@@ -10,7 +10,7 @@ import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
 import { styleGuide } from '@/lib/constants/styleGuide';
-import { blendWithWhite } from '@/utils/colorUtils';
+import { blendWithWhite } from '@/lib/utils';
 
 
 export const ProblemV3: React.FC<ProblemProps> = ({

@@ -22,8 +22,6 @@ export const HeroV1: React.FC<HeroProps> = ({
   videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1
 }) => {
   const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
-
-  const isDark = theme === 'dark';
   
   return (
     <MySection 

@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { SectionType } from '../types';
 
 // Template metadata - simplified to essential fields
@@ -8,10 +7,11 @@ export interface TemplateVariant {
   theme: 'light' | 'dark';
 }
 
-// Section template collection
+// will have list of template variants  Hero v1 light, hero v1 dark ...
 export interface SectionTemplates {
-  light: Record<string, TemplateVariant>;
-  dark: Record<string, TemplateVariant>;
+  // light: Record<string, TemplateVariant>;
+  // dark: Record<string, TemplateVariant>;
+  variants: TemplateVariant[];
 }
 
 // Template registry map type

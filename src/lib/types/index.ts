@@ -4,11 +4,11 @@
 export enum SectionType {
   S01_Hero = 'hero',
   // S02_SocialProof = 's02-social-proof',
-  S03_Problem = 'problem',
-  S04_Solutions = 'solutions',
-  S05_FeaturesOrServices = 'features-or-services',
-  S06_HowItWorks = 'how-it-works',
-  S07_Testimonials = 'testimonials',
+  // S03_Problem = 'problem',
+  // S04_Solutions = 'solutions',
+  // S05_FeaturesOrServices = 'features-or-services',
+  // S06_HowItWorks = 'how-it-works',
+  // S07_Testimonials = 'testimonials',
   // S08_FAQs = 'faqs',
   // S09_BeforeAfter = 'before-after',
   // S10_WorkWithUs = 'work-with-us',
@@ -18,12 +18,6 @@ export enum SectionType {
   // S14_CaseStudies = 'case-studies',
   // S15_Guarantee = 'guarantee',
   S16_CTA = 'cta',
-}
-
-// Common shared props that most sections might need
-interface CommonSectionProps {
-  theme?: 'light' | 'dark';
-  className?: string;
 }
 
 // Base interface for all section props
