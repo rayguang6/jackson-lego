@@ -56,15 +56,15 @@ export function getTemplate(
   sectionType: SectionType,
   version: VersionType = VersionType.v1,
   theme: ThemeType = ThemeType.light
-): TemplateVariant {
+): TemplateVariant | null   {
   const sectionTemplates = templateRegistry[sectionType];
-  if (!sectionTemplates) throw new Error(`Section type ${sectionType} not found in template registry`);
-  
+  if (!sectionTemplates) return null;
+
   const themeTemplates = sectionTemplates[theme];
-  if (!themeTemplates) throw new Error(`Theme ${theme} not found for section type ${sectionType}`);
+  if (!themeTemplates) return null;
   
   const template = themeTemplates[version];
-  if (!template) throw new Error(`Version ${version} not found for section type ${sectionType} and theme ${theme}`);
+  if (!template) return null;
   
   return template;
 }
@@ -74,14 +74,14 @@ export function getTemplate(
  */
 export function getTemplatesForSectionType(sectionType: SectionType): TemplateVariant[] {
   const sectionTemplates = templateRegistry[sectionType];
-  if (!sectionTemplates) throw new Error(`Section type ${sectionType} not found in template registry`); 
+  if (!sectionTemplates) return [];
 
   const allTemplates: TemplateVariant[] = [];
   
   // Collect templates from both themes and all versions
   Object.values(ThemeType).forEach(theme => {
     const themeTemplates = sectionTemplates[theme];
-    if (!themeTemplates) throw new Error(`Theme ${theme} not found for section type ${sectionType}`);
+    if (!themeTemplates) return;
 
     Object.values(themeTemplates).forEach(template => {
       allTemplates.push(template);
@@ -94,11 +94,12 @@ export function getTemplatesForSectionType(sectionType: SectionType): TemplateVa
 // Import templates AFTER defining functions
 // This avoids circular dependency issues
 import { heroTemplates } from '@/components/section-templates/S01-Hero/register';
+import { ctaTemplates } from '@/components/section-templates/S16-CTA/register';
 
 // Combine all section templates into a single registry
 export const templateRegistry: SectionTemplateRegistry = {
   [SectionType.S01_Hero]: heroTemplates,
-  [SectionType.S16_CTA]: emptyTemplates,
+  [SectionType.S16_CTA]: ctaTemplates,
 };
 
 export * from './types';
