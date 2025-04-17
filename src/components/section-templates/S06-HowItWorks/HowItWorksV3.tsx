@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+
 import { MySection } from '@/components/template-ui/MySection';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';

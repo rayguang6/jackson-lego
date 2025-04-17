@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { LogoIcon } from '@/components/template-ui/icons/LogoIcon';
 import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
-import { useDesign } from '@/lib/contexts/DesignContext';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { useDesignStore } from '@/lib/store/designStore';
+
 
 export const HeroV2: React.FC<HeroProps> = ({
   title = "Multipurpose Page Blocks Designed for ",
@@ -21,7 +22,10 @@ export const HeroV2: React.FC<HeroProps> = ({
   theme = defaultHeroProps.theme,
   videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_2
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
+    // pull only what you need from Zustand
+    const { primaryColor, headingFont, bodyFont } = useDesignStore(
+      (s) => s.design.styleGuide
+    );
 
   const isDark = theme === 'dark';
   

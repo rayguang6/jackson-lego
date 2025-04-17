@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+
 import { StarIcon } from '@/components/template-ui/icons';
 import { MySection } from '@/components/template-ui/MySection';
 import { defaultProblemProps } from './types';

@@ -1,18 +1,18 @@
 'use client';
 
 import React from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 import { getTypographyClass } from '@/utils/typography';
 
-interface SectionHeadingProps {
+interface SectionHeadingProps { 
   children: React.ReactNode;
-  theme?: 'light' | 'dark';
+  theme?: 'light' | 'dark'; 
   className?: string;
   as?: 'h1' | 'h2' | 'h3' | 'h4';
 }
 
 export const Highlight: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { styleGuide } = useDesign();
+  const { styleGuide } = useDesignStore(s => s.design);
   return <span style={{ color: styleGuide.primaryColor }}>{children}</span>;
 };
 
@@ -22,7 +22,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   className = '',
   as = 'h2',
 }) => {
-  const { styleGuide } = useDesign();
+  const { styleGuide } = useDesignStore(s => s.design);
   const isDark = theme === 'dark';
   const textColor = isDark ? 'text-white' : 'text-gray-900';
   

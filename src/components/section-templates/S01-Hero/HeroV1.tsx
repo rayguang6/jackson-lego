@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { LogoIcon } from '@/components/template-ui/icons/LogoIcon';
 import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
@@ -21,7 +21,7 @@ export const HeroV1: React.FC<HeroProps> = ({
   theme = defaultHeroProps.theme,
   videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
+  const { primaryColor, headingFont, bodyFont } = useDesignStore(s => s.design.styleGuide);
   
   return (
     <MySection 

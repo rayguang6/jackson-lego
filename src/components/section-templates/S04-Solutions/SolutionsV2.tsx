@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { SolutionsProps, defaultSolutionsProps } from './types';
-import { useDesign } from '@/lib/contexts/DesignContext';
+
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 

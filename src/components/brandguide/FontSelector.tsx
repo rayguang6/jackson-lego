@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 import { FONT_OPTIONS } from '@/lib/fonts';
 
 const FontSelector: React.FC = () => {
-  const { styleGuide, updateHeadingFont, updateBodyFont } = useDesign();
+  const styleGuide = useDesignStore(s => s.design.styleGuide);
+  const updateHeadingFont = useDesignStore(s => s.updateHeadingFont);
+  const updateBodyFont = useDesignStore(s => s.updateBodyFont);
   const [headingValue, setHeadingValue] = useState(FONT_OPTIONS[0].value);
   const [bodyValue, setBodyValue] = useState(FONT_OPTIONS[1].value);
   

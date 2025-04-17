@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 import { styleGuide } from '@/lib/constants/styleGuide';
 
 interface PlayButtonProps {
@@ -15,7 +15,7 @@ export const PlayButton: React.FC<PlayButtonProps> = ({
   size = 'md',
   className = ''
 }) => {
-  const { styleGuide } = useDesign();
+  const { styleGuide } = useDesignStore(s => s.design);
   const primaryColor = styleGuide?.primaryColor || styleGuide.primaryColor;
 
   // Size mappings

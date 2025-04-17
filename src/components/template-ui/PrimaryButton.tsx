@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 
 interface PrimaryButtonProps {
   text: string;
@@ -14,7 +14,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   theme,
   className = '',
 }) => {
-  const { styleGuide } = useDesign();
+  const { styleGuide } = useDesignStore(s => s.design);
   const primaryColor = styleGuide?.primaryColor || styleGuide.primaryColor;
   const bodyFont = styleGuide?.bodyFont || styleGuide.bodyFont;
 

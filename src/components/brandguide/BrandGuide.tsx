@@ -2,15 +2,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useDesign } from '@/lib/contexts/DesignContext';
 import FontSelector from './FontSelector';
+import { useDesignStore } from '@/lib/store/designStore';
 
-interface DesignHook {
-  styleGuide: any;
-  updatePrimaryColor: (color: string) => void;
-  updateSecondaryColor: (color: string) => void;
-  resetStyleGuide?: () => void;
-}
+// interface DesignHook {
+//   styleGuide: any;
+//   updatePrimaryColor: (color: string) => void;
+//   updateSecondaryColor: (color: string) => void;
+//   resetStyleGuide?: () => void;
+// }
 
 interface ColorConfig {
   id: string;
@@ -65,27 +65,23 @@ const getShades = (hexColor: string): string[] => {
 };
 
 const BrandGuide: React.FC = () => {
-  // Cast to our simplified interface to avoid TypeScript errors
-  const { styleGuide, updatePrimaryColor, updateSecondaryColor, resetStyleGuide } = useDesign() as unknown as DesignHook;
+    // 1️⃣ Pull from Zustand
+  const styleGuide           = useDesignStore(s => s.design.styleGuide);
+  const updatePrimaryColor   = useDesignStore(s => s.updatePrimaryColor);
+  const updateSecondaryColor = useDesignStore(s => s.updateSecondaryColor);
+  const resetStyleGuide      = useDesignStore(s => s.resetStyleGuide);
   
-  // State for color configurations including names
-  const [colorConfigs, setColorConfigs] = useState<ColorConfig[]>([
-    {
-      id: 'primary',
-      label: 'Primary',
-      value: styleGuide.primaryColor,
-      updateFn: updatePrimaryColor,
-      name: 'Primary'
-    },
-    {
-      id: 'secondary',
-      label: 'Secondary',
-      value: styleGuide.secondaryColor,
-      updateFn: updateSecondaryColor,
-      name: 'Secondary'
-    }
-  ]);
-  
+  // 2️⃣ Local configs, synced on every styleGuide change
+  const [colorConfigs, setColorConfigs] = useState<ColorConfig[]>([]);
+  useEffect(() => {
+    setColorConfigs([
+      { id:'primary',   label:'Primary',   value:styleGuide.primaryColor,   updateFn:updatePrimaryColor,   name:'Primary' },
+      { id:'secondary', label:'Secondary', value:styleGuide.secondaryColor, updateFn:updateSecondaryColor, name:'Secondary' }
+    ]);
+  }, [styleGuide.primaryColor, styleGuide.secondaryColor, updatePrimaryColor, updateSecondaryColor]);
+
+
+  // 3️⃣ Popup + picker state
   const [activeColorId, setActiveColorId] = useState<string | null>(null);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const [colorName, setColorName] = useState('');
@@ -93,9 +89,7 @@ const BrandGuide: React.FC = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const colorInputRef = useRef<HTMLInputElement>(null);
   const cardRefs = useRef<{[key: string]: React.RefObject<HTMLDivElement | null>}>({});
-  
-  // State to track if we're in a browser environment for the portal
-  const [isBrowser, setIsBrowser] = useState(false);
+  const [isBrowser, setIsBrowser] = useState(false); // State to track if we're in a browser environment for the portal
   
   // Set isBrowser to true on mount
   useEffect(() => {
@@ -133,18 +127,36 @@ const BrandGuide: React.FC = () => {
     }
   }, [activeColorId]);
   
-  const handleColorChange = (hexColor: string) => {
-    const config = colorConfigs.find(c => c.id === activeColorId);
-    if (config) {
-      // Update the color in our state
-      setColorConfigs(prev => prev.map(c => 
-        c.id === activeColorId ? { ...c, value: hexColor } : c
-      ));
+  // const handleColorChange = (hexColor: string) => {
+  //   const config = colorConfigs.find(c => c.id === activeColorId);
+  //   if (config) {
+  //     // Update the color in our state
+  //     setColorConfigs(prev => prev.map(c => 
+  //       c.id === activeColorId ? { ...c, value: hexColor } : c
+  //     ));
       
-      // Update in the design context
-      config.updateFn(hexColor);
-    }
-  };
+  //     // Update in the design context
+  //     config.updateFn(hexColor);
+  //   }
+  // };
+
+  // const handleColorChange = (hex: string) => {
+  //   if (!activeColorId) return;
+  //   setColorConfigs(cfgs => cfgs.map(c => c.id === activeColorId ? { ...c, value: hex } : c));
+  //   colorConfigs.find(c => c.id === activeColorId)!.updateFn(hex);
+  // };
+
+  // Stale‑free color change
+  const handleColorChange = (hex: string) => {
+    if (!activeColorId) return
+    setColorConfigs(cfgs =>
+      cfgs.map(c =>
+        c.id === activeColorId
+          ? (c.updateFn(hex), { ...c, value: hex })
+          : c
+      )
+    )
+  }
 
   const handleNativeColorPickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleColorChange(e.target.value);
@@ -160,24 +172,11 @@ const BrandGuide: React.FC = () => {
   };
 
   const handleResetStyle = () => {
-    if (resetStyleGuide && confirm('Reset to default style settings?')) {
-      resetStyleGuide();
-      
-      // Get the default values from the reset style guide and update local state
-      import('@/lib/constants/styleGuide').then(({ styleGuide: defaultStyleGuide }) => {
-        setColorConfigs(prev => prev.map(config => {
-          if (config.id === 'primary') {
-            return { ...config, value: defaultStyleGuide.primaryColor };
-          } else if (config.id === 'secondary') {
-            return { ...config, value: defaultStyleGuide.secondaryColor };
-          }
-          return config;
-        }));
-      });
-      
-      setActiveColorId(null);
+    if (confirm("Reset to default style settings?")) {
+      resetStyleGuide()
+      setActiveColorId(null)
     }
-  };
+  }
 
   const openColorPicker = (colorId: string) => {
     const cardRef = cardRefs.current[colorId];
@@ -309,23 +308,23 @@ const BrandGuide: React.FC = () => {
   // Get active color
   const activeColor = colorConfigs.find(c => c.id === activeColorId);
 
-  const headingFont = styleGuide.headingFont;
-  const bodyFont = styleGuide.bodyFont;
+   // 5️⃣ Extract fonts for preview
+   const headingFont = styleGuide.headingFont;
+   const bodyFont    = styleGuide.bodyFont;
 
   return (
     <div className="flex flex-col h-full">
+      {/* Header */}
       <div className="flex-shrink-0 bg-white py-4 mb-4 flex justify-between items-center">
         <h2 className="text-xl font-semibold">Brand Colors</h2>
-        {resetStyleGuide && (
-          <button
-            onClick={handleResetStyle}
-            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors cursor-pointer"
-          >
-            Reset Style
-          </button>
-        )}
+        <button
+          onClick={handleResetStyle}
+          className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">
+          Reset
+        </button>
       </div>
-      
+
+      {/* Color Cards */}
       <div className="flex-grow space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {colorConfigs.map(config => (
@@ -541,12 +540,14 @@ const BrandGuide: React.FC = () => {
           </div>,
           document.body
         )}
-        
+
+        {/* Typography */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Typography</h2>
           <FontSelector />
         </div>
-        
+
+        {/* Preview */}
         <div className="mt-6 p-4 rounded-lg border border-gray-200 bg-white">
           <h3 className="text-lg font-semibold mb-4" style={{ color: styleGuide.primaryColor, fontFamily: headingFont }}>
             Preview

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { DesignProvider } from "@/lib/contexts/DesignContext";
 import { archivo, fontVariables } from "@/lib/fonts";
-
 export const metadata: Metadata = {
   title: "Jackson Lego - Web Design Generator",
   description: "Quickly create beautiful web designs with AI",
@@ -16,9 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontVariables} style={{ backgroundColor: '#F5F5F5', height: '100vh' }}>
       <body className={archivo.className}>
-        <DesignProvider>
-          {children}
-        </DesignProvider>
+            {children}
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 
 interface SectionProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ export const MySection: React.FC<SectionProps> = ({
   className = '',
   backgroundColor,
 }) => {
-  const { styleGuide } = useDesign();
+  const { styleGuide } = useDesignStore(s => s.design);
   const isDark = theme === 'dark';
 
   const bgColor = backgroundColor || (isDark ? styleGuide.backgroundColorDark : styleGuide.backgroundColor);

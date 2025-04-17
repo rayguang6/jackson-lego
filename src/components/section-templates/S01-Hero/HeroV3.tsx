@@ -5,13 +5,12 @@ import Image from 'next/image';
 import { LogoIcon } from '@/components/template-ui/icons/LogoIcon';
 import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
-import { useDesign } from '@/lib/contexts/DesignContext';
 import { Badge } from '@/components/template-ui/Badge';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
 import { MySection } from '@/components/template-ui/MySection';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-
+import { useDesignStore } from '@/lib/store/designStore';
 export const HeroV3: React.FC<HeroProps> = ({
   title = defaultHeroProps.title,
   subtitle = defaultHeroProps.subtitle,
@@ -21,9 +20,10 @@ export const HeroV3: React.FC<HeroProps> = ({
   features = defaultHeroProps.features,
   videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_3
 }) => {
-  const { styleGuide } = useDesign();
-  const primaryColor = styleGuide?.primaryColor || styleGuide.primaryColor;
-  const bodyFont = styleGuide?.bodyFont || styleGuide.bodyFont;
+
+  const { primaryColor, bodyFont } = useDesignStore(
+    (s) => s.design.styleGuide
+  );
 
   const isDark = theme === 'dark';
   

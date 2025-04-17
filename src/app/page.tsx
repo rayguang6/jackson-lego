@@ -2,13 +2,13 @@
 
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { DesignProvider } from '@/lib/contexts/DesignContext';
-import { useDesign } from '@/lib/contexts/DesignContext';
 import TabPanel from '@/components/TabPanel';
 import SitemapBuilder from '@/components/sitemap/SitemapBuilder';
 import WebsiteBuilder from '@/components/website-builder/WebsiteBuilder';
 import BrandGuide from '@/components/brandguide/BrandGuide';
 import ExportButton from '@/components/ExportButton';
+import { useDesignStore } from '@/lib/store/designStore';
+import StyleProvider from '@/lib/contexts/StyleProvider';
 
 export default function Home() {
   const [isStructurePanelOpen, setIsStructurePanelOpen] = useState(true);
@@ -19,7 +19,7 @@ export default function Home() {
 
   // New Design button component
   const NewDesignButton = () => {
-    const design = useDesign() as any;
+    const design = useDesignStore() as any;
     
     const handleNewDesign = () => {
       if (confirm('Start a completely new design? This will reset everything to defaults.')) {
@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <main className="h-screen bg-gray-50 overflow-hidden ">
-      <DesignProvider>
+
         {/* Top Nav Bar */}
         <header className="bg-white shadow-sm">
           <div className="max-w-full mx-auto px-6 py-4">
@@ -136,7 +136,10 @@ export default function Home() {
                       {
                         id: 'brand-guide',
                         label: 'Brand Guide',
-                        content: <BrandGuide />,
+                        content: 
+                          <StyleProvider>
+                            <BrandGuide />
+                          </StyleProvider>
                       },
                     ]}
                     defaultTab="sections"
@@ -146,10 +149,12 @@ export default function Home() {
             )}
           </div>
           <div className="flex-grow overflow-y-auto bg-gray-50 p-6">
-            <WebsiteBuilder />
+            <StyleProvider>
+              <WebsiteBuilder />
+            </StyleProvider>
           </div>
         </div>
-      </DesignProvider>
+          
     </main>
   );
 }

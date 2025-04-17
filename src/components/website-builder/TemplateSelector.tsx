@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 import { WebsiteSection, SectionType, ThemeType, VersionType } from '@/lib/types';
 import { getTemplatesForSectionType } from '@/lib/templates';
 import { TemplateVariant } from '@/lib/templates/types';
@@ -13,7 +13,7 @@ interface TemplateSelectorProps {
 }
 
 const TemplateSelector: React.FC<TemplateSelectorProps> = ({ section, onClose }) => {
-  const { updateSectionTemplate } = useDesign();
+  const updateSectionTemplate = useDesignStore(s => s.updateSectionTemplate);
   const [templates, setTemplates] = useState<TemplateVariant[]>([]);
   
   useEffect(() => {

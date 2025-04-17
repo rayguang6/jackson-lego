@@ -10,7 +10,6 @@ export const styleGuide: StyleGuide = {
   textColor: "#1A1A1A",
   
   // Typography
-  fontFamily: 'var(--font-archivo), system-ui, sans-serif',
   headingFont: 'var(--font-manrope), system-ui, sans-serif',
   bodyFont: 'var(--font-archivo), system-ui, sans-serif',
   
@@ -25,16 +24,4 @@ export const styleGuide: StyleGuide = {
   bodyWeight: '400',
   bodyLineHeight: '1.6',
   
-  // Spacing
-  spacingXs: '0.5rem',
-  spacingSm: '1rem',
-  spacingMd: '1.5rem',
-  spacingLg: '2rem',
-  spacingXl: '4rem',
-  
-  // Border Radius
-  borderRadiusSm: '0.25rem',
-  borderRadiusMd: '0.5rem',
-  borderRadiusLg: '1rem',
-  borderRadiusFull: '9999px'
 }; 

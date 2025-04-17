@@ -2,16 +2,26 @@
 
 import React, { useState } from 'react';
 import { WebsiteSection, SectionType } from '@/lib/types';
-import { useDesign } from '@/lib/contexts/DesignContext';
+import { useDesignStore } from '@/lib/store/designStore';
 import SitemapSection from './SitemapSection';
-import { DesignContextProps } from '@/lib/contexts/DesignContext';
 
 const SitemapBuilder: React.FC = () => {
-  const { design, addSection, removeSection, reorderSection } = useDesign() as DesignContextProps;
+  // 1️⃣ Grab only what you need from the store
+  const sections       = useDesignStore(s => s.design.sections);
+  const addSection     = useDesignStore(s => s.addSection);
+  const removeSection  = useDesignStore(s => s.removeSection);
+  const reorderSection = useDesignStore(s => s.reorderSection);
+
   const [newSectionType, setNewSectionType] = useState<SectionType>(SectionType.S01_Hero);
 
   // Sort sections by order
-  const sortedSections = [...design.sections].sort((a, b) => a.order - b.order);
+  // const sortedSections = [...design.sections].sort((a, b) => a.order - b.order);
+
+  // 3️⃣ Sort them by order for rendering
+  const sortedSections = React.useMemo(
+    () => [...sections].sort((a, b) => a.order - b.order),
+    [sections]
+  );
 
   const handleAddSection = () => {
     // Generate a descriptive title for the sitemap display
@@ -25,17 +35,18 @@ const SitemapBuilder: React.FC = () => {
     addSection(newSectionType, defaultTemplateId);
   };
 
+  
   const handleMoveUp = (sectionId: string) => {
-    const section = design.sections.find((s: WebsiteSection) => s.id === sectionId);
-    if (section && section.order > 0) {
-      reorderSection(sectionId, section.order - 1);
+    const sec = sections.find(s => s.id === sectionId);
+    if (sec && sec.order > 0) {
+      reorderSection(sectionId, sec.order - 1);
     }
   };
 
   const handleMoveDown = (sectionId: string) => {
-    const section = design.sections.find((s: WebsiteSection) => s.id === sectionId);
-    if (section && section.order < design.sections.length - 1) {
-      reorderSection(sectionId, section.order + 1);
+    const sec = sections.find(s => s.id === sectionId);
+    if (sec && sec.order < sections.length - 1) {
+      reorderSection(sectionId, sec.order + 1);
     }
   };
 

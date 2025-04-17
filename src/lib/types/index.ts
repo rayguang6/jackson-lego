@@ -19,7 +19,7 @@ export enum VersionType {
 // Section types
 export enum SectionType {
   S01_Hero = 'hero',
-  S16_CTA = 'cta',
+  // S16_CTA = 'cta',
 }
 
 // Template interface
@@ -43,7 +43,6 @@ export interface StyleGuide {
   // Typography
   headingFont: string;
   bodyFont: string;
-  fontFamily: string;
   
   // Typography Sizes and Weights
   h1Size: string;
@@ -55,19 +54,6 @@ export interface StyleGuide {
   bodySize: string;
   bodyWeight: string;
   bodyLineHeight: string;
-  
-  // Spacing
-  spacingXs: string;
-  spacingSm: string;
-  spacingMd: string;
-  spacingLg: string;
-  spacingXl: string;
-  
-  // Border Radius
-  borderRadiusSm: string;
-  borderRadiusMd: string;
-  borderRadiusLg: string;
-  borderRadiusFull: string;
 }
 
 

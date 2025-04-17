@@ -1,11 +1,12 @@
 import { WebsiteDesign, SectionType } from '../types';
-import { getTemplate, parseTemplateId } from '@/lib/templates';
+import { getTemplate } from '@/lib/templates';
+import { parseTemplateId } from '@/lib/utils';
 import { ThemeType, VersionType } from '@/lib/types';
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import { useDesignStore } from '@/lib/store/designStore';
 import JSZip from 'jszip';
-import { DesignContext } from '@/lib/contexts/DesignContext';
+// import { DesignContext } from '@/lib/contexts/DesignContext';
 
 // Helper function to extract image URLs from HTML
 const extractImageUrls = (html: string): string[] => {
@@ -152,16 +153,6 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
         --body-weight: ${design.styleGuide.bodyWeight};
         --body-line-height: ${design.styleGuide.bodyLineHeight};
         
-        --spacing-xs: ${design.styleGuide.spacingXs};
-        --spacing-sm: ${design.styleGuide.spacingSm};
-        --spacing-md: ${design.styleGuide.spacingMd};
-        --spacing-lg: ${design.styleGuide.spacingLg};
-        --spacing-xl: ${design.styleGuide.spacingXl};
-        
-        --border-radius-sm: ${design.styleGuide.borderRadiusSm};
-        --border-radius-md: ${design.styleGuide.borderRadiusMd};
-        --border-radius-lg: ${design.styleGuide.borderRadiusLg};
-        --border-radius-full: ${design.styleGuide.borderRadiusFull};
       }
     `;
 
@@ -230,19 +221,27 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
         }
 
         // Render the component with DesignProvider and all section data
+        // const componentHtml = ReactDOMServer.renderToString(
+        //   React.createElement(
+        //     DesignContext.Provider,
+        //     { value: mockStore },
+        //     React.createElement(Component, {
+        //       // Pass section-specific props to ensure unique content
+        //       theme: template.theme,
+        //       styleGuide: design.styleGuide,
+        //       sectionId: section.id,
+        //       content: section.content || {}
+        //     })
+        //   )
+        // );
         const componentHtml = ReactDOMServer.renderToString(
-          React.createElement(
-            DesignContext.Provider,
-            { value: mockStore },
-            React.createElement(Component, {
-              // Pass section-specific props to ensure unique content
-              theme: template.theme,
-              styleGuide: design.styleGuide,
-              sectionId: section.id,
-              content: section.content || {}
-            })
-          )
-        );
+          React.createElement(Component, {
+            theme:    template.theme,
+            styleGuide: design.styleGuide,
+            sectionId:  section.id,
+            content:    section.content || {},
+          })
+        )
         
         // Extract and process images
         const imageUrls = extractImageUrls(componentHtml);

@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { getTemplate, parseTemplateId } from '@/lib/templates';
+import { getTemplate } from '@/lib/templates';
+import { parseTemplateId } from '@/lib/utils';
 import { ThemeType, VersionType, SectionType } from '@/lib/types';
 import { useDesignStore } from '@/lib/store/designStore';
 

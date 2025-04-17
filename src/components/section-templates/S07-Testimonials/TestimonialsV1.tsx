@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TestimonialsProps, defaultTestimonialsProps } from './types';
-import { useDesign } from '@/lib/contexts/DesignContext';
+
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
