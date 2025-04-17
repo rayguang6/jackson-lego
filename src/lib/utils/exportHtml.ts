@@ -4,99 +4,48 @@ import { parseTemplateId } from '@/lib/utils';
 import { ThemeType, VersionType } from '@/lib/types';
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
-import { useDesignStore } from '@/lib/store/designStore';
 import JSZip from 'jszip';
-// import { DesignContext } from '@/lib/contexts/DesignContext';
+import { extractImageUrls, cleanNextImageUrl, downloadImage } from './exportUtils';
 
-// Helper function to extract image URLs from HTML
-const extractImageUrls = (html: string): string[] => {
-  // Look for Next.js Image components and regular img tags
-  const patterns = [
-    /<img[^>]+src=["']([^"']+)["']/g,  // Regular img tags
-    /data-src=["']([^"']+)["']/g,      // Next.js Image data-src
-    /srcSet=["']([^"']+)["']/g,        // srcSet attributes
-  ];
-
-  const urls = new Set<string>();
+// Helper function to extract font family name from CSS variable
+const extractFontFamily = (fontString: string): { fontName: string, fontImport: string } => {
+  // Extract font name from strings like "var(--font-manrope), system-ui, sans-serif"
+  const fontMatch = fontString.match(/var\(--font-([a-zA-Z]+)\)/);
+  if (fontMatch && fontMatch[1]) {
+    const fontName = fontMatch[1].toLowerCase();
+    // Map font name to import URL
+    const fontImportMap: Record<string, string> = {
+      archivo: 'https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap',
+      manrope: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap',
+      inter: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+      merriweather: 'https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap',
+      montserrat: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap',
+      poppins: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
+    };
+    
+    return {
+      fontName: fontName,
+      fontImport: fontImportMap[fontName] || ''
+    };
+  }
   
-  patterns.forEach(pattern => {
-    const matches = [...html.matchAll(pattern)];
-    matches.forEach(match => {
-      const url = match[1];
-      
-      // For srcSet, we need to handle multiple URLs
-      if (pattern.toString().includes('srcSet')) {
-        // Split the srcSet value by commas to get individual URL descriptors
-        const srcSetParts = url.split(',');
-        srcSetParts.forEach(part => {
-          // Extract just the URL (before the size descriptor)
-          const srcUrl = part.trim().split(' ')[0];
-          if (srcUrl && (srcUrl.startsWith('/') || srcUrl.startsWith('http'))) {
-            urls.add(srcUrl);
-          }
-        });
-      } else {
-        // Handle regular URLs
-        if (url && (url.startsWith('/') || url.startsWith('http'))) {
-          urls.add(url);
-        }
-      }
-    });
-  });
-
-  return Array.from(urls);
-};
-
-// Helper function to clean Next.js image URL
-const cleanNextImageUrl = (url: string): string => {
-  try {
-    // If it's a Next.js image URL
-    if (url.includes('/_next/image')) {
-      const params = new URLSearchParams(url.split('?')[1]);
-      let originalUrl = params.get('url');
-      if (originalUrl) {
-        // Decode the URL if it's encoded
-        originalUrl = decodeURIComponent(originalUrl);
-        return originalUrl;
-      }
-    }
-    return url;
-  } catch (error) {
-    console.warn('Error cleaning Next.js image URL:', error);
-    return url;
+  // Fallback for direct font names
+  const directFontMatch = fontString.match(/['"]([a-zA-Z]+)['"]/);
+  if (directFontMatch && directFontMatch[1]) {
+    const fontName = directFontMatch[1].toLowerCase();
+    return {
+      fontName: fontName,
+      fontImport: `https://fonts.googleapis.com/css2?family=${fontName}:wght@400;500;600;700&display=swap`
+    };
   }
-};
-
-// Helper function to download an image
-const downloadImage = async (url: string): Promise<{ blob: Blob; filename: string }> => {
-  try {
-    // Clean the URL if it's a Next.js image URL
-    const cleanUrl = cleanNextImageUrl(url);
-    
-    // Handle both absolute and full URLs
-    const fullUrl = cleanUrl.startsWith('http') ? cleanUrl : `${window.location.origin}${cleanUrl}`;
-    
-    const response = await fetch(fullUrl, {
-      headers: {
-        'Accept': 'image/*, */*'
-      }
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image: ${fullUrl} (${response.status})`);
-    }
-    
-    const blob = await response.blob();
-    const filename = cleanUrl.split('/').pop() || 'image.jpg';
-    
-    return { blob, filename };
-  } catch (error) {
-    console.error(`Error downloading image ${url}:`, error);
-    throw error;
-  }
+  
+  // Default fallback
+  return { fontName: 'sans-serif', fontImport: '' };
 };
 
 const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; images: { url: string; blob: Blob; filename: string }[] }> => {
+  const { primaryColor, headingFont, bodyFont, secondaryColor } = design.styleGuide;
+
   try {
     // Validate design object
     if (!design.sections || !Array.isArray(design.sections)) {
@@ -110,27 +59,28 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
     // Track all images to download
     const allImages: { url: string; blob: Blob; filename: string }[] = [];
 
-    // Create font imports
+    // Extract font information
+    const headingFontInfo = extractFontFamily(design.styleGuide.headingFont);
+    const bodyFontInfo = extractFontFamily(design.styleGuide.bodyFont);
+    
+    // Only include the fonts actually used in the design
     const fontImports = `
-      <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+      ${headingFontInfo.fontImport ? `<link href="${headingFontInfo.fontImport}" rel="stylesheet">` : ''}
+      ${bodyFontInfo.fontImport && bodyFontInfo.fontImport !== headingFontInfo.fontImport ? 
+        `<link href="${bodyFontInfo.fontImport}" rel="stylesheet">` : ''}
     `;
 
-    // Create CSS variables for the style guide
+    // Create proper CSS font variables
     const cssVariables = `
       :root {
         /* Font family declarations */
-        --font-merriweather: 'Merriweather', serif;
-        --font-montserrat: 'Montserrat', sans-serif;
-        --font-poppins: 'Poppins', sans-serif;
-        --font-inter: 'Inter', sans-serif;
-        --font-archivo: 'Archivo', sans-serif;
-        --font-manrope: 'Manrope', sans-serif;
-
+        --font-${headingFontInfo.fontName}: '${headingFontInfo.fontName.charAt(0).toUpperCase() + headingFontInfo.fontName.slice(1)}', ${headingFontInfo.fontName === 'merriweather' ? 'serif' : 'sans-serif'};
+        --font-${bodyFontInfo.fontName}: '${bodyFontInfo.fontName.charAt(0).toUpperCase() + bodyFontInfo.fontName.slice(1)}', ${bodyFontInfo.fontName === 'merriweather' ? 'serif' : 'sans-serif'};
+        
+        /* Direct font family references */
+        --heading-font: var(--font-${headingFontInfo.fontName});
+        --body-font: var(--font-${bodyFontInfo.fontName});
+        
         /* Color variables */
         --primary-color: ${design.styleGuide.primaryColor};
         --secondary-color: ${design.styleGuide.secondaryColor};
@@ -139,10 +89,7 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
         --background-color-dark: ${design.styleGuide.backgroundColorDark};
         --text-color: ${design.styleGuide.textColor};
         
-        /* Font variables that reference the font family declarations */
-        --heading-font: var(${design.styleGuide.headingFont});
-        --body-font: var(${design.styleGuide.bodyFont});
-        
+        /* Typography Sizes and Weights */
         --h1-size: ${design.styleGuide.h1Size};
         --h1-weight: ${design.styleGuide.h1Weight};
         --h1-line-height: ${design.styleGuide.h1LineHeight};
@@ -153,6 +100,10 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
         --body-weight: ${design.styleGuide.bodyWeight};
         --body-line-height: ${design.styleGuide.bodyLineHeight};
         
+        /* Spacing */
+        --spacing-sm: 1rem;
+        --spacing-md: 2rem;
+        --spacing-lg: 4rem;
       }
     `;
 
@@ -176,14 +127,6 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
           // Fallback to default if parsing failed
           template = getTemplate(section.type as SectionType, VersionType.v1, ThemeType.light);
         }
-      } else if (section.type) {
-        // Use default template
-        template = getTemplate(section.type as SectionType, VersionType.v1, ThemeType.light);
-        
-        if (!template) {
-          // Try dark theme as fallback
-          template = getTemplate(section.type as SectionType, VersionType.v1, ThemeType.dark);
-        }
       }
         
       if (!template || !template.component) {
@@ -194,25 +137,6 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
       const Component = template.component;
       
       try {
-        // Create mock store for DesignProvider
-        const mockStore = {
-          design,
-          styleGuide: design.styleGuide,
-          addSection: () => {},
-          removeSection: () => {},
-          updateSection: () => {},
-          reorderSection: () => {},
-          updateStyleGuide: () => {},
-          updatePrimaryColor: () => {},
-          updateSecondaryColor: () => {},
-          updateHeadingFont: () => {},
-          updateBodyFont: () => {},
-          updateSectionTemplate: () => {},
-          resetDesign: () => {},
-          resetStyleGuide: () => {},
-          resetSections: () => {},
-        };
-
         // Get the section data from the design store to ensure we have all content
         const sectionData = design.sections.find(s => s.id === section.id);
         if (!sectionData) {
@@ -220,26 +144,15 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
           return '';
         }
 
-        // Render the component with DesignProvider and all section data
-        // const componentHtml = ReactDOMServer.renderToString(
-        //   React.createElement(
-        //     DesignContext.Provider,
-        //     { value: mockStore },
-        //     React.createElement(Component, {
-        //       // Pass section-specific props to ensure unique content
-        //       theme: template.theme,
-        //       styleGuide: design.styleGuide,
-        //       sectionId: section.id,
-        //       content: section.content || {}
-        //     })
-        //   )
-        // );
         const componentHtml = ReactDOMServer.renderToString(
           React.createElement(Component, {
-            theme:    template.theme,
-            styleGuide: design.styleGuide,
-            sectionId:  section.id,
-            content:    section.content || {},
+            theme: template.theme,
+            // Don't pass these as props anymore - use CSS variables
+            // primaryColor,
+            // headingFont,
+            // bodyFont,
+            sectionId: section.id,
+            content: section.content || {},
           })
         )
         
@@ -280,28 +193,13 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
             console.error(`Failed to process image ${imageUrl}:`, error);
           }
         }
-        return `${updatedHtml}`;
-        // return `
-        //   <section 
-        //     class="section ${section.type.toLowerCase()}-section"
-        //     data-section-id="${section.id}"
-        //     data-template-id="${section.templateId || `${section.type}-v1`}"
-        //   >
-        //     ${updatedHtml}
-        //   </section>
-        // `;
+        return updatedHtml;
+
       } catch (error) {
         console.error(`Error rendering section:`, error);
         return '';
       }
     }));
-
-    // Filter out empty sections
-    const validContent = content.filter(Boolean);
-    
-    if (validContent.length === 0) {
-      throw new Error('No valid sections were generated');
-    }
 
     // Create the HTML document
     const html = `
@@ -368,11 +266,38 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
               padding: 0 var(--spacing-sm);
             }
           }
+          
+          /* Fix for SVG elements with hardcoded colors */
+          svg [fill="#EF083A"],
+          path[fill="#EF083A"],
+          circle[fill="#EF083A"] {
+            fill: var(--primary-color) !important;
+          }
+          
+          /* Fix inline styles that might be referencing variables */
+          [style*="color: primaryColor"],
+          [style*="color:primaryColor"] {
+            color: var(--primary-color) !important;
+          }
+          
+          [style*="fill:"] {
+            fill: var(--primary-color);
+          }
+          
+          [style*="fontFamily:"] {
+            font-family: inherit !important;
+          }
+          
+          /* Fix font family references */
+          .font-archivo, .font-manrope, .font-inter, 
+          .font-poppins, .font-montserrat, .font-merriweather {
+            font-family: inherit !important;
+          }
         </style>
       </head>
       <body>
         <div id="root">
-          ${validContent.join('')}
+          ${content.join('')}
         </div>
       </body>
       </html>

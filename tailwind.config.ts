@@ -8,11 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        manrope: ['var(--font-manrope)'],
-        archivo: ['var(--font-archivo)'],
+      colors: {
+        primary: 'var(--primary-color)',
+        secondary: 'var(--secondary-color)'
       },
-    },
+      fontFamily: {
+        heading: 'var(--heading-font)',
+        body: 'var(--body-font)'
+      }
+    }
   },
   plugins: [],
 };

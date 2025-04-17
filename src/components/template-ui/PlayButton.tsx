@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useDesignStore } from '@/lib/store/designStore';
-import { styleGuide } from '@/lib/constants/styleGuide';
 
 interface PlayButtonProps {
   onClick?: () => void;
@@ -15,8 +13,6 @@ export const PlayButton: React.FC<PlayButtonProps> = ({
   size = 'md',
   className = ''
 }) => {
-  const { styleGuide } = useDesignStore(s => s.design);
-  const primaryColor = styleGuide?.primaryColor || styleGuide.primaryColor;
 
   // Size mappings
   const sizeClasses = {
@@ -45,7 +41,7 @@ export const PlayButton: React.FC<PlayButtonProps> = ({
       >
         <path 
           d="M8 5.14301V19.143L19 12.143L8 5.14301Z" 
-          style={{ fill: primaryColor, stroke: primaryColor }} 
+          style={{ fill: 'var(--primary-color)', stroke: 'var(--primary-color)' }} 
           strokeWidth="2" 
           strokeLinecap="round" 
           strokeLinejoin="round"

@@ -9,13 +9,13 @@ interface LogoIconProps {
 }
 
 export const LogoIcon: React.FC<LogoIconProps> = ({
-  brandColor = '#EF083A',
   theme = 'light',
   className = '',
   width = 140,
   height = 35
 }) => {
   const isDark = theme === 'dark';
+  const brandColor = 'var(--primary-color)';
   
   return (
     <svg 
@@ -29,21 +29,24 @@ export const LogoIcon: React.FC<LogoIconProps> = ({
       {/* Left shape */}
       <path 
         d="M0.5 11C2.9 2.6 11.5 0.166667 15.5 0V23C12.7 32.6 4.33333 35 0.5 35V11Z" 
-        fill={isDark ? "#ffffff" : `${brandColor}`} 
+        fill={isDark ? "#ffffff" : brandColor} 
       />
       {/* Bottom right circle */}
       <circle 
         cx="26" 
         cy="27" 
         r="8" 
-        fill={isDark ? brandColor : `${brandColor}20`} 
+        style={{
+          fill: isDark ? brandColor : 'var(--primary-color)',
+          opacity: isDark ? 1 : 0.12
+        }}
       />
       {/* Top right circle */}
       <circle 
         cx="26" 
         cy="8" 
         r="8" 
-        fill={isDark ? "#ffffff" : `${brandColor}`} 
+        fill={isDark ? "#ffffff" : brandColor} 
       />
       {/* YourBrand text */}
       <text

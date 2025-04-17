@@ -62,7 +62,7 @@ export default function Home() {
               <div className="flex space-x-3">
                 {/* 3 Buttons */}
                 <div className="flex items-center gap-4">
-                  <Link
+                  <Link 
                     href="/preview"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -90,7 +90,11 @@ export default function Home() {
                     </svg>
                     Preview
                   </Link>
-                  <ExportButton />
+
+                  <StyleProvider>
+                    <ExportButton />
+                  </StyleProvider>
+                  
                   <NewDesignButton />
                 </div>
               </div>

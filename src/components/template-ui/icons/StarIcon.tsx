@@ -10,7 +10,7 @@ interface StarIconProps {
 }
 
 export const StarIcon: React.FC<StarIconProps> = ({ 
-  color = '#EF083A',
+  color = 'var(--primary-color)',
   className = '',
   width = 21,
   height = 20

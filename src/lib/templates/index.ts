@@ -7,47 +7,6 @@ const emptyTemplates: SectionTemplatesVariants = {
   [ThemeType.dark]: {}
 };
 
-/**
- * Generate a consistent template ID from section type, version and theme
- */
-// export function generateTemplateId(
-//   sectionType: SectionType, 
-//   version: VersionType = VersionType.v1, 
-//   theme: ThemeType = ThemeType.light
-// ): string {
-//   return `${sectionType}-${version}-${theme}`;
-// }
-
-/**
- * Parse a template ID safely and return its components
- */
-// export function parseTemplateId(templateId: string): { 
-//   sectionType: SectionType; 
-//   version: VersionType; 
-//   theme: ThemeType 
-// } | null {
-//   try {
-//     const parts = templateId.split('-');
-    
-//     // Validate we have at least 3 parts (section-version-theme)
-//     if (parts.length < 3) {
-//       console.error(`Invalid templateId format: ${templateId}`);
-//       return null;
-//     }
-    
-//     // The section type could have hyphens (e.g., "features-or-services")
-//     // So we need to ensure we get the right split for version and theme
-//     const sectionType = parts.slice(0, -2).join('-') as SectionType;
-//     const version = parts[parts.length - 2] as VersionType;
-//     const themeStr = parts[parts.length - 1];
-//     const theme = themeStr === 'light' ? ThemeType.light : ThemeType.dark;
-    
-//     return { sectionType, version, theme };
-//   } catch (error) {
-//     console.error(`Error parsing templateId: ${templateId}`, error);
-//     return null;
-//   }
-// }
 
 /**
  * Get template by section type, theme and version

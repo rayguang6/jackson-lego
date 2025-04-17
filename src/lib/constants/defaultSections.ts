@@ -1,5 +1,5 @@
 import { SectionType, ThemeType, VersionType, WebsiteSection } from '../types';
-import { generateTemplateId } from '../templates';
+// import { generateTemplateId } from '../templates';
 import { v4 as uuidv4 } from 'uuid';
 
 export const defaultSections: WebsiteSection[] = [

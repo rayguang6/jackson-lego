@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useDesignStore } from '@/lib/store/designStore';
 
 interface PrimaryButtonProps {
   text: string;
@@ -14,16 +13,13 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   theme,
   className = '',
 }) => {
-  const { styleGuide } = useDesignStore(s => s.design);
-  const primaryColor = styleGuide?.primaryColor || styleGuide.primaryColor;
-  const bodyFont = styleGuide?.bodyFont || styleGuide.bodyFont;
 
   return (
     <button 
       className={`group font-archivo inline-flex items-center px-10 py-5 text-white rounded-lg font-bold text-base hover:opacity-90 transition-all duration-300 ${className}`}
       style={{ 
-        backgroundColor: primaryColor,
-        fontFamily: bodyFont 
+        backgroundColor: 'var(--primary-color)',
+        fontFamily: 'var(--body-font)' 
       }}
     >
       {text}

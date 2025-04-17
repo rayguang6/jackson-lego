@@ -21,7 +21,7 @@ export const HeroV1: React.FC<HeroProps> = ({
   theme = defaultHeroProps.theme,
   videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesignStore(s => s.design.styleGuide);
+  // const { primaryColor, headingFont, bodyFont } = useDesignStore(s => s.design.styleGuide);
   
   return (
     <MySection 
@@ -31,7 +31,6 @@ export const HeroV1: React.FC<HeroProps> = ({
       {/* Logo */}
       <div className="mb-8">
         <LogoIcon 
-          brandColor={primaryColor}
           theme={theme}
         />
       </div>

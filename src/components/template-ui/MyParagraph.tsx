@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesignStore } from '@/lib/store/designStore';
-import { getTypographyClass } from '@/utils/typography';
+import { getTypographyClass } from '@/lib/typography';
 
 interface ParagraphProps {
   text: string;
@@ -17,7 +16,7 @@ export const MyParagraph: React.FC<ParagraphProps> = ({
   className = '',
   size = 'body',
 }) => {
-  const { styleGuide } = useDesignStore(s => s.design);
+
   const isDark = theme === 'dark';
   const textColor = isDark ? 'text-gray-300' : 'text-gray-600';
 
@@ -34,7 +33,7 @@ export const MyParagraph: React.FC<ParagraphProps> = ({
         ${textColor}
         ${className}
       `}
-      style={{ fontFamily: styleGuide.bodyFont }}
+      style={{ fontFamily: 'var(--body-font)' }}
     >
       {text}
     </p>

@@ -4,16 +4,17 @@ import { useLayoutEffect } from 'react'
 import { useDesignStore } from '@/lib/store/designStore'
 
 export default function StyleProvider({ children }: { children: React.ReactNode }) {
-  const { primaryColor, secondaryColor, headingFont, bodyFont } =
-    useDesignStore((s) => s.design.styleGuide)
+  const { styleGuide } =
+    useDesignStore((s) => s.design)
 
   useLayoutEffect(() => {
     const r = document.documentElement.style
-    r.setProperty('--primary-color', primaryColor)
-    r.setProperty('--secondary-color', secondaryColor)
-    r.setProperty('--heading-font', headingFont)
-    r.setProperty('--body-font', bodyFont)
-  }, [primaryColor, secondaryColor, headingFont, bodyFont])
+    r.setProperty('--primary-color', styleGuide.primaryColor)
+    r.setProperty('--secondary-color', styleGuide.secondaryColor)
+    r.setProperty('--heading-font', styleGuide.headingFont)
+    r.setProperty('--body-font', styleGuide.bodyFont)
+    
+  }, [styleGuide])
 
   return <>{children}</>
 }
