@@ -58,7 +58,7 @@ const PreviewContent = () => {
         theme={template.theme}
         sectionId={section.id}
         styleGuide={design.styleGuide}
-        content={section.content}
+        {...section.content}
       />;
     }
     

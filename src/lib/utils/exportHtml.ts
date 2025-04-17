@@ -6,9 +6,39 @@ import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import JSZip from 'jszip';
 import { extractImageUrls, cleanNextImageUrl, downloadImage, extractFontFamily } from './exportUtils';
-import { useDesignStore } from '../store/designStore';
+import { useFilePoolStore } from '../store/filePoolStore';
 
+// Helper function to convert data URL to Blob
+const dataURLtoBlob = (dataURL: string): Blob => {
+  const arr = dataURL.split(',');
+  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  
+  return new Blob([u8arr], { type: mime });
+};
 
+const resolveTempHandle = (
+  value: string,
+  sectionId: string,
+  key: string,
+  allImages: { url: string; blob: Blob; filename: string }[]
+): string => {
+  const id = value.replace('temp://', '');
+  const file = useFilePoolStore.getState().getFile(id);
+  if (!file) {
+    console.warn('Missing file for temp handle', id);
+    return '';
+  }
+  const filename = `${sectionId}-${key}-${file.name}`;
+  allImages.push({ url: 'temp', blob: file, filename });
+  return `images/${filename}`;
+};
 
 const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; images: { url: string; blob: Blob; filename: string }[] }> => {
   
@@ -110,19 +140,71 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
           return '';
         }
 
-        const componentHtml = ReactDOMServer.renderToString(
-          React.createElement(Component, {
-            theme: template.theme,
-            sectionId: section.id,
-            ...section.content,
-          })
-        )
+        // Create a modified content object for the export
+        const exportContent = { ...sectionData.content };
         
-        // Extract and process images
+        // Process data URLs in the content and convert them to local file paths
+        // for (const [key, value] of Object.entries(exportContent)) {
+        //   if (typeof value === 'string' && value.startsWith('data:image')) {
+        //     try {
+        //       // Generate a filename for the data URL
+        //       const filename = `local-${section.id}-${key}-${Date.now()}.png`;
+        //       const blob = dataURLtoBlob(value);
+              
+        //       allImages.push({ 
+        //         url: value, 
+        //         blob, 
+        //         filename 
+        //       });
+              
+        //       // Replace the data URL with the local file path
+        //       exportContent[key] = `images/${filename}`;
+        //     } catch (error) {
+        //       console.error(`Failed to process data URL for ${key}:`, error);
+        //     }
+        //   }
+        // }
+
+        // Resolve any image placeholders inside this section’s content
+        for (const [key, value] of Object.entries(exportContent)) {
+          if (typeof value !== 'string') continue;            // skip non‑string fields
+
+          if (value.startsWith('temp://')) {
+            // <== NEW: handle our temp handles
+            exportContent[key] = resolveTempHandle(value, section.id, key, allImages);
+          } else if (value.startsWith('data:image')) {
+            // (optional) keep the old base‑64 branch so users can paste images
+            try {
+              const filename = `local-${section.id}-${key}-${Date.now()}.png`;
+              const blob = dataURLtoBlob(value);
+              allImages.push({ url: value, blob, filename });
+              exportContent[key] = `images/${filename}`;
+            } catch (err) {
+              console.error(`Failed to process data URL for ${key}:`, err);
+            }
+          }
+        }
+
+
+        // Render the component with the modified content
+        const componentProps = {
+          theme: template.theme,
+          sectionId: section.id,
+          ...exportContent,
+        };
+
+        const componentHtml = ReactDOMServer.renderToString(
+          React.createElement(Component, componentProps)
+        );
+        
+        // Extract and process regular image URLs
         const imageUrls = extractImageUrls(componentHtml);
         let updatedHtml = componentHtml;
         
         for (const imageUrl of imageUrls) {
+          // Skip data URLs as they're already processed
+          if (imageUrl.startsWith('data:')) continue;
+          
           try {
             const { blob, filename } = await downloadImage(imageUrl);
             allImages.push({ url: imageUrl, blob, filename });
