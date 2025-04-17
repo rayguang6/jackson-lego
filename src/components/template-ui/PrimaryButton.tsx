@@ -1,15 +1,16 @@
 'use client';
 
 import React from 'react';
+import { EditableText } from '../editable/EditableText';
 
 interface PrimaryButtonProps {
-  text: string;
+  children: React.ReactNode;
   theme: 'light' | 'dark';
   className?: string;
 }
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
-  text,
+  children,
   theme,
   className = '',
 }) => {
@@ -22,7 +23,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         fontFamily: 'var(--body-font)' 
       }}
     >
-      {text}
+      {children}
        
         <svg className="ml-2 group-hover:translate-x-1 transition-transform duration-300" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4.16663 10H15.8333M15.8333 10L10 4.16669M15.8333 10L10 15.8334" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

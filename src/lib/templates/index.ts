@@ -53,10 +53,12 @@ export function getTemplatesForSectionType(sectionType: SectionType): TemplateVa
 // Import templates AFTER defining functions
 // This avoids circular dependency issues
 import { heroTemplates } from '@/components/section-templates/S01-Hero/register';
+import { ctaTemplates } from '@/components/section-templates/S16-CTA/register';
 
 // Combine all section templates into a single registry
 export const templateRegistry: SectionTemplateRegistry = {
   [SectionType.S01_Hero]: heroTemplates,
+  [SectionType.S16_CTA]: ctaTemplates,
 };
 
 export * from './types';

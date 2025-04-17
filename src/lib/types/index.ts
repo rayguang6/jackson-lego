@@ -19,7 +19,7 @@ export enum VersionType {
 // Section types
 export enum SectionType {
   S01_Hero = 'hero',
-  // S16_CTA = 'cta',
+  S16_CTA = 'cta', 
 }
 
 // Template interface

@@ -5,47 +5,13 @@ import { ThemeType, VersionType } from '@/lib/types';
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import JSZip from 'jszip';
-import { extractImageUrls, cleanNextImageUrl, downloadImage } from './exportUtils';
+import { extractImageUrls, cleanNextImageUrl, downloadImage, extractFontFamily } from './exportUtils';
+import { useDesignStore } from '../store/designStore';
 
-// Helper function to extract font family name from CSS variable
-const extractFontFamily = (fontString: string): { fontName: string, fontImport: string } => {
-  // Extract font name from strings like "var(--font-manrope), system-ui, sans-serif"
-  const fontMatch = fontString.match(/var\(--font-([a-zA-Z]+)\)/);
-  if (fontMatch && fontMatch[1]) {
-    const fontName = fontMatch[1].toLowerCase();
-    // Map font name to import URL
-    const fontImportMap: Record<string, string> = {
-      archivo: 'https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap',
-      manrope: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap',
-      inter: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-      merriweather: 'https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap',
-      montserrat: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap',
-      poppins: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
-    };
-    
-    return {
-      fontName: fontName,
-      fontImport: fontImportMap[fontName] || ''
-    };
-  }
-  
-  // Fallback for direct font names
-  const directFontMatch = fontString.match(/['"]([a-zA-Z]+)['"]/);
-  if (directFontMatch && directFontMatch[1]) {
-    const fontName = directFontMatch[1].toLowerCase();
-    return {
-      fontName: fontName,
-      fontImport: `https://fonts.googleapis.com/css2?family=${fontName}:wght@400;500;600;700&display=swap`
-    };
-  }
-  
-  // Default fallback
-  return { fontName: 'sans-serif', fontImport: '' };
-};
+
 
 const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; images: { url: string; blob: Blob; filename: string }[] }> => {
-  const { primaryColor, headingFont, bodyFont, secondaryColor } = design.styleGuide;
-
+  
   try {
     // Validate design object
     if (!design.sections || !Array.isArray(design.sections)) {
@@ -147,12 +113,8 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
         const componentHtml = ReactDOMServer.renderToString(
           React.createElement(Component, {
             theme: template.theme,
-            // Don't pass these as props anymore - use CSS variables
-            // primaryColor,
-            // headingFont,
-            // bodyFont,
             sectionId: section.id,
-            content: section.content || {},
+            ...section.content,
           })
         )
         

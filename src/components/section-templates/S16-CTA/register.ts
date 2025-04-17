@@ -1,21 +1,20 @@
-// import { SectionType } from '@/lib/types';
-// import { SectionTemplates } from '@/lib/templates/types';
-// import { CTAV1 } from './CTAV1';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
+import { CTAV1 } from './CTAV1';
+import { ThemeType, VersionType } from '@/lib/types';
 
-// // Register all CTA templates
-// export const ctaTemplates: SectionTemplates = {
-//   light: {
-//     v1: {
-//       id: 'cta-light-v1',
-//       component: CTAV1,
-//       theme: 'light'
-//     }
-//   },
-//   dark: {
-//     v1: {
-//       id: 'cta-dark-v1',
-//       component: CTAV1,
-//       theme: 'dark'
-//     }
-//   }
-// }; 
+export const ctaTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'cta-v1-light',
+      component: CTAV1,
+      theme: ThemeType.light
+    },
+  },
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'cta-v1-dark',
+      component: CTAV1,
+      theme: ThemeType.dark
+    },
+  }
+}; 

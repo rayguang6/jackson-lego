@@ -12,6 +12,7 @@ import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeadi
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { EditableText } from '@/components/editable/EditableText';
 
 export const HeroV1: React.FC<HeroProps> = ({
   title = "Multipurpose Page Blocks Designed for ",
@@ -19,9 +20,9 @@ export const HeroV1: React.FC<HeroProps> = ({
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1
-}) => {
-  // const { primaryColor, headingFont, bodyFont } = useDesignStore(s => s.design.styleGuide);
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1,
+  sectionId
+}: HeroProps) => {
   
   return (
     <MySection 
@@ -37,21 +38,61 @@ export const HeroV1: React.FC<HeroProps> = ({
 
       {/* Badge */} 
       <Badge 
-        text={badgeText}
         theme={theme}
-      />
+      >
+        <EditableText
+            sectionId={sectionId}
+            contentPath="badgeText"
+            defaultValue={badgeText}
+          />
+      </Badge>
+
 
       {/* Title */}
       <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
-        {title}{' '}
-        <Highlight>Maximum Efficiency</Highlight>
+        {sectionId ? (
+          <EditableText
+            sectionId={sectionId}
+            contentPath="title"
+            defaultValue={title}
+            className='inline max-w-[1000px]'
+          />
+        ) : (
+          title
+        )}{' '}
+        <Highlight>
+          {sectionId ? (
+            <EditableText
+              sectionId={sectionId}
+              contentPath="highlight"
+              defaultValue={"Maximum Efficiency"}
+              className='inline'
+            />
+          ) : (
+            "Maximum Efficiency"
+          )}
+        </Highlight>
       </SectionHeading>
 
+      <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
+        <EditableText
+            sectionId={sectionId}
+            contentPath="subtitle"
+            defaultValue={subtitle}
+          />
+      </MyParagraph>
 
-      <MyParagraph theme={theme} className="max-w-[1000px] mt-8" text={subtitle} />
+
+         
 
       {/* CTA Button */}
-      <PrimaryButton text={ctaText} theme={theme} className="mt-8" />
+      <PrimaryButton theme={theme} className="mt-8">
+        <EditableText
+            sectionId={sectionId}
+            contentPath="ctaText"
+            defaultValue={ctaText}
+          />
+      </PrimaryButton>
 
       {/* Video Thumbnail */}
       <div className="mt-16 relative w-full max-w-[1000px] max-h-[400px] rounded-t-lg aspect-video overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)]">

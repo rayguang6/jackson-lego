@@ -19,6 +19,11 @@ export const TEMPLATE_IMAGES = {
     SOLUTION_IMAGE_2: '/images/templates/solution-image-2.png',
     SOLUTION_IMAGE_3: '/images/templates/solution-image-3.png',
   },
+
+  // CTA section
+  CTA: {
+    CTA_IMAGE: "/images/templates/cta-image.png",
+  },
 };
 
 // App images

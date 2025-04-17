@@ -12,6 +12,7 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 
 
 export const HeroV2: React.FC<HeroProps> = ({
@@ -20,12 +21,10 @@ export const HeroV2: React.FC<HeroProps> = ({
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_2
-}) => {
-    // pull only what you need from Zustand
-    const { primaryColor, headingFont, bodyFont } = useDesignStore(
-      (s) => s.design.styleGuide
-    );
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_2,
+  sectionId
+}: HeroProps) => {
+
 
   const isDark = theme === 'dark';
   
@@ -37,28 +36,64 @@ export const HeroV2: React.FC<HeroProps> = ({
       {/* Logo */}
       <div className="mb-8">
         <LogoIcon 
-          brandColor={primaryColor}
           theme={theme}
         />
       </div>
 
       {/* Badge */} 
       <Badge 
-        text={badgeText}
         theme={theme}
-      />
+      >
+        <EditableText
+            sectionId={sectionId}
+            contentPath="badgeText"
+            defaultValue={badgeText}
+          />
+      </Badge>
 
       {/* Title */}
       <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
-        {title}{' '}
-        <Highlight>Maximum Efficiency</Highlight>
+        {sectionId ? (
+          <EditableText
+            sectionId={sectionId}
+            contentPath="title"
+            defaultValue={title}
+            className='inline max-w-[1000px]'
+          />
+        ) : (
+          title
+        )}{' '}
+        <Highlight>
+          {sectionId ? (
+            <EditableText
+              sectionId={sectionId}
+              contentPath="highlight"
+              defaultValue={"Maximum Efficiency"}
+              className='inline'
+            />
+          ) : (
+            "Maximum Efficiency"
+          )}
+        </Highlight>
       </SectionHeading>
 
 
-      <MyParagraph theme={theme} className="max-w-[1000px] mt-8" text={subtitle} />
+      <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
+        <EditableText
+            sectionId={sectionId}
+            contentPath="subtitle"
+            defaultValue={subtitle}
+          />
+      </MyParagraph>
 
       {/* CTA Button */}
-      <PrimaryButton text={ctaText} theme={theme} className="mt-8" />
+      <PrimaryButton theme={theme} className="mt-8">
+        <EditableText
+            sectionId={sectionId}
+            contentPath="ctaText"
+            defaultValue={ctaText}
+          />
+      </PrimaryButton>
 
       {/* Video Thumbnail */}
       <div className="relative w-full max-w-[1000px] max-h-[400px] overflow-hidden mt-16">

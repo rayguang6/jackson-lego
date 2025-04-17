@@ -20,5 +20,14 @@ export const defaultSections: WebsiteSection[] = [
     templateId: `${SectionType.S01_Hero}-${VersionType.v1}-${ThemeType.dark}`,
     theme: ThemeType.dark,
     content: {},
-  }
+  },
+  {
+    id: uuidv4(),
+    type: SectionType.S16_CTA,
+    title: 'CTA Section',
+    order: 2,
+    templateId: `${SectionType.S16_CTA}-${VersionType.v1}-${ThemeType.light}`,
+    theme: ThemeType.light,
+    content: {},
+  },
 ]; 
