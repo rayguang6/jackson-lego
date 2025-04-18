@@ -20,6 +20,15 @@ export const TEMPLATE_IMAGES = {
     SOLUTION_IMAGE: '/images/templates/solutions/solution-image.png',
   },
 
+  // Features or services section
+  FEATURES_OR_SERVICES: {
+    FEATURES_IMAGE_1: '/images/templates/features/features_1.png',
+    FEATURES_IMAGE_2: '/images/templates/features/features_2.png',
+    FEATURES_IMAGE_3: '/images/templates/features/features_3.png',
+    FEATURES_IMAGE_4: '/images/templates/features/features_4.png',
+    SERVICE_CHECK_ICON: '/images/templates/features/service-check-icon.svg',
+  },
+
   // CTA section
   CTA: {
     CTA_IMAGE: '/images/templates/cta/cta-image.png',

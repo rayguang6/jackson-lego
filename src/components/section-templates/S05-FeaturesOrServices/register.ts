@@ -1,17 +1,17 @@
 import { SectionTemplatesVariants } from '@/lib/templates/types';
-import { ThemeType, VersionType } from '@/lib/types';
+import { SectionType, ThemeType, VersionType } from '@/lib/types';
 import { FeaturesOrServicesV1 } from './FeaturesOrServicesV1';
 import { FeaturesOrServicesV3 } from './FeaturesOrServicesV3';
 
 export const featuresOrServicesTemplates: SectionTemplatesVariants = {
   [ThemeType.light]: {
     [VersionType.v1]: {
-      id: 'features_or_services-v1-light',
+      id:`${SectionType.S05_FeaturesOrServices}-${VersionType.v1}-${ThemeType.light}`,
       component: FeaturesOrServicesV1,
       theme: ThemeType.light
     },
-    [VersionType.v2]: {
-      id: 'features_or_services-v3-light',
+    [VersionType.v3]: {
+      id: `${SectionType.S05_FeaturesOrServices}-${VersionType.v3}-${ThemeType.light}`,
       component: FeaturesOrServicesV3,
       theme: ThemeType.light
     },
@@ -19,12 +19,12 @@ export const featuresOrServicesTemplates: SectionTemplatesVariants = {
   },
   [ThemeType.dark]: {
     [VersionType.v1]: {
-      id: 'features_or_services-v1-dark',
+      id: `${SectionType.S05_FeaturesOrServices}-${VersionType.v1}-${ThemeType.dark}`,
       component: FeaturesOrServicesV1,
       theme: ThemeType.dark
     },
-    [VersionType.v2]: {
-      id: 'features_or_services-v3-dark',
+    [VersionType.v3]: {
+      id: `${SectionType.S05_FeaturesOrServices}-${VersionType.v3}-${ThemeType.dark}`,
       component: FeaturesOrServicesV3,
       theme: ThemeType.dark
     },

@@ -28,7 +28,7 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
     {
       title: "Funnel Build & Design",
       description: "High-converting funnels that guide users from interest to sale.",
-      imageSrc: "/images/service-v3-image-1.svg",
+      imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_1,
       bulletPoints: [
         "Regularly updated with new templates to stay on trend.",
         "Easy to customize, ensuring unique results.",
@@ -38,7 +38,7 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
     {
       title: "Automation Workflow",
       description: "Tailored automation to save time and boost efficiency.",
-      imageSrc: "/images/service-v3-image-2.svg",
+      imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_2,
       bulletPoints: [
         "Regularly updated with new templates to stay on trend.",
         "Easy to customize, ensuring unique results.",
@@ -48,27 +48,17 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
     {
       title: "Social Media Management",
       description: "Strategic management to grow your brand's online presence.",
-      imageSrc: "/images/service-v3-image-3.svg",
+      imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_3,
       bulletPoints: [
         "Regularly updated with new templates to stay on trend.",
         "Easy to customize, ensuring unique results.",
         "Built for professional standards and polished output."
-      ]
+      ] 
     },
     {
       title: "Versatile Templates",
       description: "A wide range of pre-designed templates that cater to any project, industry, or style.",
-      imageSrc: "/images/service-image-4.svg",
-      bulletPoints: [
-        "Regularly updated with new templates to stay on trend.",
-        "Easy to customize, ensuring unique results.",
-        "Built for professional standards and polished output."
-      ]
-    },
-    {
-      title: "General Admin",
-      description: "Comprehensive administrative support to keep your business running smoothly.",
-      imageSrc: "/images/service-image-3.svg",
+      imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_4,
       bulletPoints: [
         "Regularly updated with new templates to stay on trend.",
         "Easy to customize, ensuring unique results.",

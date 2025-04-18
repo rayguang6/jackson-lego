@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { SolutionsProps, defaultSolutionsProps } from './types';
 
 import { MySection } from '@/components/template-ui/MySection';
@@ -35,9 +34,9 @@ export const SolutionsV2: React.FC<SolutionsProps> = ({
             {title}
           </SectionHeading>
           
-          <MyParagraph theme={theme} />
+          <MyParagraph theme={theme} >
             {subtitle}
-          <MyParagraph/>
+          </MyParagraph>
         </div>
         
         {/* Features grid */}
@@ -45,12 +44,10 @@ export const SolutionsV2: React.FC<SolutionsProps> = ({
           {features.slice(0, 4).map((feature, index) => (
             <div key={index} className="bg-white rounded-xl border border-gray-100/50 shadow-sm p-8 flex flex-col items-center text-center">
               <div style={{backgroundColor: GLOBALCSS_VAR.primaryColor}} className="flex-shrink-0 h-14 w-14 rounded-lg flex items-center justify-center mb-6">
-                <Image 
-                  src={`/images/solution-icon-${index + 1}.svg`} 
-                  alt={feature.title}
-                  width={24}
-                  height={24}
-                />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 22h20L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M12 2L2 22h20L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
               </div>
               <h4 className="text-xl font-bold mb-3 text-gray-900">
                 {feature.title}

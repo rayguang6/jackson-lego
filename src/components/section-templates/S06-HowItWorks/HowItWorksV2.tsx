@@ -65,7 +65,7 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
                   {/* Circle indicator */}
                   <div className="relative flex-shrink-0">
                     {/* Light pink outer circle */}
-                    <div className={`w-11 h-11 rounded-full ${isDark ? 'bg-red-900/20' : 'bg-red-100'}`}></div>
+                    <div className={`w-11 h-11 rounded-full`} style={{ backgroundColor: GLOBALCSS_VAR.primaryColor10 }}></div>
                     
                     {/* Small red inner circle */}
                     <div 

@@ -79,7 +79,7 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
               
               <div className="rounded-2xl overflow-hidden mt-auto">
                 <Image 
-                  src={`/images/service-v3-image-${index + 1}.svg`}
+                  src={service.imageSrc}
                   alt={service.title}
                   width={300}
                   height={200}
@@ -91,9 +91,11 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
         </div>
         
         {/* CTA Button */}
-        <PrimaryButton theme={theme} className="mt-8">
-          {ctaText}
-        </PrimaryButton>
+        <div className="flex justify-center">
+          <PrimaryButton theme={theme} className="mt-8">
+            {ctaText}
+          </PrimaryButton>
+        </div>
       </div>
     </MySection>
   );

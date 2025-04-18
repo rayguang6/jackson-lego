@@ -4,8 +4,8 @@ import React, { useState, useMemo } from 'react';
 import { useDesignStore } from '@/lib/store/designStore';
 import { WebsiteSection, SectionType, ThemeType, VersionType } from '@/lib/types';
 // Import the template registry
-import { getTemplate } from '@/lib/templates';
-import { parseTemplateId } from '@/lib/utils';
+import { getTemplate, getTemplatesForSectionType } from '@/lib/templates';
+import { parseTemplateId, generateTemplateId } from '@/lib/utils';
 import TemplateSelector from './TemplateSelector';
 
 const WebsiteBuilder: React.FC = () => {
@@ -15,6 +15,7 @@ const WebsiteBuilder: React.FC = () => {
   const styleGuide      = useDesignStore(s => s.design.styleGuide);
   const removeSection   = useDesignStore(s => s.removeSection);
   const reorderSection  = useDesignStore(s => s.reorderSection);
+  const updateSectionTemplate = useDesignStore(s => s.updateSectionTemplate);
 
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
   const [templateSelectorSection, setTemplateSelectorSection] = useState<WebsiteSection | null>(null);
@@ -58,6 +59,59 @@ const WebsiteBuilder: React.FC = () => {
 
   const closeTemplateSelector = () => {
     setTemplateSelectorSection(null);
+  };
+
+  // Toggle the theme of a section between light and dark
+  const toggleSectionTheme = (section: WebsiteSection) => {
+    if (!section.templateId) return;
+    
+    const templateInfo = parseTemplateId(section.templateId);
+    if (!templateInfo) return;
+    
+    // Toggle theme
+    const newTheme = templateInfo.theme === ThemeType.light ? ThemeType.dark : ThemeType.light;
+    
+    // Generate new template ID with the same section type and version, but opposite theme
+    const newTemplateId = generateTemplateId(
+      templateInfo.sectionType,
+      templateInfo.version,
+      newTheme
+    );
+    
+    // Check if the template exists
+    const newTemplate = getTemplate(templateInfo.sectionType, templateInfo.version, newTheme);
+    if (newTemplate) {
+      updateSectionTemplate(section.id, newTemplateId);
+    }
+  };
+  
+  // Change to a random variant of the same section type
+  const randomizeSectionVariant = (section: WebsiteSection) => {
+    // Get all templates for this section type
+    const templates = getTemplatesForSectionType(section.type);
+    if (templates.length <= 1) return; // No other templates available
+    
+    // Get current template info
+    const currentTemplateInfo = section.templateId ? parseTemplateId(section.templateId) : null;
+    
+    // Filter templates to exclude the current one
+    const otherTemplates = templates.filter(template => {
+      if (!currentTemplateInfo) return true;
+      const info = parseTemplateId(template.id);
+      if (!info) return true;
+      
+      // We consider it a different template if the version is different
+      return info.version !== currentTemplateInfo.version;
+    });
+    
+    if (otherTemplates.length === 0) return;
+    
+    // Pick a random template
+    const randomIndex = Math.floor(Math.random() * otherTemplates.length);
+    const randomTemplate = otherTemplates[randomIndex];
+    
+    // Update section with the new template
+    updateSectionTemplate(section.id, randomTemplate.id);
   };
 
   // Create a skeleton placeholder based on section type
@@ -219,6 +273,52 @@ const WebsiteBuilder: React.FC = () => {
                           strokeLinejoin="round"
                           strokeWidth={2}
                           d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+                    
+                    <div className="mx-0.5 h-4 border-r border-gray-200"></div>
+                    
+                    {/* Theme toggle button */}
+                    <button
+                      onClick={() => toggleSectionTheme(section)}
+                      className="p-1.5 text-gray-600 hover:bg-gray-100 rounded"
+                      title="Toggle light/dark theme"
+                    >
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                        />
+                      </svg>
+                    </button>
+                    
+                    {/* Random variant button */}
+                    <button
+                      onClick={() => randomizeSectionVariant(section)}
+                      className="p-1.5 text-gray-600 hover:bg-gray-100 rounded"
+                      title="Random variant"
+                    >
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
                         />
                       </svg>
                     </button>

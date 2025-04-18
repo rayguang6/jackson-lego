@@ -43,7 +43,7 @@ export const CTAV1: React.FC<CTAProps> = ({
 
         {/* Image - added border to make it visible even when empty */}
         <div className="w-full md:w-auto">
-          <div className={`rounded-lg overflow-hidden ${isDark ? 'border border-gray-700' : 'border border-gray-200'}`}>
+          <div className={`rounded-lg overflow-hidden`}>
             {/* <EditableImage
               sectionId={sectionId}
               contentPath="imageUrl"

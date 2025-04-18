@@ -40,7 +40,7 @@ export const SolutionsV1: React.FC<SolutionsProps> = ({
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
           {/* Left side - Image placeholder */}
-          <div className="w-full md:w-1/2 relative rounded-lg overflow-hidden bg-gray-200">
+          <div className="w-full md:w-1/2 relative rounded-lg overflow-hidden">
             {/* Image placeholder */}
             <Image src={imageUrl || ''} alt="Solutions" width={500} height={500} className="object-cover" />  
           </div>
@@ -53,7 +53,7 @@ export const SolutionsV1: React.FC<SolutionsProps> = ({
             </Badge>
 
             {/* Main heading */}
-            <SectionHeading theme={theme} className="mb-4">
+            <SectionHeading theme={theme} className="mb-4 mt-5">
               {title}
             </SectionHeading>
             
