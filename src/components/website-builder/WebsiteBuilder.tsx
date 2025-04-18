@@ -307,20 +307,11 @@ const WebsiteBuilder: React.FC = () => {
                       className="p-1.5 text-gray-600 hover:bg-gray-100 rounded"
                       title="Random variant"
                     >
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-4 w-4" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={2} 
-                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
-                        />
+                      <svg width="14" height="14" viewBox="0 0 18 18" fill="#000" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 1.63636C4.93318 1.63636 1.63636 4.93318 1.63636 9V9.81818H0V9C0 4.02944 4.02944 0 9 0C12.0449 0 14.7354 1.51203 16.3636 3.82434V0.818182H18V6.54545H12.2727V4.90909H15.1238C13.8023 2.93478 11.5521 1.63636 9 1.63636Z" fill="#000"/>
+                        <path d="M18 8.18182V9C18 13.9706 13.9705 18 8.99995 18C5.95506 18 3.26456 16.488 1.63636 14.1757V17.1818H0V11.4545H5.72727V13.0909H2.87611C4.19768 15.0652 6.44784 16.3636 8.99995 16.3636C13.0668 16.3636 16.3636 13.0668 16.3636 9V8.18182H18Z" fill="#000"/>
                       </svg>
+
                     </button>
                     
                     <div className="mx-0.5 h-4 border-r border-gray-200"></div>
