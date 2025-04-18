@@ -16,10 +16,25 @@ export enum VersionType {
   v10 = 'v10'
 }
 
+
+
+// Common props for all sections 
+// to be extended by each section templates
+export interface BaseSectionProps {
+  theme: ThemeType;
+  sectionId?: string;
+}
+
 // Section types
 export enum SectionType {
   S01_Hero = 'hero',
-  S16_CTA = 'cta', 
+  S02_SocialProof = 'socialProof',
+  S03_Problem = 'problem',
+  S04_Solutions = 'solutions',
+  S05_FeaturesOrServices = 'features',
+  S06_HowItWorks = 'howItWorks',
+  S07_Testimonials = 'testimonials',
+  S16_CTA = 'cta',
 }
 
 // Template interface

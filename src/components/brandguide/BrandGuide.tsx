@@ -563,7 +563,7 @@ const BrandGuide: React.FC = () => {
                 Body Font Sample text with your selected <span style={{ color: styleGuide.primaryColor }}>primary color</span> and body font.
               </p>
               
-              <div className="flex space-x-3 mt-2">
+              <div className="flex space-x-3 space-y-3 mt-2 flex-wrap">
                 <button 
                   className="px-4 py-2 rounded-md text-white transition-colors"
                   style={{ backgroundColor: styleGuide.primaryColor }}

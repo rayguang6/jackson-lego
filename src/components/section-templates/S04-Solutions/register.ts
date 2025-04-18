@@ -1,43 +1,42 @@
-import { SectionType } from '@/lib/types';
-import { SectionTemplates } from '@/lib/templates/types';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
+import { ThemeType, VersionType } from '@/lib/types';
 import { SolutionsV1 } from './SolutionsV1';
-import { SolutionsV2 } from './SolutionsV2';    
+import { SolutionsV2 } from './SolutionsV2';
 import { SolutionsV3 } from './SolutionsV3';
 
-// Register all Solutions templates
-export const solutionsTemplates: SectionTemplates = {
-  light: {
-    v1: {
-      id: 'solutions-light-v1',
+export const solutionsTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'solutions-v1-light',
       component: SolutionsV1,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v2: {
-      id: 'solutions-light-v2',
+    [VersionType.v2]: {
+      id: 'solutions-v2-light',
       component: SolutionsV2,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v3: {
-      id: 'solutions-light-v3',
+    [VersionType.v3]: {
+      id: 'solutions-v3-light',
       component: SolutionsV3,
-      theme: 'light'
+      theme: ThemeType.light
     }
   },
-  dark: {
-    v1: {
-      id: 'solutions-dark-v1',
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'solutions-v1-dark',
       component: SolutionsV1,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v2: {
-      id: 'solutions-dark-v2',
+    [VersionType.v2]: {
+      id: 'solutions-v2-dark',
       component: SolutionsV2,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v3: {
-      id: 'solutions-dark-v3',
+    [VersionType.v3]: {
+      id: 'solutions-v3-dark',
       component: SolutionsV3,
-      theme: 'dark'
+      theme: ThemeType.dark
     }
   }
 }; 

@@ -105,7 +105,7 @@ export default function Home() {
         {/* Main Content */}
         <div className="flex h-[calc(100vh-64px)]">
           {/* Left Panel */}
-          <div className={`transition-all duration-300 ease-in-out flex-shrink-0 ${isStructurePanelOpen ? 'w-96 lg:w-1/4 max-w-md' : 'w-12'} bg-white border-r border-gray-200 relative`}>
+          <div className={`transition-all duration-300 ease-in-out flex-shrink-0 ${isStructurePanelOpen ? 'w-50 lg:w-1/4' : 'w-12'} bg-white border-r border-gray-200 relative`}>
             <div className={`sticky top-0 flex items-center p-4 border-b border-gray-200 bg-white z-10 ${isStructurePanelOpen ? 'justify-between' : 'justify-center'}`}>
               {isStructurePanelOpen && (
                 <h2 className="text-lg font-medium text-gray-900 transition-opacity duration-300">Structure</h2>
@@ -133,11 +133,6 @@ export default function Home() {
                   <TabPanel
                     tabs={[
                       {
-                        id: 'sections',
-                        label: 'Sections',
-                        content: <SitemapBuilder />,
-                      },
-                      {
                         id: 'brand-guide',
                         label: 'Brand Guide',
                         content: 
@@ -145,14 +140,19 @@ export default function Home() {
                             <BrandGuide />
                           </StyleProvider>
                       },
+                      {
+                        id: 'sections',
+                        label: 'Sections',
+                        content: <SitemapBuilder />,
+                      }
                     ]}
-                    defaultTab="sections"
+                    defaultTab="brand-guide"
                   />
                 </div>
               </div>
             )}
           </div>
-          <div className="flex-grow overflow-y-auto bg-gray-50 p-6">
+          <div className="flex-grow overflow-y-auto bg-gray-50 p-6 w-full lg:w-3/4">
             <StyleProvider>
               <WebsiteBuilder />
             </StyleProvider>

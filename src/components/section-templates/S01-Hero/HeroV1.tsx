@@ -5,22 +5,21 @@ import Image from 'next/image';
 import { LogoIcon } from '@/components/template-ui/icons/LogoIcon';
 import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
-import { useDesignStore } from '@/lib/store/designStore';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
-import { EditableText } from '@/components/editable/EditableText';
+import { BaseSectionProps } from '@/lib/types';
 
 export const HeroV1: React.FC<HeroProps> = ({
-  title = "Multipurpose Page Blocks Designed for ",
+  title = defaultHeroProps.title,
   subtitle = defaultHeroProps.subtitle,
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1,
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_4,
   sectionId
 }: HeroProps) => {
   
@@ -33,6 +32,7 @@ export const HeroV1: React.FC<HeroProps> = ({
       <div className="mb-8">
         <LogoIcon 
           theme={theme}
+          className='mx-auto'
         />
       </div>
 
@@ -40,46 +40,20 @@ export const HeroV1: React.FC<HeroProps> = ({
       <Badge 
         theme={theme}
       >
-        <EditableText
-            sectionId={sectionId}
-            contentPath="badgeText"
-            defaultValue={badgeText}
-          />
+        {badgeText}
       </Badge>
 
 
       {/* Title */}
-      <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
-        {sectionId ? (
-          <EditableText
-            sectionId={sectionId}
-            contentPath="title"
-            defaultValue={title}
-            className='inline max-w-[1000px]'
-          />
-        ) : (
-          title
-        )}{' '}
+      <SectionHeading theme={theme} className="max-w-[800px] mt-5">
+        {title}
         <Highlight>
-          {sectionId ? (
-            <EditableText
-              sectionId={sectionId}
-              contentPath="highlight"
-              defaultValue={"Maximum Efficiency"}
-              className='inline'
-            />
-          ) : (
-            "Maximum Efficiency"
-          )}
+            Maximum Efficiency
         </Highlight>
       </SectionHeading>
 
-      <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
-        <EditableText
-            sectionId={sectionId}
-            contentPath="subtitle"
-            defaultValue={subtitle}
-          />
+      <MyParagraph theme={theme} className="max-w-[800px] mt-5">
+        {subtitle}
       </MyParagraph>
 
 
@@ -87,11 +61,7 @@ export const HeroV1: React.FC<HeroProps> = ({
 
       {/* CTA Button */}
       <PrimaryButton theme={theme} className="mt-8">
-        <EditableText
-            sectionId={sectionId}
-            contentPath="ctaText"
-            defaultValue={ctaText}
-          />
+        {ctaText}
       </PrimaryButton>
 
       {/* Video Thumbnail */}

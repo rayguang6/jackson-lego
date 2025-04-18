@@ -10,8 +10,6 @@ import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
 import { MySection } from '@/components/template-ui/MySection';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-import { useDesignStore } from '@/lib/store/designStore';
-import { EditableText } from '@/components/editable/EditableText';
 export const HeroV3: React.FC<HeroProps> = ({
   title = defaultHeroProps.title,
   subtitle = defaultHeroProps.subtitle,
@@ -32,7 +30,7 @@ export const HeroV3: React.FC<HeroProps> = ({
       theme={theme}
       className="px-8">
 
-      <div className="w-full mx-auto">
+      <div className="mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative">
           {/* Left Content */}
           <div className="flex flex-col">
@@ -46,46 +44,20 @@ export const HeroV3: React.FC<HeroProps> = ({
             {/* Badge */}
             <div className="">
               <Badge theme={theme}>
-                <EditableText
-                    sectionId={sectionId}
-                    contentPath="badgeText"
-                    defaultValue={badgeText}
-                  />
+                {badgeText}
               </Badge>
             </div>
 
             {/* Title */}
             <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
-              {sectionId ? (
-                <EditableText
-                  sectionId={sectionId}
-                  contentPath="title"
-                  defaultValue={title}
-                  className='inline max-w-[1000px]'
-                />
-              ) : (
-                title
-              )}{' '}
+              {title}
               <Highlight> 
-                {sectionId ? (
-                  <EditableText
-                    sectionId={sectionId}
-                    contentPath="highlight"
-                    defaultValue={"Maximum Efficiency"}
-                    className='inline'
-                  />
-                ) : (
-                  "Maximum Efficiency"
-                )}
+                  Maximum Efficiency
               </Highlight>
             </SectionHeading>
 
             <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
-              <EditableText
-                  sectionId={sectionId}
-                  contentPath="subtitle"
-                  defaultValue={subtitle}
-                />
+              {subtitle}
             </MyParagraph>
   
             {/* Feature List */}
@@ -98,11 +70,7 @@ export const HeroV3: React.FC<HeroProps> = ({
                     </svg>
                   </div>
                   <span style={{ fontFamily: 'var(--body-font)' }} className={`text-sm leading-[1.75] ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    <EditableText
-                      sectionId={sectionId}
-                      contentPath="feature"
-                      defaultValue={feature}
-                    />
+                    {feature}
                     </span>
                 </div>
               ))}
@@ -111,11 +79,7 @@ export const HeroV3: React.FC<HeroProps> = ({
             {/* CTA Button */}
             <div className="mt-8">
               <PrimaryButton theme={theme}>
-                <EditableText
-                    sectionId={sectionId}
-                    contentPath="ctaText"
-                    defaultValue={ctaText}
-                  />
+                {ctaText}
               </PrimaryButton>
             </div>
 
@@ -130,11 +94,7 @@ export const HeroV3: React.FC<HeroProps> = ({
                 />
               </div>
               <p style={{ fontFamily: 'var(--body-font)' }} className={`text-sm font-medium ${isDark ? 'text-white/50' : 'text-gray-500'}`}>
-                <EditableText
-                  sectionId={sectionId}
-                  contentPath="credibilityText"
-                  defaultValue={credibilityText || ''}
-                />
+                {credibilityText}
               </p>
             </div>
           </div>

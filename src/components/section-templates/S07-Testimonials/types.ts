@@ -1,15 +1,25 @@
-import { TestimonialsSectionProps as BaseTestimonialsSectionProps } from '@/lib/types';
+import { BaseSectionProps, ThemeType } from "@/lib/types";
 
-export interface TestimonialsProps extends BaseTestimonialsSectionProps {
+export interface TestimonialsProps extends BaseSectionProps {
   // Additional props specific to our implementation if needed
+  title: string;
+  subtitle: string;
   badgeText?: string;
+  testimonials: {
+    quote: string;
+    author: string;
+    role: string;
+    company: string;
+    rating: number;
+    avatarUrl: string;
+  }[];
 }
 
 // Default values for testimonials
 export const defaultTestimonialsProps: TestimonialsProps = {
   title: "What our customer are saying...",
   subtitle: "See how our solutions are making a difference for businesses like yours.",
-  theme: 'light',
+  theme: ThemeType.light,
   badgeText: "TESTIMONIALS",
   testimonials: [
     {
@@ -36,6 +46,5 @@ export const defaultTestimonialsProps: TestimonialsProps = {
       rating: 5,
       avatarUrl: "/images/testimonial-avatar-3.jpg"
     }
-  ],
-  layout: 'grid'
+  ]
 }; 

@@ -7,19 +7,17 @@ import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
-import Link from 'next/link';
 import Image from 'next/image';
-
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 export const HowItWorksV3: React.FC<HowItWorksProps> = ({
   theme = defaultHowItWorksProps.theme,
   title = defaultHowItWorksProps.title,
   subtitle = defaultHowItWorksProps.subtitle,
   badgeText = defaultHowItWorksProps.badgeText,
   features = defaultHowItWorksProps.features,
-  buttonText = defaultHowItWorksProps.buttonText,
-  buttonUrl = defaultHowItWorksProps.buttonUrl,
+  ctaText = defaultHowItWorksProps.ctaText,
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
 
   // Icons that represent each step
@@ -38,10 +36,10 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
         <div className="flex flex-col items-center gap-8">  
           {/* Badge */}
           <Badge 
-            text={badgeText}
             theme={theme}
-            icon="star"
-          />
+          >
+            {badgeText}
+          </Badge>
 
           {/* Title */}
           <SectionHeading
@@ -54,9 +52,9 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
           {/* Subtitle */}
           <MyParagraph
             theme={theme}
-            text={subtitle}
-            className="text-center max-w-[600px]"
-          />
+          >
+            {subtitle}
+          </MyParagraph>
 
           {/* Horizontal Divider */}
           <div className={`w-full h-px ${isDark ? 'bg-gray-700' : 'bg-gray-200'} my-4`}></div>
@@ -83,7 +81,7 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
                 {/* Step Label */}
                 <div 
                   className="uppercase font-bold text-lg mb-2.5"
-                  style={{ color: primaryColor, fontFamily: headingFont }}
+                  style={{ color: GLOBALCSS_VAR.primaryColor, fontFamily: GLOBALCSS_VAR.headingFont }}
                 >
                   STEP {index + 1}
                 </div>
@@ -91,7 +89,7 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
                 {/* Step Title */}
                 <h3 
                   className={`font-bold text-xl mb-2.5 ${isDark ? 'text-white' : 'text-[#343434]'}`} 
-                  style={{ fontFamily: headingFont }}
+                  style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
                 >
                   {feature.title.replace(/\d+\.\s+/, '')}
                 </h3>
@@ -99,7 +97,7 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
                 {/* Step Description */}
                 <p 
                   className={`text-lg ${isDark ? 'text-gray-300' : 'text-[#4B5162]'}`}
-                  style={{ fontFamily: bodyFont }}
+                  style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
                 >
                   {feature.description}
                 </p>
@@ -108,26 +106,9 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
           </div>
 
           {/* CTA Button */}
-          <div className="mt-16">
-            <Link 
-              href={buttonUrl || "#"}
-              className="group inline-flex items-center gap-2 px-7 py-4 rounded-lg border-[10px] border-opacity-12"
-              style={{
-                backgroundColor: primaryColor,
-                borderColor: `${primaryColor}20`,
-                fontFamily: 'Archivo, sans-serif'
-              }}
-            >
-              <span className="text-white font-bold text-lg uppercase tracking-wide">
-                {buttonText}
-              </span>
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.5 11L6.5 6L1.5 1" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-            </Link>
-          </div>
+          <PrimaryButton theme={theme} className="mt-8">
+            {ctaText}
+          </PrimaryButton>
         </div>
       </div>
     </MySection>

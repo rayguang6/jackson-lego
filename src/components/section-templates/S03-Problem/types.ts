@@ -1,10 +1,10 @@
+import { BaseSectionProps, ThemeType } from "@/lib/types";
 
-export interface ProblemProps {
+export interface ProblemProps extends BaseSectionProps {
   // Common props
   title: string;
   subtitle: string;
   badgeText: string;
-  theme: 'light' | 'dark';
   problems: {
     title: string;
     description: string;
@@ -13,10 +13,10 @@ export interface ProblemProps {
 
 // Default values that can be used by any Hero variant
 export const defaultProblemProps: ProblemProps = {
-  title: "Are you tired of running into these problems? ",
+  title: "Are you tired of running into these problems?",
   subtitle: "It's time to take control and design like a pro — fast and easy.",
   badgeText: "PROBLEM",
-  theme: 'light',
+  theme: ThemeType.light,
   problems: [
     { 
       title: "Confused by complex design tools",

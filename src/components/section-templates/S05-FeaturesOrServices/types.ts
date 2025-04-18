@@ -1,14 +1,13 @@
 import { TEMPLATE_IMAGES } from "@/lib/constants/imagePaths";
+import { BaseSectionProps, ThemeType } from "@/lib/types";
 
-export interface FeaturesOrServicesProps {
+export interface FeaturesOrServicesProps extends BaseSectionProps  {
   // Common props
   title: string;
   subtitle: string;
-  theme: 'light' | 'dark';
   badgeText?: string;
   // CTA button
-  ctaButtonText?: string;
-  ctaButtonLink?: string;
+  ctaText?: string;
   // Service cards
   services: Array<{
     title: string;
@@ -22,10 +21,9 @@ export interface FeaturesOrServicesProps {
 export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
   title: "Design Faster. Deliver Better.",
   subtitle: "From design to automation, we provide services that streamline processes and help your business scale efficiently.",
-  theme: 'light',
+  theme: ThemeType.light,
   badgeText: "OUR SERVICES",
-  ctaButtonText: "GET INSTANT ACCESS",
-  ctaButtonLink: "#",
+  ctaText: "GET INSTANT ACCESS",
   services: [
     {
       title: "Funnel Build & Design",

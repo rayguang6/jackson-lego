@@ -6,12 +6,14 @@ interface ParagraphProps {
   theme?: 'light' | 'dark';
   className?: string;
   children?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 export const MyParagraph: React.FC<ParagraphProps> = ({
   theme = 'light',
   className = '',
   children,
+  style
 }) => {
 
   const isDark = theme === 'dark';
@@ -23,7 +25,7 @@ export const MyParagraph: React.FC<ParagraphProps> = ({
         ${textColor}
         ${className}
       `}
-      style={{ fontFamily: 'var(--body-font)' }}
+      style={{ fontFamily: 'var(--body-font)', ...style }}
     >
       {children}
     </p>

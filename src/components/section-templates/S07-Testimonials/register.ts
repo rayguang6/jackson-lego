@@ -1,32 +1,31 @@
-import { SectionType } from '@/lib/types';
-import { SectionTemplates } from '@/lib/templates/types';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
 import { TestimonialsV1 } from './TestimonialsV1';
+import { ThemeType, VersionType } from '@/lib/types';
 import { TestimonialsV2 } from './TestimonialsV2';
 
-// Register all Testimonials templates
-export const testimonialsTemplates: SectionTemplates = {
-  light: {
-    v1: {
-      id: 'testimonials-light-v1',
+export const testimonialsTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'testimonials-v1-light',
       component: TestimonialsV1,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v2: {
-      id: 'testimonials-light-v2',
+    [VersionType.v2]: {
+      id: 'testimonials-v2-light',
       component: TestimonialsV2,
-      theme: 'light'
-    }
+      theme: ThemeType.light
+    },    
   },
-  dark: {
-    v1: {
-      id: 'testimonials-dark-v1',
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'testimonials-v1-dark',
       component: TestimonialsV1,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v2: {
-      id: 'testimonials-dark-v2',
+    [VersionType.v2]: {
+      id: 'testimonials-v2-dark',
       component: TestimonialsV2,
-      theme: 'dark'
-    }
+      theme: ThemeType.dark
+    },
   }
 }; 

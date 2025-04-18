@@ -8,6 +8,7 @@ interface SectionHeadingProps {
   theme?: 'light' | 'dark'; 
   className?: string;
   as?: 'h1' | 'h2' | 'h3' | 'h4';
+  style?: React.CSSProperties;
 }
 
 export const Highlight: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -19,6 +20,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   theme = 'light',
   className = '',
   as = 'h2',
+  style
 }) => {
   const isDark = theme === 'dark';
   const textColor = isDark ? 'text-white' : 'text-gray-900';
@@ -38,7 +40,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
         ${textColor}
         ${className}
       `}
-      style={{ fontFamily: 'var(--heading-font)' }}
+      style={{ fontFamily: 'var(--heading-font)', ...style }}
     >
       {children}
     </HeadingTag>

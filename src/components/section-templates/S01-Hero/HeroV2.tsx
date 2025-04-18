@@ -11,8 +11,6 @@ import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeadi
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
-import { useDesignStore } from '@/lib/store/designStore';
-import { EditableText } from '@/components/editable/EditableText';
 
 
 export const HeroV2: React.FC<HeroProps> = ({
@@ -37,6 +35,7 @@ export const HeroV2: React.FC<HeroProps> = ({
       <div className="mb-8">
         <LogoIcon 
           theme={theme}
+          className='mx-auto'
         />
       </div>
 
@@ -44,55 +43,25 @@ export const HeroV2: React.FC<HeroProps> = ({
       <Badge 
         theme={theme}
       >
-        <EditableText
-            sectionId={sectionId}
-            contentPath="badgeText"
-            defaultValue={badgeText}
-          />
+        {badgeText}
       </Badge>
 
       {/* Title */}
-      <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
-        {sectionId ? (
-          <EditableText
-            sectionId={sectionId}
-            contentPath="title"
-            defaultValue={title}
-            className='inline max-w-[1000px]'
-          />
-        ) : (
-          title
-        )}{' '}
+      <SectionHeading theme={theme} className="max-w-[800px] mt-5">
+        {title}
         <Highlight>
-          {sectionId ? (
-            <EditableText
-              sectionId={sectionId}
-              contentPath="highlight"
-              defaultValue={"Maximum Efficiency"}
-              className='inline'
-            />
-          ) : (
-            "Maximum Efficiency"
-          )}
+            Maximum Efficiency
         </Highlight>
       </SectionHeading>
 
 
-      <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
-        <EditableText
-            sectionId={sectionId}
-            contentPath="subtitle"
-            defaultValue={subtitle}
-          />
+      <MyParagraph theme={theme} className="max-w-[800px] mt-5">
+        {subtitle}
       </MyParagraph>
 
       {/* CTA Button */}
       <PrimaryButton theme={theme} className="mt-8">
-        <EditableText
-            sectionId={sectionId}
-            contentPath="ctaText"
-            defaultValue={ctaText}
-          />
+        {ctaText}
       </PrimaryButton>
 
       {/* Video Thumbnail */}

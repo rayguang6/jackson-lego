@@ -7,7 +7,7 @@ import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
-
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 export const HowItWorksV1: React.FC<HowItWorksProps> = ({
   theme = defaultHowItWorksProps.theme,
   title = defaultHowItWorksProps.title,
@@ -15,7 +15,6 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
   badgeText = defaultHowItWorksProps.badgeText,
   features = defaultHowItWorksProps.features,
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
 
   const StepCard = ({ number, title, description, isHighlighted = false }: { 
@@ -35,7 +34,7 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
       >
         <div 
           className="w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: primaryColor }}
+          style={{ backgroundColor: GLOBALCSS_VAR.primaryColor }}
         >
           <span className="text-white font-extrabold text-xl font-manrope">{number}</span>
         </div>
@@ -43,13 +42,13 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
         <div className="flex-1">
           <p 
             className={`font-medium text-xl mb-1 ${isDark ? 'text-white' : 'text-[#18181B]'}`} 
-            style={{ fontFamily: headingFont, lineHeight: '1.4' }}
+            style={{ fontFamily: GLOBALCSS_VAR.headingFont, lineHeight: '1.4' }}
           >
             {title}
           </p>
           <p 
             className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}
-            style={{ fontFamily: bodyFont }}
+            style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
           >
             {description}
           </p>
@@ -67,10 +66,10 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
         <div className="flex flex-col items-center gap-8">  
           {/* Badge */}
           <Badge 
-            text={badgeText}
             theme={theme}
-            icon="star"
-          />
+          >
+            {badgeText}
+          </Badge>
 
           {/* Title */}
           <SectionHeading
@@ -83,9 +82,9 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
           {/* Subtitle */}
           <MyParagraph
             theme={theme}
-            text={subtitle}
-            className="text-center max-w-[600px]"
-          />
+          >
+            {subtitle}
+          </MyParagraph>
 
           {/* Steps */}
           <div className="w-full flex flex-col items-center gap-6 mt-6">

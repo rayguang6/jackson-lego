@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useDesignStore } from '@/lib/store/designStore';
-
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 interface SectionProps {
   children: React.ReactNode;
   theme?: 'light' | 'dark';
@@ -16,24 +15,25 @@ export const MySection: React.FC<SectionProps> = ({
   className = '',
   backgroundColor,
 }) => {
-  const { styleGuide } = useDesignStore(s => s.design);
   const isDark = theme === 'dark';
 
-  const bgColor = backgroundColor || (isDark ? styleGuide.backgroundColorDark : styleGuide.backgroundColor);
+  const bgColor = backgroundColor || (isDark ? GLOBALCSS_VAR.backgroundColorDark : GLOBALCSS_VAR.backgroundColor);
 
   return (
     <section
       className={`
         w-full relative overflow-hidden
-        px-4 sm:px-6 lg:px-8 xl:px-24
-        py-8 sm:py-12 lg:py-16
+        px-8 sm:px-6 lg:px-8 xl:px-24
+        py-16 sm:py-12 lg:py-16
         ${className}
       `}
       style={{
         backgroundColor: bgColor,
       }}
     >
-      {children}
+      <div className="max-w-[1170px] mx-auto">
+        {children}
+      </div>
     </section>
   );
 }; 

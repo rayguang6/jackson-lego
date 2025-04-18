@@ -4,6 +4,18 @@ import Image from 'next/image';
 import { useDesignStore } from '@/lib/store/designStore';
 import { usePathname } from 'next/navigation';
 import { useFilePoolStore } from '@/lib/store/filePoolStore';
+
+interface ImgProps {
+  src: string;
+  alt: string;
+  width: number | string;
+  height: number | string;
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+  onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
+}
+
 export const EditableImage = ({
   sectionId, contentPath, defaultSrc, alt,
   width, height, className = '', objectFit = 'cover',
@@ -19,26 +31,72 @@ export const EditableImage = ({
 }) => {
   const update = useDesignStore((s) => s.updateSectionField);
   const section = useDesignStore((s) => s.design.sections.find((x) => x.id === sectionId));
-  const { add, getUrl } = useFilePoolStore();
+  const { add, getUrl, getBase64 } = useFilePoolStore();
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const isEditable = Boolean(sectionId) && pathname === '/';
+  const isPreview = pathname === '/preview';
   const raw = section?.content?.[contentPath] as string | undefined;
+  const [base64Data, setBase64Data] = useState<string | null>(null);
 
-  const Img = (p) => {
+  // For preview page, convert temp:// URLs to base64
+  useEffect(() => {
+    if (isPreview && raw?.startsWith('temp://')) {
+      const id = raw.slice(7);
+      const loadBase64 = async () => {
+        try {
+          const data = await getBase64(id);
+          if (data) {
+            setBase64Data(data);
+          }
+        } catch (err) {
+          console.error('Failed to load image data:', err);
+        }
+      };
+      loadBase64();
+    }
+  }, [isPreview, raw, getBase64]);
+
+  // Custom image component that handles both regular and blob URLs
+  const Img = (p: ImgProps) => {
     const src = p.src as string;
     const isBlob = src?.startsWith('blob:') || src?.startsWith('data:');
-    const isSSR  = typeof window === 'undefined';
-    return isSSR || isBlob ? <img {...p} /> : <Image {...p} unoptimized />;
+    const isSSR = typeof window === 'undefined';
+    
+    // For blob URLs or SSR, use a regular img tag
+    if (isSSR || isBlob) {
+      return <img {...p} />;
+    }
+    
+    // For regular URLs, use Next.js Image component with proper type conversion
+    return (
+      <Image 
+        src={src}
+        alt={p.alt}
+        width={typeof p.width === 'string' ? parseInt(p.width, 10) : p.width}
+        height={typeof p.height === 'string' ? parseInt(p.height, 10) : p.height}
+        className={p.className}
+        style={p.style}
+        onClick={p.onClick}
+        onError={p.onError}
+        unoptimized
+      />
+    );
   };
 
   /* decide src */
   const { poolMiss, src } = useMemo(() => {
+    // For preview page, use base64 data if available
+    if (isPreview && base64Data) {
+      return { poolMiss: false, src: base64Data };
+    }
+    
     if (!raw) return { poolMiss: false, src: defaultSrc };
     if (!raw.startsWith('temp://')) return { poolMiss: false, src: raw };
+    
     const url = getUrl(raw.slice(7));
     return { poolMiss: !url, src: url ?? defaultSrc };
-  }, [raw, getUrl, defaultSrc]);
+  }, [raw, getUrl, defaultSrc, isPreview, base64Data]);
 
   /* clean dead handle */
   useEffect(() => {
@@ -69,9 +127,13 @@ export const EditableImage = ({
         </div>
       ) : (
         <Img
-          src={src} alt={alt} width={width} height={height}
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
           className={`${className} ${isEditable ? 'cursor-pointer' : ''} rounded`}
-          style={{ objectFit }} onClick={pick}
+          style={{ objectFit: objectFit as 'cover' | 'contain' | 'fill' | undefined }}
+          onClick={pick}
           onError={(e) => ((e.target as HTMLImageElement).src = defaultSrc)}
         />
       )}

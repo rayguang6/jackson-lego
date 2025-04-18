@@ -1,54 +1,53 @@
-import { SectionType } from '@/lib/types';
-import { SectionTemplates } from '@/lib/templates/types';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
+import { ThemeType, VersionType } from '@/lib/types';
 import { ProblemV1 } from './ProblemV1';
 import { ProblemV2 } from './ProblemV2';
 import { ProblemV3 } from './ProblemV3';
 import { ProblemV4 } from './ProblemV4';
 
-// Register all Problem templates
-export const problemTemplates: SectionTemplates = {
-  light: {
-    v1: {
-      id: 'problem-v1',
+export const problemTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'problem-v1-light',
       component: ProblemV1,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v2: {
-      id: 'problem-v2',
+    [VersionType.v2]: { 
+      id: 'problem-v2-light',
       component: ProblemV2,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v3: {
-      id: 'problem-v3',
+    [VersionType.v3]: {
+      id: 'problem-v3-light',
       component: ProblemV3,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v4: {
-      id: 'problem-v4',
+    [VersionType.v4]: {
+      id: 'problem-v4-light',
       component: ProblemV4,
-      theme: 'light'
+      theme: ThemeType.light
     }
   },
-  dark: {
-    v1: {
-      id: 'problem-v1',
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'problem-v1-dark',
       component: ProblemV1,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v2: {
-      id: 'problem-v2',
+    [VersionType.v2]: {
+      id: 'problem-v2-dark',
       component: ProblemV2,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v3: {
-      id: 'problem-v3',
+    [VersionType.v3]: {
+      id: 'problem-v3-dark',
       component: ProblemV3,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v4: {
-      id: 'problem-v4',
+    [VersionType.v4]: {
+      id: 'problem-v4-dark',
       component: ProblemV4,
-      theme: 'dark'
+      theme: ThemeType.dark
     }
   }
 }; 

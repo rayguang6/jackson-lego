@@ -1,32 +1,32 @@
-import { SectionType } from '@/lib/types';
-import { SectionTemplates } from '@/lib/templates/types';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
+import { ThemeType, VersionType } from '@/lib/types';
 import { FeaturesOrServicesV1 } from './FeaturesOrServicesV1';
 import { FeaturesOrServicesV3 } from './FeaturesOrServicesV3';
 
-// Register all FeaturesOrServices templates
-export const featuresOrServicesTemplates: SectionTemplates = {
-  light: {
-    v1: {
-      id: 'features-or-services-light-v1',
+export const featuresOrServicesTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'features_or_services-v1-light',
       component: FeaturesOrServicesV1,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v3: {
-      id: 'features-or-services-light-v3',
+    [VersionType.v2]: {
+      id: 'features_or_services-v3-light',
       component: FeaturesOrServicesV3,
-      theme: 'light'
-    }
+      theme: ThemeType.light
+    },
+    
   },
-  dark: {
-    v1: {
-      id: 'features-or-services-dark-v1',
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'features_or_services-v1-dark',
       component: FeaturesOrServicesV1,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v3: {
-      id: 'features-or-services-dark-v3',
+    [VersionType.v2]: {
+      id: 'features_or_services-v3-dark',
       component: FeaturesOrServicesV3,
-      theme: 'dark'
-    }
+      theme: ThemeType.dark
+    },
   }
 }; 

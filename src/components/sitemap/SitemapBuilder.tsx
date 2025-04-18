@@ -29,7 +29,7 @@ const SitemapBuilder: React.FC = () => {
     const title = `${formattedType} Section`;
     
     // Get default template ID for this section type
-    const defaultTemplateId = `${newSectionType}-light-v1`;
+    const defaultTemplateId = `${newSectionType}-v1-light`;
     
     // Pass both required parameters
     addSection(newSectionType, defaultTemplateId);

@@ -15,7 +15,6 @@ export const SolutionsV3: React.FC<SolutionsProps> = ({
   features = defaultSolutionsProps.features,
   theme = defaultSolutionsProps.theme
 }) => {
-  const { design } = useDesign();
   
   // Ensure we have 6 features (2 rows of 3)
   const displayFeatures = features.slice(0, 6);
@@ -29,9 +28,9 @@ export const SolutionsV3: React.FC<SolutionsProps> = ({
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex justify-center mb-10">
-          {badgeText && (
-            <Badge text={badgeText} icon="none" className="text-red-600 tracking-widest" />
-          )}
+          <Badge theme={theme}>
+            {badgeText}
+          </Badge>
         </div>
         
         {/* Main content */}

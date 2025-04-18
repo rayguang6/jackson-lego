@@ -1,43 +1,42 @@
-import { SectionType } from '@/lib/types';
-import { SectionTemplates } from '@/lib/templates/types';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
 import { HowItWorksV1 } from './HowItWorksV1';
 import { HowItWorksV2 } from './HowItWorksV2';
 import { HowItWorksV3 } from './HowItWorksV3';
+import { ThemeType, VersionType } from '@/lib/types';
 
-// Register all HowItWorks templates
-export const howItWorksTemplates: SectionTemplates = {
-  light: {
-    v1: {
-      id: 'how-it-works-light-v1',
-      component: HowItWorksV1,
-      theme: 'light'
+export const howItWorksTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'how_it_works-v1-light',
+      component: HowItWorksV1, 
+      theme: ThemeType.light
     },
-    v2: {
-      id: 'how-it-works-light-v2',
+    [VersionType.v2]: {
+      id: 'how_it_works-v2-light',
       component: HowItWorksV2,
-      theme: 'light'
+      theme: ThemeType.light
     },
-    v3: {
-      id: 'how-it-works-light-v3',
+    [VersionType.v3]: {
+      id: 'how_it_works-v3-light',
       component: HowItWorksV3,
-      theme: 'light'
-    }
+      theme: ThemeType.light
+    },
   },
-  dark: {
-    v1: {
-      id: 'how-it-works-dark-v1',
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'how_it_works-v1-dark',
       component: HowItWorksV1,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v2: {
-      id: 'how-it-works-dark-v2',
+    [VersionType.v2]: {
+      id: 'how_it_works-v2-dark',
       component: HowItWorksV2,
-      theme: 'dark'
+      theme: ThemeType.dark
     },
-    v3: {
-      id: 'how-it-works-dark-v3',
+    [VersionType.v3]: {
+      id: 'how_it_works-v3-dark',
       component: HowItWorksV3,
-      theme: 'dark'
-    }
+      theme: ThemeType.dark
+    },
   }
 }; 

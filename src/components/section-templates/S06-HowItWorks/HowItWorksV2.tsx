@@ -7,18 +7,16 @@ import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
-import Link from 'next/link';
-
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 export const HowItWorksV2: React.FC<HowItWorksProps> = ({
   theme = defaultHowItWorksProps.theme,
   title = defaultHowItWorksProps.title,
   subtitle = defaultHowItWorksProps.subtitle,
   badgeText = defaultHowItWorksProps.badgeText,
   features = defaultHowItWorksProps.features,
-  buttonText = defaultHowItWorksProps.buttonText,
-  buttonUrl = defaultHowItWorksProps.buttonUrl,
+  ctaText = defaultHowItWorksProps.ctaText,
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
 
   return (
@@ -30,10 +28,10 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
         <div className="flex flex-col items-center gap-8">  
           {/* Badge */}
           <Badge 
-            text={badgeText}
             theme={theme}
-            icon="star"
-          />
+          >
+            {badgeText}
+          </Badge>
 
           {/* Title */}
           <SectionHeading
@@ -46,9 +44,9 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
           {/* Subtitle */}
           <MyParagraph
             theme={theme}
-            text={subtitle}
-            className="text-center max-w-[600px]"
-          />
+          >
+            {subtitle}
+          </MyParagraph>
 
           {/* Steps */}
           <div className="w-full mt-6 relative">
@@ -56,7 +54,7 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
             <div className={`absolute left-[22px] top-8 bottom-8 w-[1px] ${isDark ? 'bg-gray-700' : 'bg-gray-300'} z-0`}>
               <div 
                 className="absolute left-0 top-0 bottom-0 w-[1px] z-10"
-                style={{ backgroundColor: primaryColor, height: '100%' }}
+                style={{ backgroundColor: GLOBALCSS_VAR.primaryColor, height: '100%' }}
               ></div>
             </div>
 
@@ -72,7 +70,7 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
                     {/* Small red inner circle */}
                     <div 
                       className="w-5 h-5 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                      style={{ backgroundColor: primaryColor }}
+                      style={{ backgroundColor: GLOBALCSS_VAR.primaryColor }}
                     ></div>
                   </div>
                   
@@ -80,13 +78,13 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
                   <div className="flex-1">
                     <h3 
                       className={`text-[26px] font-normal mb-2 ${isDark ? 'text-white' : 'text-[#4D4D4D]'}`}
-                      style={{ fontFamily: 'General Sans, sans-serif' }}
+                      style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
                     >
                       {`${index + 1}. ${feature.title.replace(/\d+\.\s+/, '')}`}
                     </h3>
                     <p 
                       className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-[#4D4D4D]'}`}
-                      style={{ fontFamily: bodyFont }}
+                      style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
                     >
                       {feature.description}
                     </p>
@@ -96,27 +94,9 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
             </div>
           </div>
 
-          {/* CTA Button */}
-          <div className="mt-10">
-            <Link 
-              href={buttonUrl || "#"}
-              className="group inline-flex items-center gap-2 px-7 py-4 rounded-lg border-[10px] border-opacity-12"
-              style={{
-                backgroundColor: primaryColor,
-                borderColor: `${primaryColor}20`,
-                fontFamily: 'Archivo, sans-serif'
-              }}
-            >
-              <span className="text-white font-bold text-lg uppercase tracking-wide">
-                {buttonText}
-              </span>
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.5 11L6.5 6L1.5 1" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-            </Link>
-          </div>
+          <PrimaryButton theme={theme} className="mt-8">
+            {ctaText}
+          </PrimaryButton>
         </div>
       </div>
     </MySection>

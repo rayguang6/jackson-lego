@@ -7,7 +7,7 @@ import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 // Custom placeholder avatar component
 const UserAvatar = ({ author, index, isDark }: { author: string; index: number; isDark: boolean }) => {
   const colors = ['#EF083A', '#3267FF', '#9061F9', '#2DA94F', '#FF8C42'];
@@ -31,7 +31,6 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
   testimonials = defaultTestimonialsProps.testimonials,
   theme = defaultTestimonialsProps.theme
 }) => {
-  const { primaryColor, headingFont, bodyFont } = useDesign().styleGuide;
   const isDark = theme === 'dark';
   
   const renderStars = (rating: number = 5) => {
@@ -52,7 +51,7 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
           {badgeText && (
             <span 
               className="uppercase tracking-[0.06em] font-semibold text-sm"
-              style={{ color: primaryColor, fontFamily: bodyFont }}
+              style={{ color: GLOBALCSS_VAR.primaryColor, fontFamily: GLOBALCSS_VAR.bodyFont }}
             >
               {badgeText}
             </span>
@@ -64,7 +63,7 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
           <h2 
             className="text-3xl md:text-4xl font-semibold mb-4" 
             style={{ 
-              fontFamily: headingFont,
+              fontFamily: GLOBALCSS_VAR.headingFont,
               color: isDark ? 'white' : '#343434'
             }}
           >
@@ -75,7 +74,7 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
             <p 
               className="text-lg" 
               style={{ 
-                fontFamily: bodyFont,
+                fontFamily: GLOBALCSS_VAR.bodyFont,
                 color: isDark ? '#E5E7EB' : '#4B5162'
               }}
             >
@@ -104,7 +103,7 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
                 <p 
                   className="text-lg"
                   style={{ 
-                    fontFamily: bodyFont,
+                    fontFamily: GLOBALCSS_VAR.bodyFont,
                     color: isDark ? '#E5E7EB' : '#101828',
                     lineHeight: 1.67
                   }}
@@ -124,7 +123,7 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
                   <h4 
                     className="font-bold text-lg"
                     style={{ 
-                      fontFamily: headingFont,
+                      fontFamily: GLOBALCSS_VAR.headingFont,
                       color: isDark ? 'white' : '#101828'
                     }}
                   >
@@ -133,7 +132,7 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
                   <p 
                     className="text-base"
                     style={{ 
-                      fontFamily: bodyFont,
+                      fontFamily: GLOBALCSS_VAR.bodyFont,
                       color: isDark ? '#9CA3AF' : '#475467'
                     }}
                   >

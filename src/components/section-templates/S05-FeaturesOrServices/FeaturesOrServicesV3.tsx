@@ -9,17 +9,17 @@ import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import { SectionHeading } from '@/components/template-ui/SectionHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 
 export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
   title = defaultFeaturesOrServicesProps.title,
   subtitle = defaultFeaturesOrServicesProps.subtitle,
   badgeText = defaultFeaturesOrServicesProps.badgeText,
-  ctaButtonText = defaultFeaturesOrServicesProps.ctaButtonText,
-  ctaButtonLink = defaultFeaturesOrServicesProps.ctaButtonLink,
+  ctaText = defaultFeaturesOrServicesProps.ctaText,
   services = defaultFeaturesOrServicesProps.services,
   theme = defaultFeaturesOrServicesProps.theme
 }) => {
-  const { primaryColor, headingFont, bodyFont, textColor } = useDesign().styleGuide;
   const isDark = theme === 'dark';
   
   return (
@@ -28,7 +28,9 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
         {/* Header Section */}
         <div className="flex justify-center mb-10">
           {badgeText && (
-            <Badge text={badgeText} theme={theme} />
+            <Badge theme={theme}>
+              {badgeText}
+            </Badge>
           )}
         </div>
         
@@ -38,7 +40,9 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
             {title}
           </SectionHeading>
           
-          <MyParagraph theme={theme} text={subtitle} />
+          <MyParagraph theme={theme} />
+            {subtitle}
+          <MyParagraph/>
         </div>
         
         {/* Services Cards */}
@@ -51,15 +55,15 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
               <div className="flex justify-between items-center pb-5 border-b border-gray-200 mb-5">
                 <h3 
                   className="text-xl font-medium pr-4"
-                  style={{ color: textColor, fontFamily: headingFont }}
+                  style={{ color: GLOBALCSS_VAR.textColor, fontFamily: GLOBALCSS_VAR.headingFont }}
                 >
                   {service.title}
                 </h3>
                 <div 
                   className="h-12 w-12 rounded-lg flex items-center justify-center font-semibold text-xl shadow-sm"
                   style={{ 
-                    backgroundColor: `${primaryColor}10`, 
-                    color: primaryColor 
+                    backgroundColor: `${GLOBALCSS_VAR.primaryColor10}`, 
+                    color: GLOBALCSS_VAR.primaryColor 
                   }}
                 >
                   {`0${index + 1}`}
@@ -68,7 +72,7 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
               
               <p 
                 className="mb-5 flex-grow"
-                style={{ color: textColor, fontFamily: bodyFont }}
+                style={{ color: GLOBALCSS_VAR.textColor, fontFamily: GLOBALCSS_VAR.bodyFont }}
               >
                 {service.description}
               </p>
@@ -87,25 +91,9 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
         </div>
         
         {/* CTA Button */}
-        {ctaButtonText && (
-          <div className="flex justify-center">
-            <Link 
-              href={ctaButtonLink || '#'} 
-              className="inline-flex items-center gap-3 text-white rounded-lg px-7 py-4 font-bold tracking-wide shadow-md transition-colors"
-              style={{ 
-                backgroundColor: primaryColor,
-                fontFamily: bodyFont 
-              }}
-            >
-              <span>{ctaButtonText}</span>
-              <span className="w-6 h-6 bg-white rounded-full flex items-center justify-center" style={{ color: primaryColor }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none">
-                  <path d="M1.5 11L6.5 6L1.5 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
-            </Link>
-          </div>
-        )}
+        <PrimaryButton theme={theme} className="mt-8">
+          {ctaText}
+        </PrimaryButton>
       </div>
     </MySection>
   );
