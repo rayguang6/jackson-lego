@@ -1,20 +1,42 @@
-// import { SectionTemplatesVariants } from '@/lib/templates/types';
-// import { CTAV1 } from './';
-// import { ThemeType, VersionType } from '@/lib/types';
+import { SectionTemplatesVariants } from '@/lib/templates/types';
+import { SocialProofV1 } from './SocialProofV1';
+import { SocialProofV2 } from './SocialProofV2';
+import { SocialProofV3 } from './SocialProofV3';
+import { ThemeType, VersionType } from '@/lib/types';
 
-// export const ctaTemplates: SectionTemplatesVariants = {
-//   [ThemeType.light]: {
-//     [VersionType.v1]: {
-//       id: 'cta-v1-light',
-//       component: CTAV1,
-//       theme: ThemeType.light
-//     },
-//   },
-//   [ThemeType.dark]: {
-//     [VersionType.v1]: {
-//       id: 'cta-v1-dark',
-//       component: CTAV1,
-//       theme: ThemeType.dark
-//     },
-//   }
-// }; 
+export const socialProofTemplates: SectionTemplatesVariants = {
+  [ThemeType.light]: {
+    [VersionType.v1]: {
+      id: 'social-proof-v1-light',
+      component: SocialProofV1,
+      theme: ThemeType.light
+    },
+    [VersionType.v2]: {
+      id: 'social-proof-v2-light',
+      component: SocialProofV2,
+      theme: ThemeType.light
+    },
+    [VersionType.v3]: {
+      id: 'social-proof-v3-light',
+      component: SocialProofV3,
+      theme: ThemeType.light
+    }
+  },
+  [ThemeType.dark]: {
+    [VersionType.v1]: {
+      id: 'social-proof-v1-dark',
+      component: SocialProofV1,
+      theme: ThemeType.dark
+    },
+    [VersionType.v2]: {
+      id: 'social-proof-v2-dark',
+      component: SocialProofV2,
+      theme: ThemeType.dark
+    },
+    [VersionType.v3]: {
+      id: 'social-proof-v3-dark',
+      component: SocialProofV3,
+      theme: ThemeType.dark
+    }
+  }
+}; 

@@ -28,12 +28,13 @@ export interface BaseSectionProps {
 // Section types
 export enum SectionType {
   S01_Hero = 'hero',
-  S02_SocialProof = 'socialProof',
+  S02_SocialProof = 'socialproof',
   S03_Problem = 'problem',
   S04_Solutions = 'solutions',
   S05_FeaturesOrServices = 'features',
-  S06_HowItWorks = 'howItWorks',
+  S06_HowItWorks = 'howitworks',
   S07_Testimonials = 'testimonials',
+  S08_FAQ = 'faq',
   S16_CTA = 'cta',
 }
 

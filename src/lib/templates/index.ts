@@ -59,15 +59,17 @@ import { featuresOrServicesTemplates } from '@/components/section-templates/S05-
 import { howItWorksTemplates } from '@/components/section-templates/S06-HowItWorks/register';
 import { testimonialsTemplates } from '@/components/section-templates/S07-Testimonials/register';
 import { ctaTemplates } from '@/components/section-templates/S16-CTA/register';
-
+import { socialProofTemplates } from '@/components/section-templates/S02-SocialProof/register';
 // Combine all section templates into a single registry
-export const templateRegistry: SectionTemplateRegistry = {
+export const templateRegistry: Partial<SectionTemplateRegistry> = {
   [SectionType.S01_Hero]: heroTemplates,
+  [SectionType.S02_SocialProof]: socialProofTemplates,
   [SectionType.S03_Problem]: problemTemplates,
   [SectionType.S04_Solutions]: solutionsTemplates,
   [SectionType.S05_FeaturesOrServices]: featuresOrServicesTemplates,
   [SectionType.S06_HowItWorks]: howItWorksTemplates,
   [SectionType.S07_Testimonials]: testimonialsTemplates,
+  // [SectionType.S08_FAQ]: faqTemplates,
   [SectionType.S16_CTA]: ctaTemplates,
 };
 

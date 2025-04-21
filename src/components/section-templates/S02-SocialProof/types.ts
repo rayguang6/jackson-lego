@@ -2,8 +2,8 @@ import { BaseSectionProps, ThemeType } from "@/lib/types";
 
 export interface SocialProofProps extends BaseSectionProps {
   // Common props
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   theme: ThemeType;
   
   // Social proof specific props
@@ -29,11 +29,12 @@ export const defaultSocialProofProps: SocialProofProps = {
   subtitle: "Join thousands of companies using our platform to accelerate their business",
   theme: ThemeType.light,
   logos: [
-    { url: "/images/templates/social-proof/logo-1.svg", alt: "Company 1" },
-    { url: "/images/templates/social-proof/logo-2.svg", alt: "Company 2" },
-    { url: "/images/templates/social-proof/logo-3.svg", alt: "Company 3" },
-    { url: "/images/templates/social-proof/logo-4.svg", alt: "Company 4" },
-    { url: "/images/templates/social-proof/logo-5.svg", alt: "Company 5" },
+    { url: "/images/templates/logos/logo-1.svg", alt: "Company Logo 1" },
+    { url: "/images/templates/logos/logo-2.svg", alt: "Company Logo 2" },
+    { url: "/images/templates/logos/logo-3.svg", alt: "Company Logo 3" },
+    { url: "/images/templates/logos/logo-4.svg", alt: "Company Logo 4" },
+    { url: "/images/templates/logos/logo-5.svg", alt: "Company Logo 5" },
+    { url: "/images/templates/logos/logo-6.svg", alt: "Company Logo 6" },
   ],
   stats: [
     { value: "10k+", label: "Users" },
@@ -44,6 +45,6 @@ export const defaultSocialProofProps: SocialProofProps = {
     quote: "This platform has completely transformed how our team works. The efficiency gains have been remarkable.",
     author: "Alex Morgan",
     role: "CEO at TechCorp",
-    avatarUrl: "/images/templates/social-proof/avatar.png",
+    avatarUrl: "/images/templates/testimonials/avatar.png",
   }
 };
