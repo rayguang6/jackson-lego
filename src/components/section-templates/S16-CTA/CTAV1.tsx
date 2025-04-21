@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MySection } from '@/components/template-ui/MySection';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { CTAProps, defaultCTAProps } from './types';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
@@ -27,9 +27,9 @@ export const CTAV1: React.FC<CTAProps> = ({
       <div className="z-10 flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 gap-8">
         {/* Text Content */}
         <div className="flex flex-col max-w-xl">
-          <SectionHeading theme={theme} className="mb-6">
+          <MyHeading theme={theme} className="mb-6">
             {title}
-          </SectionHeading>
+          </MyHeading>
 
           <MyParagraph theme={theme} className="mb-8">
             {subtitle}

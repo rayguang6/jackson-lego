@@ -10,6 +10,7 @@ export interface HowItWorksProps extends BaseSectionProps {
     title: string;
     description: string;
   }[];
+  image: string;
   ctaText?: string;
 }
 
@@ -19,17 +20,18 @@ export const defaultHowItWorksProps: HowItWorksProps = {
   subtitle: "Easily create stunning designs in just a few simple steps with our intuitive, multipurpose templates.",
   badgeText: "HOW IT WORKS?",
   theme: ThemeType.light, 
+  image: TEMPLATE_IMAGES.HOW_IT_WORKS.IMAGE_1,  
   features: [
         {
-            title: "1. Choose Your Template",
+            title: "Choose Your Template",
             description: "Pick a pre-designed template that suits your needs.",
         },
         {
-            title: "2. Customize Easily",
+            title: "Customize Easily",
             description: "Personalize with drag-and-drop.",
         },
         {
-            title: "3. Launch Fast",
+            title: "Launch Fast",
             description: "Quickly publish your site.",
         }   
   ],

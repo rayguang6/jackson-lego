@@ -6,7 +6,7 @@ import { MySection } from '@/components/template-ui/MySection';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 export const HowItWorksV1: React.FC<HowItWorksProps> = ({
   theme = defaultHowItWorksProps.theme,
@@ -72,12 +72,12 @@ export const HowItWorksV1: React.FC<HowItWorksProps> = ({
           </Badge>
 
           {/* Title */}
-          <SectionHeading
+          <MyHeading
             theme={theme}
             className="text-center max-w-[600px]"
           >
             {title}
-          </SectionHeading>
+          </MyHeading>
 
           {/* Subtitle */}
           <MyParagraph

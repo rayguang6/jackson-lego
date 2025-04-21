@@ -1,9 +1,13 @@
 import React from 'react';
 import { OfferProps, defaultOfferProps } from './types';
-
+import { Badge } from '@/components/template-ui/Badge';
+import { MyHeading } from '@/components/template-ui/MyHeading';
+import { MyParagraph } from '@/components/template-ui/MyParagraph';
+import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
+import Image from 'next/image';
 export const OfferV3: React.FC<OfferProps> = (props) => {
   const { 
-    eyebrowText, 
+    badgeText, 
     title, 
     subtitle, 
     offers,
@@ -37,26 +41,21 @@ export const OfferV3: React.FC<OfferProps> = (props) => {
     <section className={`w-full py-24 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex flex-col items-center gap-10">
-          {/* Eyebrow */}
-          {eyebrowText && (
-            <div className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium tracking-wide ${
-              isDark ? 'bg-gray-800 text-red-500 border border-gray-700' : 'bg-white text-red-600 border border-gray-200 shadow-sm'
-            }`}>
-              <span className="text-red-600 tracking-widest uppercase font-medium">{eyebrowText}</span>
-            </div>
-          )}
+          <Badge theme={theme}>
+            {badgeText}
+          </Badge>
           
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
             {title && (
-              <h2 className={`text-4xl font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <MyHeading as='h2' className={`text-4xl font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {title}
-              </h2>
+              </MyHeading>
             )}
             {subtitle && (
-              <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <MyParagraph theme={theme} className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {subtitle}
-              </p>
+              </MyParagraph>
             )}
           </div>
           
@@ -65,10 +64,12 @@ export const OfferV3: React.FC<OfferProps> = (props) => {
             {/* Devices Image - 2 columns */}
             <div className="lg:col-span-2 order-2 lg:order-1">
               <div className="relative w-full">
-                <img 
-                  src="https://placehold.co/800x800/FFE5E5/EF083A?text=Responsive+Devices" 
+                <Image 
+                  src={TEMPLATE_IMAGES.OFFER.BUNDLE_IMAGE} 
                   alt="Responsive Devices" 
-                  className="w-full h-auto rounded-lg shadow-xl"
+                  className="w-full h-auto"
+                  width={1000}
+                  height={1000}
                 />
               </div>
             </div>

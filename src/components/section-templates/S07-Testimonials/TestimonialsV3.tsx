@@ -5,41 +5,11 @@ import Image from 'next/image';
 import { TestimonialsProps, defaultTestimonialsProps } from './types';
 
 import { MySection } from '@/components/template-ui/MySection';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
-
+import { Badge } from '@/components/template-ui/Badge';
 // Custom placeholder avatar component
-const UserAvatar = ({ author, index, isDark, avatarUrl }: { author: string; index: number; isDark: boolean; avatarUrl?: string }) => {
-  // Only use the custom avatar if no avatarUrl is provided
-  if (!avatarUrl || avatarUrl.includes('testimonial-avatar')) {
-    const colors = ['#EF083A', '#3267FF', '#9061F9', '#2DA94F', '#FF8C42'];
-    const avatarColor = colors[index % colors.length];
-    const initials = author.split(' ').map(name => name[0]).join('').toUpperCase().substring(0, 2);
-    
-    return (
-      <div 
-        className="w-12 h-12 rounded-full flex items-center justify-center text-white text-base font-bold"
-        style={{ backgroundColor: avatarColor }}
-      >
-        {initials}
-      </div>
-    );
-  }
-  
-  // Return image if avatarUrl is provided
-  return (
-    <div className="w-12 h-12 rounded-full overflow-hidden">
-      <Image 
-        src={avatarUrl} 
-        alt={author}
-        width={48}
-        height={48}
-        className="object-cover w-full h-full"
-      />
-    </div>
-  );
-};
 
 // Render the star rating (all filled in V3 design)
 const renderStars = () => {
@@ -79,13 +49,13 @@ export const TestimonialsV3: React.FC<TestimonialsProps> = ({
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="max-w-3xl mx-auto mb-14 text-center">
-          <p className="text-sm font-semibold tracking-widest uppercase mb-4 text-primary">
+          <Badge theme={theme}>
             {badgeText || 'TESTIMONIAL'}
-          </p>
+          </Badge>
           
-          <SectionHeading theme={theme} className="mb-5 text-4xl font-semibold">
+          <MyHeading theme={theme} className="mb-5 text-4xl font-semibold mt-5">
             {title}
-          </SectionHeading>
+          </MyHeading>
           
           <MyParagraph theme={theme} className="text-lg">
             {subtitle}
@@ -94,50 +64,43 @@ export const TestimonialsV3: React.FC<TestimonialsProps> = ({
         
         {/* Testimonial Cards - First Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {displayTestimonials.slice(0, 3).map((testimonial, index) => (
+          {displayTestimonials.map((testimonial, index) => (
             <div 
               key={`row1-${index}`} 
               className={`
-                rounded-lg p-6 flex flex-col shadow-lg bg-white
+                rounded-lg p-6 flex flex-col shadow-lg 
               `}
+              style={{
+                backgroundColor: isDark ? '#1F2937' : '#F9FAFB'
+              }}
             >
+
+              {/* Star Rating */}
+              <div className="mt-4">
+                  {renderStars()}
+                </div>
+
+
               {/* Quote */}
-              <div className="mb-6">
-                <p 
-                  className="text-gray-900 text-lg"
-                  style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
-                >
+              <div className="mt-6 mb-2">
+                <MyParagraph theme={theme} className="text-lg">
                   "{testimonial.quote}"
-                </p>
+                </MyParagraph>
               </div>
               
               <div className="mt-auto">
-                {/* Star Rating */}
-                <div className="mb-4">
-                  {renderStars()}
-                </div>
+                
                 
                 {/* Author Info */}
                 <div className="flex items-center">
-                  <UserAvatar 
-                    author={testimonial.author} 
-                    index={index}
-                    isDark={isDark}
-                    avatarUrl={testimonial.avatarUrl}
-                  />
+                  <Image src={testimonial.avatarUrl} alt={testimonial.author} width={48} height={48} className="rounded-full" />
                   <div className="ml-4">
-                    <h3 
-                      className="font-bold text-base text-gray-900"
-                      style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
-                    >
+                    <MyHeading as='h4' theme={theme}>
                       {testimonial.author}
-                    </h3>
-                    <p 
-                      className="text-gray-500 text-sm"
-                      style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
-                    >
+                    </MyHeading>
+                    <MyParagraph className="text-sm" theme={theme}>
                       {testimonial.role} {testimonial.company ? `@${testimonial.company}` : ''}
-                    </p>
+                    </MyParagraph>
                   </div>
                 </div>
               </div>
@@ -145,58 +108,6 @@ export const TestimonialsV3: React.FC<TestimonialsProps> = ({
           ))}
         </div>
         
-        {/* Testimonial Cards - Second Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {displayTestimonials.slice(3, 6).map((testimonial, index) => (
-            <div 
-              key={`row2-${index}`} 
-              className={`
-                rounded-lg p-6 flex flex-col shadow-lg bg-white
-              `}
-            >
-              {/* Quote */}
-              <div className="mb-6">
-                <p 
-                  className="text-gray-900 text-lg"
-                  style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
-                >
-                  "{testimonial.quote}"
-                </p>
-              </div>
-              
-              <div className="mt-auto">
-                {/* Star Rating */}
-                <div className="mb-4">
-                  {renderStars()}
-                </div>
-                
-                {/* Author Info */}
-                <div className="flex items-center">
-                  <UserAvatar 
-                    author={testimonial.author} 
-                    index={index + 3} // Different colors for second row
-                    isDark={isDark}
-                    avatarUrl={testimonial.avatarUrl}
-                  />
-                  <div className="ml-4">
-                    <h3 
-                      className="font-bold text-base text-gray-900"
-                      style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
-                    >
-                      {testimonial.author}
-                    </h3>
-                    <p 
-                      className="text-gray-500 text-sm"
-                      style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
-                    >
-                      {testimonial.role} {testimonial.company ? `@${testimonial.company}` : ''}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </MySection>
   );

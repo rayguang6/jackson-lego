@@ -7,10 +7,11 @@ import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
-import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
+import { MyHeading, Highlight } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 
 
 export const HeroV2: React.FC<HeroProps> = ({
@@ -19,7 +20,7 @@ export const HeroV2: React.FC<HeroProps> = ({
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_2,
+  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_5,
   sectionId
 }: HeroProps) => {
 
@@ -47,12 +48,12 @@ export const HeroV2: React.FC<HeroProps> = ({
       </Badge>
 
       {/* Title */}
-      <SectionHeading theme={theme} className="max-w-[800px] mt-5">
+      <MyHeading theme={theme} as='h1' className="max-w-[800px] mt-5">
         {title}
         <Highlight>
             Maximum Efficiency
         </Highlight>
-      </SectionHeading>
+      </MyHeading>
 
 
       <MyParagraph theme={theme} className="max-w-[800px] mt-5">
@@ -73,6 +74,18 @@ export const HeroV2: React.FC<HeroProps> = ({
           height={450}
           className="w-full"
         />
+        <div className="absolute top-15 left-0 w-full h-full flex items-center justify-center">
+          <svg width="128" height="128" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle opacity="0.2" cx="72.0007" cy="72.0007" r="72.0007" fill={GLOBALCSS_VAR.primaryColor} fill-opacity="0.92"/>
+            <circle opacity="0.5" cx="72.0012" cy="72.0002" r="62.7952" fill={GLOBALCSS_VAR.primaryColor}/>
+            <circle opacity="0.5" cx="72.0043" cy="72.0028" r="52.932" fill={GLOBALCSS_VAR.primaryColor}/>
+            <circle opacity="0.2" cx="72.0053" cy="72.0019" r="42.4115" fill={GLOBALCSS_VAR.primaryColor}/>
+            <circle opacity="0.2" cx="72.001" cy="72.0035" r="33.2071" fill={GLOBALCSS_VAR.primaryColor}/>
+            <path d="M82.8132 72.2503C82.814 72.5703 82.7317 72.885 82.5742 73.1638C82.4167 73.4427 82.1894 73.6762 81.9145 73.8416L64.876 84.2233C64.5887 84.3985 64.2597 84.4942 63.923 84.5004C63.5862 84.5066 63.2538 84.4231 62.9602 84.2586C62.6695 84.0967 62.4272 83.8605 62.2585 83.5745C62.0897 83.2884 62.0005 82.9627 62 82.6308V61.8699C62.0005 61.538 62.0897 61.2123 62.2585 60.9262C62.4272 60.6401 62.6695 60.404 62.9602 60.242C63.2538 60.0776 63.5862 59.9941 63.923 60.0003C64.2597 60.0065 64.5887 60.1022 64.876 60.2774L81.9145 70.6591C82.1894 70.8245 82.4167 71.058 82.5742 71.3369C82.7317 71.6157 82.814 71.9304 82.8132 72.2503Z" fill="white"/>
+          </svg>
+        </div>
+
+        
         
       </div>
     </MySection>

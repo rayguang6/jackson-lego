@@ -3,9 +3,10 @@
 import React from 'react';
 import { SocialProofProps, defaultSocialProofProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
+import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 
 export const SocialProofV3: React.FC<SocialProofProps> = ({
-  logos = defaultSocialProofProps.logos,
+  imageUrl = TEMPLATE_IMAGES.SOCIAL_PROOF.IMAGE_4,
   theme = defaultSocialProofProps.theme,
   sectionId
 }) => {
@@ -26,15 +27,13 @@ export const SocialProofV3: React.FC<SocialProofProps> = ({
         
         {/* Logos */}
         <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-8 md:gap-x-16 lg:gap-x-20">
-          {logos?.map((logo, index) => (
-            <div key={index} className="h-6 md:h-8">
+            <div className="h-6 md:h-8">
               <img 
-                src={logo.url} 
-                alt={logo.alt}
+                src={imageUrl} 
+                alt="logo"
                 className={`h-full object-contain ${logoFilter}`}
               />
             </div>
-          ))}
         </div>
       </div>
     </MySection>

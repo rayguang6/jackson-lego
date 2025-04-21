@@ -3,16 +3,17 @@
 import React, { useState } from 'react';
 import { FAQProps, defaultFAQProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
-
+import { Badge } from '@/components/template-ui/Badge';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 export const FAQV1: React.FC<FAQProps> = ({
   title = defaultFAQProps.title,
   subtitle = defaultFAQProps.subtitle,
+  badgeText = defaultFAQProps.badgeText,
   faqs = defaultFAQProps.faqs,
   ctaText = defaultFAQProps.ctaText,
-  ctaLink = defaultFAQProps.ctaLink,
   theme = defaultFAQProps.theme,
   sectionId,
 }: FAQProps) => {
@@ -24,11 +25,19 @@ export const FAQV1: React.FC<FAQProps> = ({
 
   return (
     <MySection theme={theme} className="flex flex-col items-center">
+
+      {/* Badge */}
+      <div className="flex justify-center mb-5">
+        <Badge theme={theme}>
+          {badgeText || 'FAQ'}  
+        </Badge>
+      </div>
+
       {/* Title and subtitle */}
       <div className="text-center mb-12 max-w-[800px]">
-        <SectionHeading theme={theme} className="mb-4">
+        <MyHeading theme={theme} className="mb-4">
           {title}
-        </SectionHeading>
+        </MyHeading>
         <MyParagraph theme={theme}>
           {subtitle}
         </MyParagraph>
@@ -40,6 +49,9 @@ export const FAQV1: React.FC<FAQProps> = ({
           <div 
             key={index}
             className="mb-4 border-b border-gray-200 dark:border-gray-700 pb-4"
+            style={{
+              borderColor: theme === 'dark' ? '#252F3F' : '#E5E5E7'
+            }}
           >
             <button
               className={`flex w-full text-left items-center justify-between ${
@@ -50,34 +62,15 @@ export const FAQV1: React.FC<FAQProps> = ({
               <span>{faq.question}</span>
               <span className="ml-6">
                 {openIndex === index ? (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1.5" width="22" height="22" rx="11" stroke={GLOBALCSS_VAR.primaryColor} stroke-width="2"/>
+                    <rect x="6" y="11.5" width="12" height="2" rx="1" fill={GLOBALCSS_VAR.primaryColor}/>
                   </svg>
                 ) : (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
+                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1.5" width="22" height="22" rx="11" stroke={GLOBALCSS_VAR.primaryColor} stroke-width="2"/>
+                    <rect x="6" y="11.5" width="12" height="2" rx="1" fill={GLOBALCSS_VAR.primaryColor}/>
+                    <rect x="11" y="6.5" width="2" height="12" rx="1" fill={GLOBALCSS_VAR.primaryColor}/>
                   </svg>
                 )}
               </span>

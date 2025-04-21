@@ -7,7 +7,7 @@ import { FeaturesOrServicesProps, defaultFeaturesOrServicesProps } from './types
 
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
@@ -36,13 +36,13 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
         
         {/* Main heading */}
         <div className="max-w-3xl mx-auto mb-16 text-center">
-          <SectionHeading theme={theme} className="mb-6">
+          <MyHeading theme={theme} className="mb-6">
             {title}
-          </SectionHeading>
+          </MyHeading>
           
-          <MyParagraph theme={theme} />
+          <MyParagraph theme={theme}>
             {subtitle}
-          <MyParagraph/>
+          </MyParagraph>
         </div>
         
         {/* Services Cards */}
@@ -50,15 +50,16 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
           {services.slice(0, 3).map((service, index) => (
             <div 
               key={index} 
-              className="bg-gray-50 border border-gray-200 rounded-2xl p-5 flex flex-col h-full"
+              className=" border rounded-2xl p-5 flex flex-col h-full"
+              style={{
+                backgroundColor: theme === 'dark' ? '#1F2330' : '#F9F9FB',
+                border: '1px solid' + (theme === 'dark' ? '#4B5162':'#E5E5E7'),
+              }}
             >
               <div className="flex justify-between items-center pb-5 border-b border-gray-200 mb-5">
-                <h3 
-                  className="text-xl font-medium pr-4"
-                  style={{ color: GLOBALCSS_VAR.textColor, fontFamily: GLOBALCSS_VAR.headingFont }}
-                >
+                <MyHeading as='h4' theme={theme}>
                   {service.title}
-                </h3>
+                </MyHeading>
                 <div 
                   className="h-12 w-12 rounded-lg flex items-center justify-center font-semibold text-xl shadow-sm"
                   style={{ 
@@ -70,12 +71,9 @@ export const FeaturesOrServicesV3: React.FC<FeaturesOrServicesProps> = ({
                 </div>
               </div>
               
-              <p 
-                className="mb-5 flex-grow"
-                style={{ color: GLOBALCSS_VAR.textColor, fontFamily: GLOBALCSS_VAR.bodyFont }}
-              >
+              <MyParagraph theme={theme} className="mb-5 flex-grow">
                 {service.description}
-              </p>
+              </MyParagraph>
               
               <div className="rounded-2xl overflow-hidden mt-auto">
                 <Image 

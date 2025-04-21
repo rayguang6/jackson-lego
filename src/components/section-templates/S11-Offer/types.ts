@@ -8,7 +8,7 @@ export interface OfferItem {
 }
 
 export interface OfferProps extends BaseSectionProps {
-  eyebrowText?: string;
+  badgeText?: string;
   title?: string;
   subtitle?: string;
   offers?: OfferItem[];
@@ -22,7 +22,7 @@ export interface OfferProps extends BaseSectionProps {
 }
 
 export const defaultOfferProps: OfferProps = {
-  eyebrowText: 'LIMITED TIME OFFER',
+  badgeText: 'LIMITED TIME OFFER',
   title: "Here's what you'll get...",
   subtitle: 'Join us for the newly launched by YourBrand - save time and work more efficiently!',
   offers: [

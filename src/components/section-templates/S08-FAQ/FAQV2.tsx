@@ -4,8 +4,9 @@ import React from 'react';
 import { FAQProps, defaultFAQProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 
 export const FAQV2: React.FC<FAQProps> = ({
   title = defaultFAQProps.title,
@@ -25,19 +26,17 @@ export const FAQV2: React.FC<FAQProps> = ({
       className="flex flex-col items-center py-24 px-6 md:px-16"
     >
       {/* Badge */}
-      <Badge 
-        theme={theme}
-        icon="none"
-        className="mb-10"
-      >
-        {badgeText}
-      </Badge>
+      <div className="flex justify-center mb-10">   
+        <Badge theme={theme}>
+          {badgeText}
+        </Badge>
+      </div>
 
       {/* Title and subtitle */}
       <div className="text-center mb-16 max-w-[800px]">
-        <SectionHeading theme={theme} className="mb-4">
+        <MyHeading theme={theme} className="mb-4">
           {title}
-        </SectionHeading>
+        </MyHeading>
         <MyParagraph theme={theme}>
           {subtitle}
         </MyParagraph>
@@ -50,15 +49,20 @@ export const FAQV2: React.FC<FAQProps> = ({
             key={index}
             className={`rounded-xl border ${
               openIndex === index 
-                ? `bg-[${isDark ? '#2A2A2A' : '#FFF7F7'}] border-[${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(91,4,23,0.05)'}]` 
-                : `bg-${isDark ? 'gray-800' : 'white'} border-[${isDark ? '#3D3D3D' : '#E5E5E7'}]`
-            }`}
+                ? `bg-[${isDark ? '#2A2A2A' : GLOBALCSS_VAR.primaryColor10}]` 
+                : `bg-${isDark ? 'gray-800' : 'white'} `
+            }`}  
+            style={{
+              borderColor: theme === 'dark' ? '#252F3F' : '#E5E5E7',
+              backgroundColor: openIndex === index ? isDark ? '#FFF' : GLOBALCSS_VAR.primaryColor10 : isDark ? 'gray-800' : 'white'
+            }}  
           >
             <div className="p-6">
               <div className="flex items-center justify-between gap-8">
-                <h3 className={`font-bold ${openIndex === index ? 'text-xl' : 'text-lg'} ${isDark ? 'text-white' : 'text-[#343434]'}`}>
+                <MyHeading style={{ color: index === openIndex ? GLOBALCSS_VAR.primaryColor : isDark ? '#FFF' : '#343434'}} as="h5" className={`font-bold ${openIndex === index ? 'text-xl' : 'text-lg'}`}>
                   {faq.question}
-                </h3>
+                </MyHeading>
+
                 {openIndex === index ? (
                   <div className="w-6 h-6 flex-shrink-0 relative">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,8 +72,8 @@ export const FAQV2: React.FC<FAQProps> = ({
                 ) : (
                   <div className="w-6 h-6 flex-shrink-0 relative">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M18 12H6" stroke="#EF083A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 18V6" stroke="#EF083A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M18 12H6" stroke={GLOBALCSS_VAR.primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 18V6" stroke={GLOBALCSS_VAR.primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                 )}

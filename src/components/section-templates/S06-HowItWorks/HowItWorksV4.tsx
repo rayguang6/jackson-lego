@@ -4,7 +4,10 @@ import React from 'react';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
-
+import { MyHeading } from '@/components/template-ui/MyHeading';
+import { MyParagraph } from '@/components/template-ui/MyParagraph';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 export const HowItWorksV4: React.FC<HowItWorksProps> = ({
   title = defaultHowItWorksProps.title,
   subtitle = defaultHowItWorksProps.subtitle,
@@ -15,10 +18,6 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
   sectionId
 }) => {
   const isDark = theme === 'dark';
-  const headingColor = isDark ? 'text-white' : 'text-[#343434]';
-  const subtitleColor = isDark ? 'text-gray-300' : 'text-[#4B5162]';
-  const stepTitleColor = isDark ? 'text-white' : 'text-[#343434]';
-  const stepDescColor = isDark ? 'text-gray-300' : 'text-[#52525B]';
   
   // Make sure we have exactly 3 features
   const displayFeatures = features?.slice(0, 3) || [];
@@ -36,18 +35,18 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
           
           {/* Title and Subtitle */}
           <div className="max-w-3xl mx-auto mb-16 text-center">
-            <h2 className={`text-3xl md:text-4xl font-semibold mb-6 ${headingColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+            <MyHeading theme={theme} className='mb-6'>
               {title}
-            </h2>
-            <p className={`text-base md:text-lg ${subtitleColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+            </MyHeading>
+            <MyParagraph theme={theme}>
               {subtitle}
-            </p>
+            </MyParagraph>
           </div>
           
           {/* Progress Bar */}
           <div className="relative w-full max-w-5xl mb-16">
-            <div className="h-0.5 bg-gray-200 w-full">
-              <div className="h-0.5 bg-[#EF083A] w-[30%]"></div>
+            <div className="h-1 w-full" style={{ backgroundColor: GLOBALCSS_VAR.primaryColor30 }}>
+              <div className="h-1.5 w-[30%]" style={{ backgroundColor: GLOBALCSS_VAR.primaryColor }}></div>
             </div>
           </div>
           
@@ -61,7 +60,7 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
                 <div key={index} className="flex flex-col items-start">
                   {/* Step Number */}
                   <div className="mb-5 relative">
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#EB5A68] to-[#EF083A] rotate-45 rounded-md shadow-lg w-12 h-12"></div>
+                    <div className="absolute inset-0 rotate-45 rounded-md shadow-lg w-12 h-12" style={{ backgroundColor: GLOBALCSS_VAR.primaryColor }}></div>
                     <div className="relative flex items-center justify-center w-12 h-12">
                       <span className="text-white font-bold text-xl">
                         {stepNumber}
@@ -71,12 +70,12 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
                   
                   {/* Step Content */}
                   <div>
-                    <h3 className={`text-xl font-bold mb-3 ${stepTitleColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+                    <MyHeading as='h4' theme={theme} className='mb-3'>
                       {title}
-                    </h3>
-                    <p className={`${stepDescColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+                    </MyHeading>
+                    <MyParagraph theme={theme}>
                       {feature.description}
-                    </p>
+                    </MyParagraph>
                   </div>
                 </div>
               );
@@ -86,23 +85,9 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
           {/* CTA Button */}
           {ctaText && (
             <div className="mt-6">
-              <button 
-                className="bg-[#EF083A] text-white px-7 py-3 rounded-lg font-bold uppercase tracking-wider flex items-center shadow-md hover:shadow-lg transition-shadow"
-                style={{ fontFamily: 'Archivo, sans-serif' }}
-              >
+              <PrimaryButton theme={theme} className="px-7 py-3 rounded-lg font-bold uppercase tracking-wider flex items-center shadow-md hover:shadow-lg transition-shadow">
                 {ctaText}
-                <span className="ml-2 bg-white text-[#EF083A] rounded-full w-6 h-6 flex items-center justify-center">
-                  <svg 
-                    width="10" 
-                    height="10" 
-                    viewBox="0 0 10 10" 
-                    fill="none" 
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M3 5H7M7 5L5 3M7 5L5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-              </button>
+              </PrimaryButton>
             </div>
           )}
         </div>

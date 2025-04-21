@@ -6,7 +6,7 @@ import { MySection } from '@/components/template-ui/MySection';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 export const HowItWorksV2: React.FC<HowItWorksProps> = ({
@@ -14,7 +14,20 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
   title = defaultHowItWorksProps.title,
   subtitle = defaultHowItWorksProps.subtitle,
   badgeText = defaultHowItWorksProps.badgeText,
-  features = defaultHowItWorksProps.features,
+  features = [
+    {
+      title: "Choose Your Template",
+      description: "Browse our collection of professionally designed, multipurpose templates crafted for various styles, industries, and needs. Each template is built to deliver exceptional results while maintaining visual appeal.",
+  },
+  {
+      title: "Customize Easily",
+      description: "Take full control of your design using our intuitive drag-and-drop editor. Personalize everything from text to images, colors, and layouts to perfectly reflect your brand’s unique identity. No technical expertise required.",
+  },
+  {
+      title: "Launch Fast",
+      description: "Once customized, easily publish your optimized, mobile-responsive design. Experience a smooth launch process that saves you time and drives impactful results right from the start.",
+  }   
+  ],
   ctaText = defaultHowItWorksProps.ctaText,
 }) => {
   const isDark = theme === 'dark';
@@ -34,12 +47,12 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
           </Badge>
 
           {/* Title */}
-          <SectionHeading
+          <MyHeading
             theme={theme}
             className="text-center max-w-[600px]"
           >
             {title}
-          </SectionHeading>
+          </MyHeading>
 
           {/* Subtitle */}
           <MyParagraph
@@ -76,18 +89,12 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
                   
                   {/* Step content */}
                   <div className="flex-1">
-                    <h3 
-                      className={`text-[26px] font-normal mb-2 ${isDark ? 'text-white' : 'text-[#4D4D4D]'}`}
-                      style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
-                    >
-                      {`${index + 1}. ${feature.title.replace(/\d+\.\s+/, '')}`}
-                    </h3>
-                    <p 
-                      className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-[#4D4D4D]'}`}
-                      style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
-                    >
+                    <MyHeading as='h4' style={{color: GLOBALCSS_VAR.primaryColor}}>
+                      {`${index + 1}. ${feature.title}`}
+                    </MyHeading>
+                    <MyParagraph theme={theme} className='mt-4'>
                       {feature.description}
-                    </p>
+                    </MyParagraph>
                   </div>
                 </div>
               ))}

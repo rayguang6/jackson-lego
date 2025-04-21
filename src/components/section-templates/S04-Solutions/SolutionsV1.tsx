@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { SolutionsProps, defaultSolutionsProps } from './types';
 
 import { MySection } from '@/components/template-ui/MySection';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading   } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GridIcon } from '@/components/template-ui/icons/GridIcon';
 import { Badge } from '@/components/template-ui/Badge';
@@ -53,9 +53,9 @@ export const SolutionsV1: React.FC<SolutionsProps> = ({
             </Badge>
 
             {/* Main heading */}
-            <SectionHeading theme={theme} className="mb-4 mt-5">
+            <MyHeading theme={theme} as='h1' className="mb-4 mt-5">
               {title}
-            </SectionHeading>
+            </MyHeading>
             
             {/* Subtitle */}
             <MyParagraph theme={theme}>
@@ -64,12 +64,9 @@ export const SolutionsV1: React.FC<SolutionsProps> = ({
             
             {/* Features section */}
             {sectionTitle && (
-              <h2 
-                className="text-sm font-bold uppercase tracking-wider mt-5"
-                style={{ color: GLOBALCSS_VAR.primaryColor, fontFamily: GLOBALCSS_VAR.headingFont }}
-              >
+              <MyHeading theme={theme} as='h2' className="text-sm font-bold uppercase tracking-wider mt-5">
                 {sectionTitle}
-              </h2>
+              </MyHeading>
             )}
             
             {/* Features list */}
@@ -83,23 +80,12 @@ export const SolutionsV1: React.FC<SolutionsProps> = ({
                     <GridIcon color={GLOBALCSS_VAR.primaryColor} className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 
-                      className="text-lg font-semibold mb-1"
-                      style={{ 
-                        color: isDark ? '#FFFFFF' : GLOBALCSS_VAR.textColor,
-                        fontFamily: GLOBALCSS_VAR.headingFont 
-                      }}
-                    >
+                    <MyHeading theme={theme} as='h5' className="text-lg font-semibold mb-1">
                       {feature.title}
-                    </h4>
-                    <p 
-                      style={{ 
-                        color: isDark ? '#E5E5E5' : GLOBALCSS_VAR.textColor,
-                        fontFamily: GLOBALCSS_VAR.bodyFont 
-                      }}
-                    >
+                    </MyHeading>
+                    <MyParagraph theme={theme} className="text-base">
                       {feature.description}
-                    </p>
+                    </MyParagraph>
                   </div>
                 </div>
               ))}

@@ -6,7 +6,7 @@ import { TestimonialsProps, defaultTestimonialsProps } from './types';
 
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 
@@ -87,9 +87,9 @@ export const TestimonialsV2: React.FC<TestimonialsProps> = ({
         
         {/* Header */}
         <div className="max-w-3xl mx-auto mb-10 text-center">
-          <SectionHeading theme={theme} className="mb-5 text-4xl font-semibold">
+          <MyHeading theme={theme} className="mb-5 text-4xl font-semibold">
             {title}
-          </SectionHeading>
+          </MyHeading>
           
           <MyParagraph theme={theme} className="text-lg">
             {subtitle}

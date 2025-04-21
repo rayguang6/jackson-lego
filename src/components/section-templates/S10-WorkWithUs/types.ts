@@ -1,38 +1,38 @@
+import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { BaseSectionProps, ThemeType } from '@/lib/types';
 
-export interface CardItem {
-  title: string;
-  description: string;
-  ctaText: string;
-  ctaLink: string;
-  iconId?: string;
-}
 
 export interface WorkWithUsProps extends BaseSectionProps {
-  eyebrowText?: string;
+  badgeText?: string;
   title?: string;
   subtitle?: string;
-  cards?: CardItem[];
+  cardItems: {
+    title: string;
+    description: string;
+    ctaText: string;
+    iconId?: string;
+    image?: string;
+  }[];
 }
 
 export const defaultWorkWithUsProps: WorkWithUsProps = {
-  eyebrowText: 'JOIN THE SUCCESS JOURNEY',
+  badgeText: 'JOIN THE SUCCESS JOURNEY',
   title: 'Stay Connected, Stay Ahead.',
   subtitle: 'Join our network for valuable insights, updates, and resources to fuel your growth.',
-  cards: [
+  cardItems: [
     {
       title: 'Join Our Community',
       description: 'Connect with a network of growth-driven individuals and gain valuable insights.',
       ctaText: 'Join The #1 Community Today!',
-      ctaLink: '#community',
-      iconId: 'community-icon'
+      iconId: 'community-icon',
+      image: TEMPLATE_IMAGES.WORK_WITH_US.IMAGE_1
     },
     {
       title: 'Subscribe Our Newsletter',
       description: 'Receive the latest industry trends, expert advice, and exclusive offers directly to your inbox.',
       ctaText: 'Subscribe Weekly Insights Now',
-      ctaLink: '#newsletter',
-      iconId: 'newsletter-icon'
+      iconId: 'newsletter-icon',
+      image: TEMPLATE_IMAGES.WORK_WITH_US.IMAGE_2
     }
   ],
   theme: ThemeType.light,

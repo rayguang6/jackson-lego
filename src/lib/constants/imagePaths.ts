@@ -7,7 +7,16 @@ export const TEMPLATE_IMAGES = {
     VIDEO_THUMBNAIL_2: '/images/templates/hero/video-thumbnail-2.png',
     VIDEO_THUMBNAIL_3: '/images/templates/hero/video-thumbnail-3.png',
     VIDEO_THUMBNAIL_4: '/images/templates/hero/video-thumbnail-4.png',
+    VIDEO_THUMBNAIL_5: '/images/templates/hero/video-thumbnail-5.png',
     AVATAR_GROUP: '/images/templates/hero/avatar-group.png',
+  },
+
+  // S02 - social proof
+  SOCIAL_PROOF: {
+    IMAGE_1: '/images/templates/social-proof/logo1.png',
+    IMAGE_2: '/images/templates/social-proof/logo2.png',
+    IMAGE_3: '/images/templates/social-proof/logo3.png',
+    IMAGE_4: '/images/templates/social-proof/logo4.png',
   },
   
   // Problem section
@@ -27,6 +36,34 @@ export const TEMPLATE_IMAGES = {
     FEATURES_IMAGE_3: '/images/templates/features/features_3.png',
     FEATURES_IMAGE_4: '/images/templates/features/features_4.png',
     SERVICE_CHECK_ICON: '/images/templates/features/service-check-icon.svg',
+  },
+
+  // How it works section
+  HOW_IT_WORKS: {
+    IMAGE_1: '/images/templates/how-it-works/workflow1.png',
+  },
+
+  // Testimonials section
+  TESTIMONIALS: {
+    IMAGE_1: '/images/templates/testimonials/1.png',
+    IMAGE_2: '/images/templates/testimonials/2.png',
+    IMAGE_3: '/images/templates/testimonials/3.png',
+    THUMBNAIL_1: '/images/templates/testimonials/thumbnail1.png',
+    THUMBNAIL_2: '/images/templates/testimonials/thumbnail2.png',
+  },
+
+  // Work with us section
+  WORK_WITH_US: {
+    IMAGE_1: '/images/templates/work-with-us/1.png',
+    IMAGE_2: '/images/templates/work-with-us/2.png',
+  },
+
+  //offer
+  OFFER: {
+    BUNDLE_IMAGE: '/images/templates/offer/bundle.png',
+    DESKTOP_IMAGE: '/images/templates/offer/desktop.png',
+    PEOPLE_IMAGE: '/images/templates/offer/people.png',
+
   },
 
   // CTA section

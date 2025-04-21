@@ -7,7 +7,7 @@ import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import { HeroProps, defaultHeroProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
-import { SectionHeading, Highlight } from '@/components/template-ui/SectionHeading';
+import { MyHeading, Highlight } from '@/components/template-ui/MyHeading';
 import { MySection } from '@/components/template-ui/MySection';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 export const HeroV3: React.FC<HeroProps> = ({
@@ -49,12 +49,12 @@ export const HeroV3: React.FC<HeroProps> = ({
             </div>
 
             {/* Title */}
-            <SectionHeading theme={theme} className="max-w-[1000px] mt-8">
+            <MyHeading theme={theme} as='h1' className="max-w-[1000px] mt-8">
               {title}
               <Highlight> 
                   Maximum Efficiency
               </Highlight>
-            </SectionHeading>
+            </MyHeading>
 
             <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
               {subtitle}

@@ -7,13 +7,15 @@ interface SectionProps {
   theme?: 'light' | 'dark';
   className?: string;
   backgroundColor?: string;
+  style?: React.CSSProperties;
 }
 
 export const MySection: React.FC<SectionProps> = ({
   children,
   theme = 'light',
   className = '',
-  backgroundColor,
+  backgroundColor,  
+  style
 }) => {
   const isDark = theme === 'dark';
 
@@ -29,6 +31,7 @@ export const MySection: React.FC<SectionProps> = ({
       `}
       style={{
         backgroundColor: bgColor,
+        ...style
       }}
     >
       <div className="max-w-[1170px] mx-auto">

@@ -11,13 +11,13 @@ export interface FAQProps extends BaseSectionProps {
   subtitle?: string;
   faqs?: FAQItem[];
   ctaText?: string;
-  ctaLink?: string;
   badgeText?: string;
 }
 
 export const defaultFAQProps: FAQProps = {
   title: 'Frequently Asked Questions',
-  subtitle: 'Find answers to the most common questions about our product and service.',
+  subtitle: 'Everything you need to know about the product and billing. ',
+  badgeText: 'FAQS',
   faqs: [
     {
       question: 'What is this product?',
@@ -40,8 +40,5 @@ export const defaultFAQProps: FAQProps = {
       answer: 'Yes, you can cancel your subscription at any time without any penalties.'
     }
   ],
-  ctaText: 'Still have questions? Contact us',
-  ctaLink: '#contact',
-  badgeText: 'FAQS',
   theme: ThemeType.light,
 }; 

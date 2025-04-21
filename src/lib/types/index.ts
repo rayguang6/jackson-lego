@@ -40,7 +40,8 @@ export enum SectionType {
   S11_Offer = 'offer',
   S12_WhoIsThisFor = 'whoisthisfor',
   S13_About = 'about',
-  S14_Guarantee = 'guarantee',
+  S14_CaseStudy = 'casestudy',
+  S15_Guarantee = 'guarantee',
   S16_CTA = 'cta',
 }
 

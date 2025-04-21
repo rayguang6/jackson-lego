@@ -6,7 +6,7 @@ import { MySection } from '@/components/template-ui/MySection';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
-import { SectionHeading } from '@/components/template-ui/SectionHeading';
+import { MyHeading } from '@/components/template-ui/MyHeading';
 import Image from 'next/image';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
@@ -20,12 +20,6 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
 }) => {
   const isDark = theme === 'dark';
 
-  // Icons that represent each step
-  const stepIcons = [
-    '/images/how-it-works/icon-template.svg',
-    '/images/how-it-works/icon-customize.svg',
-    '/images/how-it-works/icon-launch.svg'
-  ];
 
   return (
     <MySection
@@ -42,12 +36,12 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
           </Badge>
 
           {/* Title */}
-          <SectionHeading
+          <MyHeading
             theme={theme}
             className="text-center max-w-[600px]"
           >
             {title}
-          </SectionHeading>
+          </MyHeading>
 
           {/* Subtitle */}
           <MyParagraph
@@ -56,11 +50,10 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
             {subtitle}
           </MyParagraph>
 
-          {/* Horizontal Divider */}
-          <div className={`w-full h-px ${isDark ? 'bg-gray-700' : 'bg-gray-200'} my-4`}></div>
 
           {/* Steps Grid */}
           <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+
             {features?.map((feature, index) => (
               <div key={index} className="flex flex-col items-center text-center">
                 {/* Icon Container */}
@@ -123,20 +116,14 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
                 </div>
 
                 {/* Step Title */}
-                <h3
-                  className={`font-bold text-xl mb-2.5 ${isDark ? 'text-white' : 'text-[#343434]'}`}
-                  style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
-                >
-                  {feature.title.replace(/\d+\.\s+/, '')}
-                </h3>
+                <MyHeading as='h4' theme={theme}>
+                  {feature.title}
+                </MyHeading>
 
                 {/* Step Description */}
-                <p
-                  className={`text-lg ${isDark ? 'text-gray-300' : 'text-[#4B5162]'}`}
-                  style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
-                >
+                <MyParagraph theme={theme} className='mt-4'>
                   {feature.description}
-                </p>
+                </MyParagraph>
               </div>
             ))}
           </div>

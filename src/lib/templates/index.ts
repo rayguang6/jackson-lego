@@ -66,7 +66,8 @@ import { workWithUsTemplates } from '@/components/section-templates/S10-WorkWith
 import { offerTemplates } from '@/components/section-templates/S11-Offer/register';
 import { whoIsThisForTemplates } from '@/components/section-templates/S12-WhoIsThisFor/register';
 import { aboutTemplates } from '@/components/section-templates/S13-About/register';
-import { guaranteeTemplates } from '@/components/section-templates/S14-Guarantee/register';
+import { guaranteeTemplates } from '@/components/section-templates/S15-Guarantee/register';
+import { caseStudyTemplates } from '@/components/section-templates/S14-CaseStudy/register';
 
 // Combine all section templates into a single registry
 export const templateRegistry: Partial<SectionTemplateRegistry> = {
@@ -83,7 +84,8 @@ export const templateRegistry: Partial<SectionTemplateRegistry> = {
   [SectionType.S11_Offer]: offerTemplates,
   [SectionType.S12_WhoIsThisFor]: whoIsThisForTemplates,
   [SectionType.S13_About]: aboutTemplates,
-  [SectionType.S14_Guarantee]: guaranteeTemplates,
+  [SectionType.S14_CaseStudy]: caseStudyTemplates,
+  [SectionType.S15_Guarantee]: guaranteeTemplates,
   [SectionType.S16_CTA]: ctaTemplates,
 };
 

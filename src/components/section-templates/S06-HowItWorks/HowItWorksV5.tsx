@@ -5,21 +5,21 @@ import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
 import Image from 'next/image';
-
+import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { MyHeading } from '@/components/template-ui/MyHeading';
+import { MyParagraph } from '@/components/template-ui/MyParagraph';
 export const HowItWorksV5: React.FC<HowItWorksProps> = ({
   title = defaultHowItWorksProps.title,
   subtitle = defaultHowItWorksProps.subtitle,
   badgeText = defaultHowItWorksProps.badgeText,
   features = defaultHowItWorksProps.features,
+  image = defaultHowItWorksProps.image,
   ctaText = defaultHowItWorksProps.ctaText,
   theme = defaultHowItWorksProps.theme,
   sectionId
 }) => {
   const isDark = theme === 'dark';
-  const headingColor = isDark ? 'text-white' : 'text-[#343434]';
-  const subtitleColor = isDark ? 'text-gray-300' : 'text-[#4B5162]';
-  const stepTitleColor = isDark ? 'text-white' : 'text-[#EF083A]';
-  const stepDescColor = isDark ? 'text-gray-300' : 'text-[#505F7C]';
   
   // Make sure we have exactly 3 features
   const displayFeatures = features?.slice(0, 3) || [];
@@ -62,12 +62,12 @@ export const HowItWorksV5: React.FC<HowItWorksProps> = ({
           
           {/* Title and Subtitle */}
           <div className="max-w-3xl mx-auto">
-            <h2 className={`text-3xl md:text-4xl font-semibold mb-6 ${headingColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+            <MyHeading theme={theme}>
               {title}
-            </h2>
-            <p className={`text-base md:text-lg ${subtitleColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+            </MyHeading>
+            <MyParagraph theme={theme}>
               {subtitle}
-            </p>
+            </MyParagraph>
           </div>
         </div>
         
@@ -84,7 +84,7 @@ export const HowItWorksV5: React.FC<HowItWorksProps> = ({
                   <div key={index} className="flex items-start">
                     {/* Number Circle */}
                     <div className="mr-4 lg:mr-4 flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-[#EF083A] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: GLOBALCSS_VAR.primaryColor }}>
                         <span className="text-white font-bold" style={{ fontFamily: 'Manrope, sans-serif' }}>
                           {stepNumber}
                         </span>
@@ -94,14 +94,14 @@ export const HowItWorksV5: React.FC<HowItWorksProps> = ({
                     {/* Content */}
                     <div className="flex-grow">
                       {/* Title */}
-                      <h3 className={`text-xl lg:text-2xl font-semibold mb-4 ${stepTitleColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+                      <MyHeading as='h4' style={{color: GLOBALCSS_VAR.primaryColor}}>
                         {title}
-                      </h3>
+                      </MyHeading>
                       
                       {/* Description */}
-                      <p className={`${stepDescColor} text-base lg:text-lg`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+                      <MyParagraph theme={theme} className='mt-4'>
                         {feature.description}
-                      </p>
+                      </MyParagraph>
                     </div>
                   </div>
                 );
@@ -110,10 +110,10 @@ export const HowItWorksV5: React.FC<HowItWorksProps> = ({
           </div>
           
           {/* Image Column */}
-          <div className="w-full lg:w-2/5 rounded-md overflow-hidden">
-            <div className="aspect-[4/3] w-full h-full relative">
+          <div className="w-full rounded-md ">
+            <div className="w-full h-full relative">
               <Image
-                src="/images/templates/how-it-works/workflow-bg.jpg"
+                src={image}
                 alt="Workflow background"
                 fill
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -125,26 +125,12 @@ export const HowItWorksV5: React.FC<HowItWorksProps> = ({
         {/* CTA Button */}
         {ctaText && (
           <div className="mt-6 flex justify-center">
-            <button 
-              className="bg-[#EF083A] text-white px-7 py-3 rounded-lg font-bold uppercase tracking-wider flex items-center shadow-md hover:shadow-lg transition-shadow"
-              style={{ fontFamily: 'Archivo, sans-serif' }}
-            >
+            <PrimaryButton theme={theme} className="px-7 py-3 rounded-lg font-bold uppercase tracking-wider flex items-center shadow-md hover:shadow-lg transition-shadow">
               {ctaText}
-              <span className="ml-2 bg-white text-[#EF083A] rounded-full w-6 h-6 flex items-center justify-center">
-                <svg 
-                  width="10" 
-                  height="10" 
-                  viewBox="0 0 10 10" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M3 5H7M7 5L5 3M7 5L5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
-            </button>
+            </PrimaryButton>
           </div>
-        )}
-      </div>
+          )}
+        </div>
     </MySection>
   );
 }; 
