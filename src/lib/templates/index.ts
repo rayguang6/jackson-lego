@@ -60,6 +60,14 @@ import { howItWorksTemplates } from '@/components/section-templates/S06-HowItWor
 import { testimonialsTemplates } from '@/components/section-templates/S07-Testimonials/register';
 import { ctaTemplates } from '@/components/section-templates/S16-CTA/register';
 import { socialProofTemplates } from '@/components/section-templates/S02-SocialProof/register';
+import { faqTemplates } from '@/components/section-templates/S08-FAQ/register';
+import { beforeAfterTemplates } from '@/components/section-templates/S09-BeforeAfter/register';
+import { workWithUsTemplates } from '@/components/section-templates/S10-WorkWithUs/register';
+import { offerTemplates } from '@/components/section-templates/S11-Offer/register';
+import { whoIsThisForTemplates } from '@/components/section-templates/S12-WhoIsThisFor/register';
+import { aboutTemplates } from '@/components/section-templates/S13-About/register';
+import { guaranteeTemplates } from '@/components/section-templates/S14-Guarantee/register';
+
 // Combine all section templates into a single registry
 export const templateRegistry: Partial<SectionTemplateRegistry> = {
   [SectionType.S01_Hero]: heroTemplates,
@@ -69,7 +77,13 @@ export const templateRegistry: Partial<SectionTemplateRegistry> = {
   [SectionType.S05_FeaturesOrServices]: featuresOrServicesTemplates,
   [SectionType.S06_HowItWorks]: howItWorksTemplates,
   [SectionType.S07_Testimonials]: testimonialsTemplates,
-  // [SectionType.S08_FAQ]: faqTemplates,
+  [SectionType.S08_FAQ]: faqTemplates,
+  [SectionType.S09_BeforeAfter]: beforeAfterTemplates,
+  [SectionType.S10_WorkWithUs]: workWithUsTemplates,
+  [SectionType.S11_Offer]: offerTemplates,
+  [SectionType.S12_WhoIsThisFor]: whoIsThisForTemplates,
+  [SectionType.S13_About]: aboutTemplates,
+  [SectionType.S14_Guarantee]: guaranteeTemplates,
   [SectionType.S16_CTA]: ctaTemplates,
 };
 

@@ -3,6 +3,7 @@ import { ThemeType, VersionType } from '@/lib/types';
 import { SolutionsV1 } from './SolutionsV1';
 import { SolutionsV2 } from './SolutionsV2';
 import { SolutionsV3 } from './SolutionsV3';
+import { SolutionsV4 } from './SolutionsV4';
 
 export const solutionsTemplates: SectionTemplatesVariants = {
   [ThemeType.light]: {
@@ -20,6 +21,11 @@ export const solutionsTemplates: SectionTemplatesVariants = {
       id: 'solutions-v3-light',
       component: SolutionsV3,
       theme: ThemeType.light
+    },
+    [VersionType.v4]: {
+      id: 'solutions-v4-light',
+      component: SolutionsV4,
+      theme: ThemeType.light
     }
   },
   [ThemeType.dark]: {
@@ -36,6 +42,11 @@ export const solutionsTemplates: SectionTemplatesVariants = {
     [VersionType.v3]: {
       id: 'solutions-v3-dark',
       component: SolutionsV3,
+      theme: ThemeType.dark
+    },
+    [VersionType.v4]: {
+      id: 'solutions-v4-dark',
+      component: SolutionsV4,
       theme: ThemeType.dark
     }
   }

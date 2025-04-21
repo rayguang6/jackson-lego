@@ -33,6 +33,11 @@ export const TEMPLATE_IMAGES = {
   CTA: {
     CTA_IMAGE: '/images/templates/cta/cta-image.png',
   },
+  
+  // Guarantee section
+  GUARANTEE: {
+    BADGE: '/images/templates/guarantee/guarantee-badge.png',
+  },
 };
 
 // App images

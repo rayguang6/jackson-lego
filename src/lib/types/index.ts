@@ -35,6 +35,12 @@ export enum SectionType {
   S06_HowItWorks = 'howitworks',
   S07_Testimonials = 'testimonials',
   S08_FAQ = 'faq',
+  S09_BeforeAfter = 'beforeafter',
+  S10_WorkWithUs = 'workwithus',
+  S11_Offer = 'offer',
+  S12_WhoIsThisFor = 'whoisthisfor',
+  S13_About = 'about',
+  S14_Guarantee = 'guarantee',
   S16_CTA = 'cta',
 }
 

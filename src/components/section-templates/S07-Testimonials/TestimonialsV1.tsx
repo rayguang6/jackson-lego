@@ -29,9 +29,24 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
   subtitle = defaultTestimonialsProps.subtitle,
   badgeText = defaultTestimonialsProps.badgeText,
   testimonials = defaultTestimonialsProps.testimonials,
-  theme = defaultTestimonialsProps.theme
+  theme = defaultTestimonialsProps.theme,
+  sectionId
 }) => {
   const isDark = theme === 'dark';
+  const badgeColor = 'text-[#EF083A]';
+  const headingColor = isDark ? 'text-white' : 'text-[#343434]';
+  const subtitleColor = isDark ? 'text-gray-300' : 'text-[#4B5162]';
+  const cardBg = isDark ? 'bg-gray-800' : 'bg-white';
+  const cardBorder = isDark ? 'border-gray-700' : 'border-[#E5E5E7]';
+  const quoteColor = isDark ? 'text-white' : 'text-[#101828]';
+  const authorColor = isDark ? 'text-white' : 'text-[#101828]';
+  const roleColor = isDark ? 'text-gray-400' : 'text-[#475467]';
+  
+  // Make sure we have at least 3 testimonials
+  const displayTestimonials = testimonials.slice(0, 3);
+  while (displayTestimonials.length < 3) {
+    displayTestimonials.push(testimonials[0]);
+  }
   
   const renderStars = (rating: number = 5) => {
     return Array(5).fill(0).map((_, i) => (
@@ -45,100 +60,67 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
   
   return (
     <MySection theme={theme} className="py-24">
-      <div className="container mx-auto px-4">
-        {/* Badge */}
-        <div className="flex justify-center mb-3">
-          {badgeText && (
-            <span 
-              className="uppercase tracking-[0.06em] font-semibold text-sm"
-              style={{ color: GLOBALCSS_VAR.primaryColor, fontFamily: GLOBALCSS_VAR.bodyFont }}
-            >
+      <div id={sectionId} className="container mx-auto px-4 max-w-7xl">
+        {/* Heading Section */}
+        <div className="text-center mb-10 md:mb-16">
+          {/* Badge */}
+          <div className="mb-3">
+            <span className={`uppercase tracking-[0.06em] font-semibold text-sm ${badgeColor}`} style={{ fontFamily: 'Archivo, sans-serif' }}>
               {badgeText}
             </span>
-          )}
-        </div>
-        
-        {/* Header */}
-        <div className="max-w-3xl mx-auto mb-10 text-center">
-          <h2 
-            className="text-3xl md:text-4xl font-semibold mb-4" 
-            style={{ 
-              fontFamily: GLOBALCSS_VAR.headingFont,
-              color: isDark ? 'white' : '#343434'
-            }}
-          >
+          </div>
+          
+          {/* Title */}
+          <h2 className={`text-3xl md:text-4xl font-semibold mb-4 ${headingColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
             {title}
           </h2>
           
-          {subtitle && (
-            <p 
-              className="text-lg" 
-              style={{ 
-                fontFamily: GLOBALCSS_VAR.bodyFont,
-                color: isDark ? '#E5E7EB' : '#4B5162'
-              }}
-            >
-              {subtitle}
-            </p>
-          )}
+          {/* Subtitle */}
+          <p className={`text-base md:text-lg max-w-3xl mx-auto ${subtitleColor}`} style={{ fontFamily: 'Manrope, sans-serif' }}>
+            {subtitle}
+          </p>
         </div>
         
-        {/* Testimonial Cards - Horizontal Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {testimonials.slice(0, 3).map((testimonial, index) => (
+        {/* Testimonial Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {displayTestimonials.map((testimonial, index) => (
             <div 
               key={index} 
-              className={`
-                border rounded-xl p-8 flex flex-col
-                ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
-              `}
+              className={`flex flex-col border ${cardBorder} ${cardBg} rounded-xl p-8`}
             >
-              {/* Stars at the top */}
-              <div className="flex mb-6">
+              {/* Stars Rating */}
+              <div className="flex mb-5">
                 {renderStars(testimonial.rating)}
               </div>
               
               {/* Quote */}
               <div className="mb-6 flex-grow">
                 <p 
-                  className="text-lg"
+                  className={`text-lg ${quoteColor}`}
                   style={{ 
-                    fontFamily: GLOBALCSS_VAR.bodyFont,
-                    color: isDark ? '#E5E7EB' : '#101828',
-                    lineHeight: 1.67
+                    fontFamily: 'Manrope, sans-serif',
+                    lineHeight: '1.67',
+                    letterSpacing: '-0.04em'
                   }}
                 >
                   "{testimonial.quote}"
                 </p>
               </div>
               
-              {/* User info at the bottom */}
-              <div className="flex items-center">
-                <UserAvatar 
-                  author={testimonial.author} 
-                  index={index}
-                  isDark={isDark}
-                />
-                <div className="ml-4">
-                  <h4 
-                    className="font-bold text-lg"
-                    style={{ 
-                      fontFamily: GLOBALCSS_VAR.headingFont,
-                      color: isDark ? 'white' : '#101828'
-                    }}
-                  >
-                    {testimonial.author}
-                  </h4>
-                  <p 
-                    className="text-base"
-                    style={{ 
-                      fontFamily: GLOBALCSS_VAR.bodyFont,
-                      color: isDark ? '#9CA3AF' : '#475467'
-                    }}
-                  >
-                    {testimonial.role}{testimonial.company ? `, ${testimonial.company}` : ''}
-                  </p>
-                </div>
+              {/* Author Info */}
+              <div className="mt-auto">
+                <h4 
+                  className={`font-bold text-lg ${authorColor}`}
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  {testimonial.author}
+                </h4>
+                <p 
+                  className={`text-base ${roleColor}`}
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  {testimonial.role}{testimonial.company ? `, ${testimonial.company}` : ''}
+                </p>
               </div>
             </div>
           ))}
