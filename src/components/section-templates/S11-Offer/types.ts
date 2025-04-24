@@ -11,13 +11,14 @@ export interface OfferProps extends BaseSectionProps {
   badgeText?: string;
   title?: string;
   subtitle?: string;
+  image?: string;
+
   offers?: OfferItem[];
   specialOfferTitle?: string;
   specialOfferSubtitle?: string;
   specialOfferPrice?: string;
   specialOfferOriginalPrice?: string;
   ctaText?: string;
-  ctaLink?: string;
   footerText?: string;
 }
 
@@ -52,7 +53,6 @@ export const defaultOfferProps: OfferProps = {
   specialOfferPrice: 'ONLY $499',
   specialOfferOriginalPrice: 'Original Price: $997',
   ctaText: 'GET INSTANT ACCESS',
-  ctaLink: '#signup',
   footerText: 'Join 4,600+ People and Accelerate Your Growth: Save Time, Get Sales',
   theme: ThemeType.light,
 }; 

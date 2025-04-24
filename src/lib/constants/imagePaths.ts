@@ -63,7 +63,14 @@ export const TEMPLATE_IMAGES = {
     BUNDLE_IMAGE: '/images/templates/offer/bundle.png',
     DESKTOP_IMAGE: '/images/templates/offer/desktop.png',
     PEOPLE_IMAGE: '/images/templates/offer/people.png',
+    RATING_IMAGE: '/images/templates/offer/rating.png',
+  },
 
+  // Who is this for section
+  WHO_IS_THIS_FOR: {
+    PROFILE_IMAGE_1: '/images/templates/who-is-this-for/1.png',
+    PROFILE_IMAGE_2: '/images/templates/who-is-this-for/2.png',
+    PROFILE_IMAGE_3: '/images/templates/who-is-this-for/3.png',
   },
 
   // CTA section
@@ -74,6 +81,15 @@ export const TEMPLATE_IMAGES = {
   // Guarantee section
   GUARANTEE: {
     BADGE: '/images/templates/guarantee/guarantee-badge.png',
+  },
+
+  COMMON: {
+    HUMAN_IMAGE_1: '/images/templates/common/human-1.png',
+    HUMAN_IMAGE_2: '/images/templates/common/human-2.png',
+    HUMAN_IMAGE_3: '/images/templates/common/human-3.png',
+    HUMAN_IMAGE_4: '/images/templates/common/human-4.png',
+    HUMAN_IMAGE_5: '/images/templates/common/human-5.png',
+    
   },
 };
 

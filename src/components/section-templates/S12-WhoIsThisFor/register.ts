@@ -3,6 +3,7 @@ import { ThemeType, VersionType } from '@/lib/types';
 import { WhoIsThisForV1 } from './WhoIsThisForV1';
 import { WhoIsThisForV2 } from './WhoIsThisForV2';
 
+
 /**
  * Template registry for WhoIsThisFor section
  * - Contains light and dark theme variants

@@ -1,53 +1,56 @@
 import React from 'react';
 import { WhoIsThisForProps, defaultWhoIsThisForProps } from './types';
+import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { MyHeading } from '@/components/template-ui/MyHeading';
+import { MyParagraph } from '@/components/template-ui/MyParagraph';   
+import Image from 'next/image';
+import { Badge } from '@/components/template-ui/Badge';
+import { MySection } from '@/components/template-ui/MySection';
 
-export const WhoIsThisForV2: React.FC<WhoIsThisForProps> = (props) => {
-  const {
-    title,
-    subtitle,
-    profiles,
-    theme,
-  } = { ...defaultWhoIsThisForProps, ...props };
+export const WhoIsThisForV2: React.FC<WhoIsThisForProps> = ({
+  title = "If you think you are one of them...",
+  subtitle = defaultWhoIsThisForProps.subtitle,
+  profiles = defaultWhoIsThisForProps.profiles,
+  theme = defaultWhoIsThisForProps.theme,
+  badgeText = defaultWhoIsThisForProps.badgeText,
+}) => {
+ 
+  const isDark = theme === 'dark';
 
   return (
-    <section className={`py-16 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+    <MySection theme={theme}>
       <div className="container mx-auto px-4 max-w-6xl">
+        <div className="flex justify-center">
+          <Badge theme={theme}>
+            {badgeText}
+          </Badge>
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">{title}</h2>
-          {subtitle && <p className="text-xl max-w-3xl mx-auto">{subtitle}</p>}
+        <div className="text-center mt-5">
+          <MyHeading as='h2' theme={theme} className="text-4xl font-bold">{title}</MyHeading>
+          <MyHeading as='h2' style={{color: GLOBALCSS_VAR.primaryColor}} className="text-4xl font-bold">We need to talk</MyHeading>
         </div>
         
-        {/* Profiles */}
-        <div className="space-y-12">
+        {/* Profiles Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
           {profiles.map((profile, index) => (
             <div 
               key={index} 
-              className={`flex flex-col md:flex-row items-center gap-8 p-8 rounded-xl transition-all duration-300 ${
-                theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'
-              } ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}
+              className={`p-8 rounded-xl transition-all duration-300 ${
+                isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100'
+              }`}
             >
-              {profile.image && (
-                <div className="mb-6 md:mb-0">
-                  <img 
-                    src={profile.image} 
-                    alt={profile.name} 
-                    className="w-32 h-32 rounded-full object-cover" 
-                  />
-                </div>
-              )}
-              
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2">{profile.name}</h3>
-                <p className={`text-sm mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {profile.role}
-                </p>
-                <p className="text-base">{profile.description}</p>
-              </div>
+             
+              <MyHeading as='h5' theme={theme} className="font-bold mb-2" style={{color: GLOBALCSS_VAR.primaryColor}}>{profile.role}</MyHeading>
+              <MyParagraph theme={theme} className={`mb-4`}>
+                {profile.description}
+              </MyParagraph>
+             
             </div>
           ))}
         </div>
       </div>
-    </section>
+    </MySection>
   );
 }; 

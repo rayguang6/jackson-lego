@@ -7,21 +7,19 @@ import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import Image from 'next/image';
 import { MySection } from '@/components/template-ui/MySection';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
-export const OfferV1: React.FC<OfferProps> = (props) => {
-  const { 
-    badgeText,  
-    title, 
-    subtitle, 
-    offers,
-    specialOfferTitle,
-    specialOfferSubtitle,
-    specialOfferPrice,
-    specialOfferOriginalPrice,
-    ctaText,
-    ctaLink,
-    footerText,
-    theme 
-  } = { ...defaultOfferProps, ...props };
+export const OfferV1: React.FC<OfferProps> = ({
+  badgeText = defaultOfferProps.badgeText,  
+  title = defaultOfferProps.title, 
+  subtitle = defaultOfferProps.subtitle, 
+  offers = defaultOfferProps.offers,
+  theme = defaultOfferProps.theme,
+  specialOfferTitle = defaultOfferProps.specialOfferTitle,
+  specialOfferSubtitle = defaultOfferProps.specialOfferSubtitle,
+  specialOfferPrice = defaultOfferProps.specialOfferPrice,
+  specialOfferOriginalPrice = defaultOfferProps.specialOfferOriginalPrice,
+  ctaText = defaultOfferProps.ctaText,
+  footerText = defaultOfferProps.footerText,
+}) => {
 
   const isDark = theme === 'dark';
   

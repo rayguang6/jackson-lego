@@ -43,6 +43,6 @@ export const defaultAboutProps: AboutProps = {
       description: 'Save time with our streamlined templates and automated workflows.'
     }
   ],
-  imageUrl: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_1,
+  imageUrl: TEMPLATE_IMAGES.COMMON.HUMAN_IMAGE_1,
   theme: ThemeType.light
 }; 

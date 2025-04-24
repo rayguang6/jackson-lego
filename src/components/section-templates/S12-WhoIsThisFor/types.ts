@@ -4,35 +4,33 @@ import { BaseSectionProps, ThemeType } from "@/lib/types";
 export interface WhoIsThisForProps extends BaseSectionProps {
   title: string;
   subtitle?: string;
+  badgeText?: string;
   profiles: {
-    name: string;
     role: string;
-    image?: string;
     description: string;
+    image?: string;
   }[];
 }
 
 export const defaultWhoIsThisForProps: WhoIsThisForProps = {
-  title: 'Who is this for?',
-  subtitle: 'This program is designed for individuals who want to transform their careers.',
+  title: 'Made for everyone',
+  badgeText: 'WHO IS THIS FOR?',
+  subtitle: 'Join our network for valuable insights, updates, and resources to fuel your growth.',
   profiles: [
     {
-      name: 'Career Changers',
-      role: 'Looking for a new path',
-      image: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_1,
-      description: 'Professionals seeking to pivot to a new industry with transferable skills.'
+      role: 'For Designers',
+      image: TEMPLATE_IMAGES.WHO_IS_THIS_FOR.PROFILE_IMAGE_1,
+      description: "Customize templates effortlessly for unique designs."
     },
     {
-      name: 'Entrepreneurs',
-      role: 'Building the future',
-      image: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_2,
-      description: 'Visionaries who want to start their own business and make an impact.'
+      role: 'For Startups',
+      image: TEMPLATE_IMAGES.WHO_IS_THIS_FOR.PROFILE_IMAGE_2,
+      description: "Launch your business quickly with ready-made templates."
     },
     {
-      name: 'Skills Upgraders',
-      role: 'Advancing expertise',
-      image: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_3,
-      description: 'Individuals looking to enhance their current skill set with cutting-edge knowledge.'
+      role: 'For Agencies',
+      image: TEMPLATE_IMAGES.WHO_IS_THIS_FOR.PROFILE_IMAGE_3,
+      description: "Manage client projects with fast, adaptable templates."
     }
   ],
   theme: ThemeType.light
