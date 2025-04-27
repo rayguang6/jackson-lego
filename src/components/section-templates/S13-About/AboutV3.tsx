@@ -1,5 +1,8 @@
 import React from 'react';
 import { AboutProps, defaultAboutProps } from './types';
+import { MyParagraph } from '@/components/template-ui/MyParagraph';
+import { MyHeading } from '@/components/template-ui/MyHeading';
+import { Badge } from '@/components/template-ui/Badge';
 
 export const AboutV3: React.FC<AboutProps> = (props) => {
   const {
@@ -17,20 +20,15 @@ export const AboutV3: React.FC<AboutProps> = (props) => {
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           <div className="max-w-xl">
             {/* Badge */}
-            {badgeText && (
-              <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white shadow-md mb-5">
-                <span className="w-4 h-4 bg-red-600 rounded-full flex-shrink-0"></span>
-                <span className="text-sm font-medium tracking-wider text-red-600 uppercase">{badgeText}</span>
-              </div>
-            )}
+            <Badge theme={theme}>{badgeText}</Badge>
 
             {/* Title and Subtitle */}
-            <h2 className="text-4xl font-bold mb-4">{title}</h2>
-            <p className="text-lg text-gray-600 mb-10">{subtitle}</p>
+            <MyHeading className='mt-5' as="h2">{title}</MyHeading>
+            <MyParagraph className='mt-5'>{subtitle}</MyParagraph>
 
             {/* Features */}
             {features && features.length > 0 && (
-              <div className="bg-red-50 rounded-lg p-8 space-y-8">
+              <div className="bg-red-50 rounded-lg p-8 space-y-8 mt-5">
                 {features.map((feature, index) => (
                   <div key={index}>
                     {index > 0 && <div className="h-px bg-gray-200 opacity-30 mb-8"></div>}

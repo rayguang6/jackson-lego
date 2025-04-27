@@ -57,7 +57,7 @@ export const HowItWorksV2: React.FC<HowItWorksProps> = ({
           {/* Subtitle */}
           <MyParagraph
             theme={theme}
-          >
+          >""
             {subtitle}
           </MyParagraph>
 
