@@ -73,16 +73,25 @@ export const TEMPLATE_IMAGES = {
     PROFILE_IMAGE_3: '/images/templates/who-is-this-for/3.png',
   },
 
-  // CTA section
-  CTA: {
-    CTA_IMAGE: '/images/templates/cta/cta-image.png',
+  //Case Study
+  CASE_STUDY: {
+    CS_LOGO_1: '/images/templates/case-study/cs-logo-1.png',
+    CS_LOGO_2: '/images/templates/case-study/cs-logo-2.png',
+    CS_HUMAN_1: '/images/templates/case-study/cs-human-1.png',
+    CS_HUMAN_2: '/images/templates/case-study/cs-human-2.png',
   },
-  
+
   // Guarantee section
   GUARANTEE: {
     BADGE: '/images/templates/guarantee/guarantee-badge.png',
   },
 
+  // CTA section
+  CTA: {
+    CTA_IMAGE: '/images/templates/cta/cta-image.png',
+  },
+  
+  
   COMMON: {
     HUMAN_IMAGE_1: '/images/templates/common/human-1.png',
     HUMAN_IMAGE_2: '/images/templates/common/human-2.png',
@@ -91,6 +100,9 @@ export const TEMPLATE_IMAGES = {
     HUMAN_IMAGE_5: '/images/templates/common/human-5.png',
     
   },
+
+
+  // CTA section
 };
 
 // App images

@@ -7,10 +7,9 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { CTAProps, defaultCTAProps } from './types';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import Image from 'next/image';
-import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { EditableText } from '@/components/editable/EditableText';
 
-export const CTAV1: React.FC<CTAProps> = ({
+export const CTAV3: React.FC<CTAProps> = ({
   title = defaultCTAProps.title,
   subtitle = defaultCTAProps.subtitle,
   ctaText = defaultCTAProps.ctaText,
@@ -24,24 +23,22 @@ export const CTAV1: React.FC<CTAProps> = ({
     <MySection 
       theme={theme}
       className="relative overflow-hidden"
-      backgroundColor={isDark ? '#000000' : GLOBALCSS_VAR.primaryColor10}
     >
       {/* Content */}
-      <div className={` z-10 flex flex-col justify-between items-center max-w-6xl mx-auto sm:px-6 lg:px-12 py-16 md:py-24 gap-8`}>
+      <div style={{ backgroundColor: isDark ? '#ffffff08' : '#F9F9F9', borderRadius: '10px', border: isDark ? '1px solid #4B5162' : '' }} className={` z-10 flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto sm:px-6 lg:px-12 py-16 md:py-24 gap-8`}>
 
         {/* Text Content */}
-        <div className="flex flex-col">
-          <MyHeading theme={theme} className="mt-5 text-center">
+        <div className="flex flex-col max-w-xl">
+          <MyHeading theme={theme} className="mt-5">
             {/* EditableText */}
             <EditableText
               sectionId={sectionId}
               contentPath="title"
-              className="text-center"
               defaultValue={title}
             />
           </MyHeading>
 
-          <MyParagraph theme={theme} className="mt-5 text-center">
+          <MyParagraph theme={theme} className="mt-5">
             {/* EditableText */}
             <EditableText
               sectionId={sectionId}
@@ -51,7 +48,7 @@ export const CTAV1: React.FC<CTAProps> = ({
           </MyParagraph>
 
           {/* CTA Button */}
-          <PrimaryButton theme={theme} className="mt-5 w-fit mx-auto">
+          <PrimaryButton theme={theme} className="mt-5 w-fit">
             {/* EditableText */}
             <EditableText
               sectionId={sectionId}
@@ -59,6 +56,30 @@ export const CTAV1: React.FC<CTAProps> = ({
               defaultValue={ctaText}
             />
           </PrimaryButton>
+        </div>
+
+        {/* Image - added border to make it visible even when empty */}
+        <div className="w-full md:w-auto">
+          <div className={`rounded-lg overflow-hidden`}>
+            {/* <EditableImage
+              sectionId={sectionId}
+              contentPath="imageUrl"
+              defaultSrc={imageUrl || ''}
+              alt="CTA Image"
+              width={400}
+              height={400}
+              objectFit="contain"
+              className="w-full"
+            /> */}
+            <Image
+                src={imageUrl}
+                alt="CTA Image"
+                width={400}
+                height={400}
+                style={{ objectFit: 'cover' }}
+                className="w-full h-full"
+              />
+          </div>
         </div>
       </div>
     </MySection>

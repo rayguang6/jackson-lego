@@ -6,15 +6,13 @@ export interface GuaranteeProps extends BaseSectionProps {
   subtitle: string;
   badgeText?: string;
   badgeIcon?: string;
-  guaranteeImageUrl?: string;
-  backgroundColor?: string;
-  textColor?: string;
+  imageUrl?: string;
 }
 
 export const defaultGuaranteeProps: GuaranteeProps = {
   title: '100% Satisfaction Guarantee',
   subtitle: 'All Pro And Enterprise Plans Come With A 30-Day Money-Back Guarantee. Try Risk-Free!',
   badgeText: 'MONEY-BACK GUARANTEE',
-  guaranteeImageUrl: TEMPLATE_IMAGES.GUARANTEE.BADGE,
+  imageUrl: TEMPLATE_IMAGES.GUARANTEE.BADGE,
   theme: ThemeType.light
 }; 

@@ -27,10 +27,30 @@ export const EditableText: React.FC<EditableTextProps> = ({
   // Only allow editing in the website builder
   const isWebsiteBuilder = pathname === '/';
   
-  // Get value from content or use default
+  // Get value from content or use default, properly handling nested paths
   const getValue = () => {
     if (!section?.content) return defaultValue;
-    return section.content[contentPath] || defaultValue;
+    
+    // For simple paths (no nesting), use direct access
+    if (!contentPath.includes('.')) {
+      return section.content[contentPath] || defaultValue;
+    }
+    
+    // For nested paths, traverse the object
+    try {
+      const parts = contentPath.split('.');
+      let value = section.content;
+      
+      for (const part of parts) {
+        if (value === undefined || value === null) return defaultValue;
+        value = value[part];
+      }
+      
+      return value !== undefined && value !== null ? value : defaultValue;
+    } catch (error) {
+      console.error(`Error accessing nested path ${contentPath}:`, error);
+      return defaultValue;
+    }
   };
   
   const handleClick = () => {

@@ -6,35 +6,44 @@ export interface CaseStudyProps extends BaseSectionProps {
   subtitle: string;
   badgeText?: string;
   ctaText?: string;
-  ctaLink?: string;
-  caseStudies: CaseStudyItem[];
+  caseStudies: {
+    companyName: string;
+    companyLogo?: string;
+    problem: string;
+    personImage?: string;
+    afterUsingText?: string;
+    results: {
+      value: string;
+      label: string;
+    }[];
+  }[];
 }
 
-export interface CaseStudyItem {
-  companyName: string;
-  companyLogo?: string;
-  problem: string;
-  personImage?: string;
-  results: ResultItem[];
-}
+// export interface CaseStudyItem {
+//   companyName: string;
+//   companyLogo?: string;
+//   problem: string;
+//   personImage?: string;
+//   results: ResultItem[];
+// }
 
-export interface ResultItem {
-  value: string;
-  label: string;
-}
+// export interface ResultItem {
+//   value: string;
+//   label: string;
+// }
 
 export const defaultCaseStudyProps: CaseStudyProps = {
   title: 'We love to see you grow',
   subtitle: 'Join the countless businesses we\'ve helped scale with ease and efficiency.',
   badgeText: 'SUCCESS STORIES',
   ctaText: 'GET INSTANT ACCESS',
-  ctaLink: '#',
   caseStudies: [
     {
       companyName: 'Adobe',
-      companyLogo: '/images/templates/casestudy/adobe-logo.png',
+      companyLogo: TEMPLATE_IMAGES.CASE_STUDY.CS_LOGO_1,
       problem: 'Adobe Startup struggled with inefficient workflows, low engagement on social platforms, and inconsistent sales funnels',
-      personImage: '/images/templates/casestudy/person-1.jpg',
+      personImage: TEMPLATE_IMAGES.CASE_STUDY.CS_HUMAN_1,
+      afterUsingText: 'After using YourBrand:',
       results: [
         {
           value: '40%',
@@ -48,9 +57,10 @@ export const defaultCaseStudyProps: CaseStudyProps = {
     },
     {
       companyName: 'Zapier',
-      companyLogo: '/images/templates/casestudy/zapier-logo.png',
+      companyLogo: TEMPLATE_IMAGES.CASE_STUDY.CS_LOGO_2,
       problem: 'Zapier agency struggled to meet tight deadlines, juggling multiple clients, and dealing with lengthy project timelines.',
-      personImage: '/images/templates/casestudy/person-2.jpg',
+      personImage: TEMPLATE_IMAGES.CASE_STUDY.CS_HUMAN_2,
+      afterUsingText: 'After using YourBrand:',
       results: [
         {
           value: '70%',
