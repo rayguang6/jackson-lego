@@ -1,19 +1,17 @@
 import { BaseSectionProps, ThemeType } from '@/lib/types';
 
-export interface OfferItem {
-  offerNumber: string;
-  title: string;
-  description: string;
-  imageUrl?: string;
-}
-
 export interface OfferProps extends BaseSectionProps {
   badgeText?: string;
   title?: string;
   subtitle?: string;
   image?: string;
 
-  offers?: OfferItem[];
+  offers?:{
+    offerNumber: string;
+    title: string;
+    description: string;
+    imageUrl?: string;
+  }[];
   specialOfferTitle?: string;
   specialOfferSubtitle?: string;
   specialOfferPrice?: string;

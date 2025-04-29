@@ -12,6 +12,7 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { BaseSectionProps } from '@/lib/types';
+import { EditableText } from '@/components/editable/EditableText';
 
 export const HeroV1: React.FC<HeroProps> = ({
   title = defaultHeroProps.title,
@@ -40,20 +41,32 @@ export const HeroV1: React.FC<HeroProps> = ({
       <Badge 
         theme={theme}
       >
-        {badgeText}
+        <EditableText
+          defaultValue={badgeText}
+          contentPath={`badgeText`}
+          className="w-full"
+        />
       </Badge>
 
 
       {/* Title */}
       <MyHeading theme={theme} as='h1' className="max-w-[800px] mt-5">
-        {title}
+        <EditableText
+          defaultValue={title}
+          contentPath={`title`}
+          className="w-full"
+        />  
         <Highlight>
             Maximum Efficiency
         </Highlight>
       </MyHeading>
 
       <MyParagraph theme={theme} className="max-w-[800px] mt-5">
-        {subtitle}
+        <EditableText
+          defaultValue={subtitle}
+          contentPath={`subtitle`}
+          className="w-full"
+        />
       </MyParagraph>
 
 
@@ -61,7 +74,11 @@ export const HeroV1: React.FC<HeroProps> = ({
 
       {/* CTA Button */}
       <PrimaryButton theme={theme} className="mt-8">
-        {ctaText}
+        <EditableText
+          defaultValue={ctaText}
+          contentPath={`ctaText`}
+          className="w-full"
+        />
       </PrimaryButton>
 
       {/* Video Thumbnail */}

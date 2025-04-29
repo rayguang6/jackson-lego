@@ -68,6 +68,11 @@ import { whoIsThisForTemplates } from '@/components/section-templates/S12-WhoIsT
 import { aboutTemplates } from '@/components/section-templates/S13-About/register';
 import { guaranteeTemplates } from '@/components/section-templates/S15-Guarantee/register';
 import { caseStudyTemplates } from '@/components/section-templates/S14-CaseStudy/register';
+import { webinarHeroTemplates } from '@/components/section-templates/S17-WebinarHero/register';
+import { webinarBenefitsTemplates } from '@/components/section-templates/S18-WebinarBenefits/register';
+import { webinarFeaturesTemplates } from '@/components/section-templates/S19-WebinarFeatures/register';
+import { webinarTestimonialsTemplates } from '@/components/section-templates/S20-WebinarTestimonials/register';
+import { webinarScheduleTemplates } from '@/components/section-templates/S22-WebinarSchedule/register';
 
 // Combine all section templates into a single registry
 export const templateRegistry: Partial<SectionTemplateRegistry> = {
@@ -87,6 +92,11 @@ export const templateRegistry: Partial<SectionTemplateRegistry> = {
   [SectionType.S14_CaseStudy]: caseStudyTemplates,
   [SectionType.S15_Guarantee]: guaranteeTemplates,
   [SectionType.S16_CTA]: ctaTemplates,
+  [SectionType.S17_WebinarHero]: webinarHeroTemplates,
+  [SectionType.S18_WebinarBenefits]: webinarBenefitsTemplates,
+  [SectionType.S19_WebinarFeatures]: webinarFeaturesTemplates,
+  [SectionType.S20_WebinarTestimonials]: webinarTestimonialsTemplates,
+  [SectionType.S22_WebinarSchedule]: webinarScheduleTemplates,
 };
 
 export * from './types';

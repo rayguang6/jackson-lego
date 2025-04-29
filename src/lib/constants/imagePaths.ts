@@ -9,6 +9,7 @@ export const TEMPLATE_IMAGES = {
     VIDEO_THUMBNAIL_4: '/images/templates/hero/video-thumbnail-4.png',
     VIDEO_THUMBNAIL_5: '/images/templates/hero/video-thumbnail-5.png',
     AVATAR_GROUP: '/images/templates/hero/avatar-group.png',
+    WEBINAR_HERO_IMAGE: '/images/templates/hero/webinar-hero.png',
   },
 
   // S02 - social proof
@@ -91,6 +92,28 @@ export const TEMPLATE_IMAGES = {
     CTA_IMAGE: '/images/templates/cta/cta-image.png',
   },
   
+  // Webinar section
+  WEBINAR: {
+    WEBINAR_HERO_IMAGE: '/images/templates/webinar/hero-image.png',
+    BENEFITS: {
+      CHECK_ICON: '/images/templates/webinar/benefits/check-icon.svg',
+      GROUP_ICON: '/images/templates/webinar/benefits/group-icon.svg',
+      CHAT_ICON: '/images/templates/webinar/benefits/chat-icon.svg',
+    },
+    FEATURES: {
+      FEATURE_1: '/images/templates/webinar/features/feature-1.svg',
+      FEATURE_2: '/images/templates/webinar/features/feature-2.svg',
+      FEATURE_3: '/images/templates/webinar/features/feature-3.svg',
+      FEATURE_4: '/images/templates/webinar/features/feature-4.svg',
+      FEATURE_5: '/images/templates/webinar/features/feature-5.svg',
+      FEATURE_6: '/images/templates/webinar/features/feature-6.svg',
+    },
+    TESTIMONIALS: {
+      TESTIMONIAL_1: '/images/templates/webinar/testimonials/testimonial-1.png',
+      TESTIMONIAL_2: '/images/templates/webinar/testimonials/testimonial-2.png',
+      TESTIMONIAL_3: '/images/templates/webinar/testimonials/testimonial-3.png',
+    }
+  },
   
   COMMON: {
     HUMAN_IMAGE_1: '/images/templates/common/human-1.png',
@@ -98,9 +121,7 @@ export const TEMPLATE_IMAGES = {
     HUMAN_IMAGE_3: '/images/templates/common/human-3.png',
     HUMAN_IMAGE_4: '/images/templates/common/human-4.png',
     HUMAN_IMAGE_5: '/images/templates/common/human-5.png',
-    
   },
-
 
   // CTA section
 };

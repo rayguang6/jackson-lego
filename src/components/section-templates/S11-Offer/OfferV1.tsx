@@ -7,19 +7,22 @@ import { TEMPLATE_IMAGES } from '@/lib/constants/imagePaths';
 import Image from 'next/image';
 import { MySection } from '@/components/template-ui/MySection';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { EditableText } from '@/components/editable/EditableText';
+
 export const OfferV1: React.FC<OfferProps> = ({
-  badgeText = defaultOfferProps.badgeText,  
-  title = defaultOfferProps.title, 
-  subtitle = defaultOfferProps.subtitle, 
-  offers = defaultOfferProps.offers,
-  theme = defaultOfferProps.theme,
-  specialOfferTitle = defaultOfferProps.specialOfferTitle,
-  specialOfferSubtitle = defaultOfferProps.specialOfferSubtitle,
-  specialOfferPrice = defaultOfferProps.specialOfferPrice,
-  specialOfferOriginalPrice = defaultOfferProps.specialOfferOriginalPrice,
-  ctaText = defaultOfferProps.ctaText,
-  footerText = defaultOfferProps.footerText,
-}) => {
+    badgeText = defaultOfferProps.badgeText,
+    title = defaultOfferProps.title,
+    subtitle = defaultOfferProps.subtitle,
+    offers = defaultOfferProps.offers || [],
+    theme = defaultOfferProps.theme,
+    specialOfferTitle = defaultOfferProps.specialOfferTitle,
+    specialOfferSubtitle = defaultOfferProps.specialOfferSubtitle,
+    specialOfferPrice = defaultOfferProps.specialOfferPrice,
+    specialOfferOriginalPrice = defaultOfferProps.specialOfferOriginalPrice,
+    ctaText = defaultOfferProps.ctaText,
+    footerText = defaultOfferProps.footerText,
+    sectionId
+  }: OfferProps) => {
 
   const isDark = theme === 'dark';
   
@@ -28,20 +31,31 @@ export const OfferV1: React.FC<OfferProps> = ({
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex flex-col items-center gap-10">
           <Badge theme={theme}>
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              contentPath="badgeText"
+              defaultValue={badgeText || ''}
+            />
           </Badge>
-          
           
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
             {title && (
               <MyHeading as='h2' className={`text-4xl font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {title}
+                <EditableText
+                  sectionId={sectionId}
+                  contentPath="title"
+                  defaultValue={title}
+                />
               </MyHeading>
             )}
             {subtitle && (
               <MyParagraph theme={theme} className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                {subtitle}
+                <EditableText
+                  sectionId={sectionId}
+                  contentPath="subtitle"
+                  defaultValue={subtitle}
+                />
               </MyParagraph>
             )}
           </div>
@@ -61,7 +75,7 @@ export const OfferV1: React.FC<OfferProps> = ({
           
           {/* Offers */}
           <div className="flex flex-col gap-6 w-full mt-6">
-            {offers?.map((offer, index) => (
+            {offers && offers.length > 0 && offers.map((offer, index) => (
               <div 
                 key={index} 
                 className={`p-6 rounded-lg border w-full max-w-4xl mx-auto ${
@@ -89,17 +103,29 @@ export const OfferV1: React.FC<OfferProps> = ({
                     <div className="mb-4">
                       {/* Offer Number */}
                       <MyHeading as='h3' className={`text-red-600 font-medium text-base mb-2`}>
-                        {offer.offerNumber}
+                        <EditableText
+                          sectionId={sectionId}
+                          contentPath={`offers.${index}.offerNumber`}
+                          defaultValue={offer.offerNumber}
+                        />        
                       </MyHeading>
                       
                       {/* Offer Title */}
                       <MyHeading as='h3' className={`text-2xl font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {offer.title}
+                        <EditableText
+                          sectionId={sectionId}
+                          contentPath={`offers.${index}.title`}
+                          defaultValue={offer.title}
+                        />
                       </MyHeading>
                       
                       {/* Offer Description */}
                       <MyParagraph theme={theme} className={`text-base ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                        {offer.description}
+                        <EditableText
+                          sectionId={sectionId}
+                          contentPath={`offers.${index}.description`}
+                          defaultValue={offer.description}
+                        />
                       </MyParagraph>
                     </div>
                   </div>
@@ -111,24 +137,46 @@ export const OfferV1: React.FC<OfferProps> = ({
           {/* Special Offer */}
           <div className="mt-16 text-center">
             <MyHeading as='h3' className={`text-2xl font-medium ${isDark ? 'text-white' : 'text-gray-800'}`}>
-              {specialOfferTitle}
+              <EditableText
+                sectionId={sectionId}
+                contentPath="specialOfferTitle"
+                defaultValue={specialOfferTitle || ''}
+              />
             </MyHeading>
             <MyParagraph theme={theme} className={`uppercase tracking-[0.24em] mt-3 font-bold text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {specialOfferSubtitle}
+              <EditableText
+                sectionId={sectionId}
+                contentPath="specialOfferSubtitle"
+                defaultValue={specialOfferSubtitle || ''}
+              />
             </MyParagraph>
             <div className="mt-4">
               <MyHeading as='h3' className={`text-6xl md:text-7xl font-extrabold text-red-600 leading-tight`}>
-                {specialOfferPrice}
+                <EditableText
+                  sectionId={sectionId}
+                  contentPath="specialOfferPrice"
+                  defaultValue={specialOfferPrice || ''}
+                />
               </MyHeading>
               <MyParagraph theme={theme} className={`text-3xl mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                <s>{specialOfferOriginalPrice}</s>
+                <s>
+                  <EditableText
+                    sectionId={sectionId}
+                    contentPath="specialOfferOriginalPrice"
+                    defaultValue={specialOfferOriginalPrice || ''}
+                  />
+                </s>
               </MyParagraph>
             </div>
           </div>
           
           {/* CTA Button */}
           <PrimaryButton theme={theme}>
-            {ctaText}
+            <EditableText
+              sectionId={sectionId}
+              contentPath="ctaText"
+              defaultValue={ctaText || ''}
+            />
           </PrimaryButton>
           
           {/* Footer Text */}
@@ -145,7 +193,11 @@ export const OfferV1: React.FC<OfferProps> = ({
                 />
               </div>
               <MyParagraph theme={theme} className={`text-base ${isDark ? 'text-gray-300' : 'text-gray-800'}`}>
-                {footerText}
+                <EditableText
+                  sectionId={sectionId}
+                  contentPath="footerText"
+                  defaultValue={footerText || ''}
+                />
               </MyParagraph>
             </div>
           )}

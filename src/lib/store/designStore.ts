@@ -34,16 +34,16 @@ interface DesignStore {
   updateBodyFont: (font: string) => void
 
   // Reset / Import
-  resetDesign: () => void
-  resetSections: () => void
+  resetDesign: (sections?: WebsiteSection[]) => void
+  resetSections: (sections?: WebsiteSection[]) => void
   resetStyleGuide: () => void
   loadDesign: (design: WebsiteDesign) => void
 }
 
-const getInitialDesign = (): WebsiteDesign => ({
+const getInitialDesign = (sections: WebsiteSection[] = defaultSections): WebsiteDesign => ({
   id: uuidv4(),
   name: 'New Website Design',
-  sections: defaultSections,
+  sections,
   styleGuide: initialStyleGuide,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
@@ -200,12 +200,12 @@ export const useDesignStore = create<DesignStore>()(
         updateBodyFont:        (f) => mergeStyle({ bodyFont:        f }),
 
         // RESET & IMPORT
-        resetDesign:   () => set({ design: getInitialDesign() }),
-        resetSections: () =>
+        resetDesign: (sections = defaultSections) => set({ design: getInitialDesign(sections) }),
+        resetSections: (sections = defaultSections) =>
           set((state) => ({
             design: {
               ...state.design,
-              sections: defaultSections,
+              sections,
               updatedAt: new Date().toISOString(),
             },
           })),
@@ -220,6 +220,8 @@ export const useDesignStore = create<DesignStore>()(
         loadDesign: (design) => set({ design }),
       }
     },
-    { name: 'jackson-lego-design-store' }
+    {
+      name: 'website-design-storage',
+    }
   )
 )

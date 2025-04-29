@@ -10,6 +10,8 @@ import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { MyHeading, Highlight } from '@/components/template-ui/MyHeading';
 import { MySection } from '@/components/template-ui/MySection';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
+import { EditableText } from '@/components/editable/EditableText';
+
 export const HeroV3: React.FC<HeroProps> = ({
   title = defaultHeroProps.title,
   subtitle = defaultHeroProps.subtitle,
@@ -50,14 +52,22 @@ export const HeroV3: React.FC<HeroProps> = ({
 
             {/* Title */}
             <MyHeading theme={theme} as='h1' className="max-w-[1000px] mt-8">
-              {title}
+              <EditableText
+                defaultValue={title}
+                contentPath={`title`}
+                className="w-full"
+              />
               <Highlight> 
                   Maximum Efficiency
               </Highlight>
             </MyHeading>
 
             <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
-              {subtitle}
+              <EditableText
+                defaultValue={subtitle}
+                contentPath={`subtitle`}
+                className="w-full"
+              />
             </MyParagraph>
   
             {/* Feature List */}
@@ -70,7 +80,11 @@ export const HeroV3: React.FC<HeroProps> = ({
                     </svg>
                   </div>
                   <span style={{ fontFamily: 'var(--body-font)' }} className={`text-sm leading-[1.75] ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    {feature}
+                    <EditableText
+                      defaultValue={feature}
+                      contentPath={`features.${index}`}
+                      className="w-full"
+                    />
                     </span>
                 </div>
               ))}
@@ -79,7 +93,11 @@ export const HeroV3: React.FC<HeroProps> = ({
             {/* CTA Button */}
             <div className="mt-8">
               <PrimaryButton theme={theme}>
-                {ctaText}
+                <EditableText
+                  defaultValue={ctaText}
+                  contentPath={`ctaText`}
+                  className="w-full"
+                />
               </PrimaryButton>
             </div>
 
@@ -94,7 +112,11 @@ export const HeroV3: React.FC<HeroProps> = ({
                 />
               </div>
               <p style={{ fontFamily: 'var(--body-font)' }} className={`text-sm font-medium ${isDark ? 'text-white/50' : 'text-gray-500'}`}>
-                {credibilityText}
+                <EditableText
+                  defaultValue={credibilityText || ''}
+                  contentPath={`credibilityText`}
+                  className="w-full"
+                />
               </p>
             </div>
           </div>

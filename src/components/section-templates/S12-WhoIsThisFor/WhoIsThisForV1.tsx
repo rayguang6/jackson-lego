@@ -6,14 +6,16 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import Image from 'next/image';
 import { Badge } from '@/components/template-ui/Badge';
 import { MySection } from '@/components/template-ui/MySection';
+import { EditableText } from '@/components/editable/EditableText';
+
 export const WhoIsThisForV1: React.FC<WhoIsThisForProps> = ({
   title = defaultWhoIsThisForProps.title,
   subtitle = defaultWhoIsThisForProps.subtitle,
-  profiles = defaultWhoIsThisForProps.profiles,
+  profiles = defaultWhoIsThisForProps.profiles || [],
   theme = defaultWhoIsThisForProps.theme,
   badgeText = defaultWhoIsThisForProps.badgeText,
+  sectionId
 }) => {
- 
   const isDark = theme === 'dark';
 
   return (
@@ -21,29 +23,56 @@ export const WhoIsThisForV1: React.FC<WhoIsThisForProps> = ({
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex justify-center">
           <Badge theme={theme}>
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              contentPath="badgeText"
+              defaultValue={badgeText || ''}
+            />
           </Badge>
         </div>
 
         {/* Header */}
         <div className="text-center mt-5">
-          <MyHeading as='h2' theme={theme} className="text-4xl font-bold mb-4">{title}</MyHeading>
-          {subtitle && <MyParagraph theme={theme} className="text-xl max-w-3xl mx-auto">{subtitle}</MyParagraph>}
+          <MyHeading as='h2' theme={theme} className="text-4xl font-bold mb-4">
+            <EditableText
+              sectionId={sectionId}
+              contentPath="title"
+              defaultValue={title}
+            />
+          </MyHeading>
+          {subtitle && (
+            <MyParagraph theme={theme} className="text-xl max-w-3xl mx-auto">
+              <EditableText
+                sectionId={sectionId}
+                contentPath="subtitle"
+                defaultValue={subtitle}
+              />
+            </MyParagraph>
+          )}
         </div>
         
         {/* Profiles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-          {profiles.map((profile, index) => (
+          {Array.isArray(profiles) && profiles.map((profile, index) => (
             <div 
               key={index} 
               className={`p-8 rounded-xl transition-all duration-300 ${
                 isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100'
               }`}
             >
-             
-              <MyHeading as='h5' theme={theme} className="font-bold mb-2" style={{color: GLOBALCSS_VAR.primaryColor}}>{profile.role}</MyHeading>
-              <MyParagraph theme={theme} className={`mb-4`}>
-                {profile.description}
+              <MyHeading as='h5' theme={theme} className="font-bold mb-2" style={{color: GLOBALCSS_VAR.primaryColor}}>
+                <EditableText
+                  sectionId={sectionId}
+                  contentPath={`profiles.${index}.role`}
+                  defaultValue={profile.role}
+                />
+              </MyHeading>
+              <MyParagraph theme={theme} className="mb-4">
+                <EditableText
+                  sectionId={sectionId}
+                  contentPath={`profiles.${index}.description`}
+                  defaultValue={profile.description}
+                />
               </MyParagraph>
               {profile.image && (
                 <div className="mb-4 flex justify-center">

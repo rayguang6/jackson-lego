@@ -66,4 +66,13 @@ export const defaultSections: WebsiteSection[] = [
     theme: ThemeType.light,
     content: {},
   },
+  {
+    id: uuidv4(),
+    type: SectionType.S22_WebinarSchedule,
+    title: 'Webinar Schedule',
+    order: 7,
+    templateId: `${SectionType.S22_WebinarSchedule}-v1-light`,
+    theme: ThemeType.light,
+    content: {},
+  },
 ]; 
