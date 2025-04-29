@@ -16,13 +16,15 @@ import { EditableText } from '@/components/editable/EditableText';
 
 
 export const HeroV2: React.FC<HeroProps> = ({
-  title = "Multipurpose Page Blocks Designed for ",
+  logoName = defaultHeroProps.logoName,
+  title = defaultHeroProps.title,
+  highlightText = defaultHeroProps.highlightText,
   subtitle = defaultHeroProps.subtitle,
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_5,
-  sectionId
+  imageUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_5,
+  sectionId = defaultHeroProps.sectionId || ''
 }: HeroProps) => {
 
 
@@ -31,21 +33,31 @@ export const HeroV2: React.FC<HeroProps> = ({
   return (
     <MySection 
       theme={theme}
-      className="flex flex-col items-center text-center py-0 !pb-0"
+      className="flex flex-col items-center text-center !pb-0"
     >
       {/* Logo */}
-      <div className="mb-8">
-        <LogoIcon 
-          theme={theme}
-          className='mx-auto'
-        />
+      <div className="flex justify-center w-full items-center">
+        <div className="flex items-center justify-center gap-3">
+          <LogoIcon 
+            theme={theme}
+          />
+          <MyHeading as="h4" theme={theme} className="m-0">
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={logoName}
+              contentPath={`logoName`}
+            />
+          </MyHeading>
+        </div>
       </div>
 
       {/* Badge */} 
       <Badge 
         theme={theme}
+        className="mt-10"
       >
         <EditableText
+          sectionId={sectionId}
           defaultValue={badgeText}
           contentPath={`badgeText`}
           className="w-full"
@@ -55,27 +67,32 @@ export const HeroV2: React.FC<HeroProps> = ({
       {/* Title */}
       <MyHeading theme={theme} as='h1' className="max-w-[800px] mt-5">
         <EditableText
+          sectionId={sectionId}
           defaultValue={title}
           contentPath={`title`}
-          className="w-full"
-        />
+        />  
         <Highlight>
-            Maximum Efficiency
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={highlightText}
+              contentPath={`highlightText`}
+            />
         </Highlight>
       </MyHeading>
 
-
-      <MyParagraph theme={theme} className="max-w-[800px] mt-5">
-        <EditableText
+      <MyParagraph  theme={theme} className="max-w-[800px] mt-5">
+        <EditableText 
+          sectionId={sectionId}
           defaultValue={subtitle}
           contentPath={`subtitle`}
-          className="w-full"
+
         />
       </MyParagraph>
 
       {/* CTA Button */}
-      <PrimaryButton theme={theme} className="mt-8">
-        <EditableText
+      <PrimaryButton theme={theme} className="mt-10">
+        <EditableText 
+          sectionId={sectionId}
           defaultValue={ctaText}
           contentPath={`ctaText`}
           className="w-full"
@@ -85,7 +102,7 @@ export const HeroV2: React.FC<HeroProps> = ({
       {/* Video Thumbnail */}
       <div className="relative w-full max-w-[1000px] max-h-[400px] overflow-hidden mt-16">
         <Image
-          src={videoThumbnailUrl}
+          src={imageUrl}
           alt="Video thumbnail"
           width={800}
           height={450}

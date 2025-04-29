@@ -6,16 +6,14 @@ export interface SolutionsProps extends BaseSectionProps {
   title: string;
   subtitle: string;
   theme: ThemeType;
-  badgeText?: string;
-  // Solutions specific props
+  badgeText: string;
   sectionTitle?: string;
+  imageUrl?: string;
+  // Solutions specific props - now using an array of features
   features: Array<{
     title: string;
     description: string;
-    iconColor?: string;
   }>;
-  imageUrl?: string;
-  sectionId?: string;
 }
 
 // Default values that can be used by any Solutions variant
@@ -29,27 +27,27 @@ export const defaultSolutionsProps: SolutionsProps = {
   features: [
     {
       title: "Easy and intuitive",
-      description: "Create reports with an easy to use drag-and-drop designer.",
+      description: "Create reports with an easy to use drag-and-drop designer."
     },
     {
       title: "Quick deployment",
-      description: "Launch your website in minutes with our streamlined setup process.",
+      description: "Launch your website in minutes with our streamlined setup process."
     },
     {
       title: "Customizable design",
-      description: "Adapt every element to match your brand identity with flexible styling options.",
+      description: "Adapt every element to match your brand identity with flexible styling options."
     },
     {
       title: "SEO optimized",
-      description: "Rank higher in search results with built-in SEO best practices.",
+      description: "Rank higher in search results with built-in SEO best practices."
     },
     {
       title: "Performance focused",
-      description: "Deliver lightning-fast experiences with optimized code and assets.",
+      description: "Deliver lightning-fast experiences with optimized code and assets."
     },
     {
       title: "Mobile responsive",
-      description: "Ensure perfect display on all devices with responsive layouts.",
+      description: "Ensure perfect display on all devices with responsive layouts."
     }
   ]
-}; 
+};

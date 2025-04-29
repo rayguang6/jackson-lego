@@ -5,11 +5,12 @@ export interface FeaturesOrServicesProps extends BaseSectionProps  {
   // Common props
   title: string;
   subtitle: string;
-  badgeText?: string;
+  badgeText: string;
   // CTA button
-  ctaText?: string;
+  ctaText: string;
   // Service cards
   services: Array<{
+    featureId: string;
     title: string;
     description: string;
     imageSrc: string;
@@ -26,6 +27,7 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
   ctaText: "GET INSTANT ACCESS",
   services: [
     {
+      featureId: "FEATURE #1",
       title: "Funnel Build & Design",
       description: "High-converting funnels that guide users from interest to sale.",
       imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_1,
@@ -36,6 +38,7 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
       ]
     },
     {
+      featureId: "FEATURE #2",
       title: "Automation Workflow",
       description: "Tailored automation to save time and boost efficiency.",
       imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_2,
@@ -46,6 +49,7 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
       ]
     },
     {
+      featureId: "FEATURE #3",
       title: "Social Media Management",
       description: "Strategic management to grow your brand's online presence.",
       imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_3,
@@ -56,6 +60,7 @@ export const defaultFeaturesOrServicesProps: FeaturesOrServicesProps = {
       ] 
     },
     {
+      featureId: "FEATURE #4",
       title: "Versatile Templates",
       description: "A wide range of pre-designed templates that cater to any project, industry, or style.",
       imageSrc: TEMPLATE_IMAGES.FEATURES_OR_SERVICES.FEATURES_IMAGE_4,

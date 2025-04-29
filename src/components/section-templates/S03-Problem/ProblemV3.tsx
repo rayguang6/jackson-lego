@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MySection } from '@/components/template-ui/MySection';
 import { defaultProblemProps } from './types';
 import { ProblemProps } from './types';
@@ -10,33 +10,31 @@ import { MyHeading } from '@/components/template-ui/MyHeading';
 import { styleGuide } from '@/lib/constants/styleGuide';
 import { blendWithWhite } from '@/lib/utils';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { EditableText } from '@/components/editable/EditableText';
+import { useDesignStore } from '@/lib/store/designStore';
 
 export const ProblemV3: React.FC<ProblemProps> = ({
   theme = defaultProblemProps.theme,
   title = defaultProblemProps.title,
   subtitle = defaultProblemProps.subtitle,
   badgeText = defaultProblemProps.badgeText,
-  problems = [
-    {
-      title: 'Limited Flexibility:',
-      description: 'Traditional design tools often restrict your creativity with rigid templates and preset structures.',
-    },
-    {
-      title: 'Time-Consuming:',
-      description: 'Spending countless hours refining designs in slow, inefficient tools can delay your projects.',
-    },
-    {
-      title: 'Inconsistent Results:',
-      description: 'Achieving a polished, professional look is challenging with outdated tools that lack cohesion.',
-    },
-    {
-      title: 'Slow Performance:',
-      description: 'Unresponsive tools hinder your workflow, slowing down design processes and frustrating your progress.',
-    },
-   
-  ],
-}) => {
+  problems = defaultProblemProps.problems,
+  sectionTitle = defaultProblemProps.sectionTitle,
+  sectionId = defaultProblemProps.sectionId || '',
+}: ProblemProps) => {
   const isDark = theme === 'dark';
+
+    // Initialize the problems array in the store to ensure it exists
+    useEffect(() => {
+      // Get the current section content
+      const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+      
+      // Check if problems array doesn't exist yet in the store
+      if (!sectionContent.problems) {
+        // Initialize with a copy of the default problems
+        useDesignStore.getState().updateSectionField(sectionId, 'problems', JSON.parse(JSON.stringify(problems)));
+      }
+    }, [sectionId, problems]);  
 
   return (
     <MySection 
@@ -50,30 +48,43 @@ export const ProblemV3: React.FC<ProblemProps> = ({
           <Badge 
             theme={theme}
           >
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={badgeText}
+              contentPath={`badgeText`}
+            />
           </Badge>
 
          {/* Title */}
          <MyHeading
             theme={theme}
             as='h1'
-            children={title}
             className='text-center !text-[36px]'
-          />
+          >
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={title}
+              contentPath={`title`}
+            />
+          </MyHeading>
 
-          {/* Subtitle */}
+          {/* Subtitle */}  
           <MyParagraph
             theme={theme}
           >
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath={`subtitle`}
+            />
           </MyParagraph>
 
           {/* Problems Grid */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mt-[20px]">
-            {problems.map((problem, index) => (
-              <div 
-                key={index}
-                className={`
+
+          {(problems || []).map((problem, index) => (
+
+              <div key={index} className={`
                   flex items-start gap-6 p-6 rounded-[10px] border border-gray-200 bg-white
                   shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]
                 `}
@@ -87,14 +98,24 @@ export const ProblemV3: React.FC<ProblemProps> = ({
                 </div>
                 <div className="flex-1 text-[16px]">
                 <span style={{ color: GLOBALCSS_VAR.primaryColor   }} className="font-semibold">
-                    {problem.title}
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={problem.title}
+                      contentPath={`problems.${index}.title`}
+                    />
                   </span>
                   <span className={'font-normal'} style={{ color: GLOBALCSS_VAR.textColor }}>
-                    {' '} {problem.description}
+                    {' '} 
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={problem.description}
+                      contentPath={`problems.${index}.description`}
+                    />
                   </span>
                 </div>
               </div>
-            ))}
+
+          ))}
           </div>
         </div>
       </div>

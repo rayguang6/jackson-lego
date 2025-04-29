@@ -28,7 +28,7 @@ export const MyHeading: React.FC<MyHeadingProps> = ({
   const HeadingTag = as;
   
   const baseTypography = getTypographyClass({
-    size: as,
+    size: as as 'h1' | 'h2' | 'h3' | 'h4' | 'small' | 'body' | 'xs',
     weight: 'bold',
     lineHeight: 'tight'
   });

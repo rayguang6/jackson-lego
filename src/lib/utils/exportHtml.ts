@@ -40,6 +40,83 @@ const resolveTempHandle = (
   return `images/${filename}`;
 };
 
+// ADD THIS NEW FUNCTION: Restructures content with dotted paths into nested objects
+const restructureContent = (content: Record<string, any>): Record<string, any> => {
+  const result: Record<string, any> = {};
+  
+  for (const [key, value] of Object.entries(content)) {
+    // Keep objects and arrays as-is
+    if (value !== null && typeof value === 'object') {
+      result[key] = value;
+      continue;
+    }
+    
+    // Process dotted paths
+    if (key.includes('.')) {
+      const parts = key.split('.');
+      let current = result;
+      
+      for (let i = 0; i < parts.length - 1; i++) {
+        const part = parts[i];
+        if (current[part] === undefined) {
+          const nextPart = parts[i + 1];
+          current[part] = !isNaN(Number(nextPart)) ? [] : {};
+        }
+        current = current[part];
+      }
+      
+      const lastPart = parts[parts.length - 1];
+      current[lastPart] = value;
+    } else {
+      result[key] = value;
+    }
+  }
+  
+  return result;
+};
+
+// Recursive function to process content (Images, URLs, etc.)
+const processContentRecursively = (
+  content: any,
+  sectionId: string,
+  allImages: { url: string; blob: Blob; filename: string }[]
+): any => {
+  // If content is an array, process each item
+  if (Array.isArray(content)) {
+    return content.map((item, index) => 
+      processContentRecursively(item, sectionId, allImages)
+    );
+  }
+  
+  // If content is an object, process each property
+  if (content !== null && typeof content === 'object') {
+    const result: Record<string, any> = {};
+    for (const [key, value] of Object.entries(content)) {
+      result[key] = processContentRecursively(value, sectionId, allImages);
+    }
+    return result;
+  }
+  
+  // Process string values (for image URLs)
+  if (typeof content === 'string') {
+    if (content.startsWith('temp://')) {
+      return resolveTempHandle(content, sectionId, 'content', allImages);
+    } else if (content.startsWith('data:image')) {
+      try {
+        const filename = `local-${sectionId}-${Date.now()}.png`;
+        const blob = dataURLtoBlob(content);
+        allImages.push({ url: content, blob, filename });
+        return `images/${filename}`;
+      } catch (err) {
+        console.error(`Failed to process data URL:`, err);
+      }
+    }
+  }
+  
+  // Return unchanged for other types
+  return content;
+};
+
 const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; images: { url: string; blob: Blob; filename: string }[] }> => {
   
   try {
@@ -140,64 +217,27 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
           return '';
         }
 
-        // Create a modified content object for the export
-        const exportContent = { ...sectionData.content };
+        // Create a deep copy of the content object for the export
+        const contentCopy = JSON.parse(JSON.stringify(sectionData.content || {}));
         
-        // Process data URLs in the content and convert them to local file paths
-        // for (const [key, value] of Object.entries(exportContent)) {
-        //   if (typeof value === 'string' && value.startsWith('data:image')) {
-        //     try {
-        //       // Generate a filename for the data URL
-        //       const filename = `local-${section.id}-${key}-${Date.now()}.png`;
-        //       const blob = dataURLtoBlob(value);
-              
-        //       allImages.push({ 
-        //         url: value, 
-        //         blob, 
-        //         filename 
-        //       });
-              
-        //       // Replace the data URL with the local file path
-        //       exportContent[key] = `images/${filename}`;
-        //     } catch (error) {
-        //       console.error(`Failed to process data URL for ${key}:`, error);
-        //     }
-        //   }
-        // }
+        // CHANGE HERE: Restructure the content to handle dotted paths
+        const structuredContent = restructureContent(contentCopy);
+        
+        // Process all content recursively, including nested objects and arrays
+        const processedContent = processContentRecursively(structuredContent, section.id, allImages);
 
-        // Resolve any image placeholders inside this section’s content
-        for (const [key, value] of Object.entries(exportContent)) {
-          if (typeof value !== 'string') continue;            // skip non‑string fields
-
-          if (value.startsWith('temp://')) {
-            // <== NEW: handle our temp handles
-            exportContent[key] = resolveTempHandle(value, section.id, key, allImages);
-          } else if (value.startsWith('data:image')) {
-            // (optional) keep the old base‑64 branch so users can paste images
-            try {
-              const filename = `local-${section.id}-${key}-${Date.now()}.png`;
-              const blob = dataURLtoBlob(value);
-              allImages.push({ url: value, blob, filename });
-              exportContent[key] = `images/${filename}`;
-            } catch (err) {
-              console.error(`Failed to process data URL for ${key}:`, err);
-            }
-          }
-        }
-
-
-        // Render the component with the modified content
+        // Render the component with the processed content
         const componentProps = {
           theme: template.theme,
           sectionId: section.id,
-          ...exportContent,
+          ...processedContent,
         };
 
         const componentHtml = ReactDOMServer.renderToString(
           React.createElement(Component, componentProps)
         );
         
-        // Extract and process regular image URLs
+        // Extract and process regular image URLs from the rendered HTML
         const imageUrls = extractImageUrls(componentHtml);
         let updatedHtml = componentHtml;
         
@@ -223,7 +263,6 @@ const generateHtml = async (design: WebsiteDesign): Promise<{ html: string; imag
             updatedHtml = updatedHtml.replace(exactUrlPattern, `images/${filename}`);
             
             // For srcSet URLs, we need to replace each URL with our local path
-            // This specific replacement handles srcSet values like "url1 1x, url2 2x"
             if (updatedHtml.includes('srcSet')) {
               // Create a regex that matches srcSet attribute values
               const srcSetPattern = /(srcSet=["'])(.*?)(["'])/g;
@@ -393,4 +432,4 @@ export const downloadHtml = async (design: WebsiteDesign) => {
 export default {
   generateHtml,
   downloadHtml,
-}; 
+};

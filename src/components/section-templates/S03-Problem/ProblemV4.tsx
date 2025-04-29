@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { StarIcon } from '@/components/template-ui/icons';
 import { MySection } from '@/components/template-ui/MySection';
@@ -10,31 +10,34 @@ import { MyHeading, Highlight } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { blendWithWhite } from '@/lib/utils';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { EditableText } from '@/components/editable/EditableText';
+import { useDesignStore } from '@/lib/store/designStore';
 
 
 export const ProblemV4: React.FC<ProblemProps> = ({
   theme = defaultProblemProps.theme,
-  title = "Does this sound like ",
-  subtitle = "It's time to take control and design like a pro — fast and easy.",
+  title = defaultProblemProps.title,
+  subtitle = defaultProblemProps.subtitle,
   badgeText = defaultProblemProps.badgeText,
-  problems = [
-    { 
-      title: 'Time Consuming', 
-      description: 'Spending countless hours refining designs in slow, inefficient tools can delay your projects.'
-    },
-    { 
-      title: 'Inconsistent Results',
-      description: 'Achieving a polished, professional look is challenging with outdated tools that lack cohesion.'
-    },
-    { 
-      title: 'Slow Performance',
-      description: 'Unresponsive tools hinder your workflow, slowing down design processes and frustrating your progress.'
-    },
-    
-  ],
-}) => {
+  problems = defaultProblemProps.problems,
+  sectionTitle = defaultProblemProps.sectionTitle,
+  sectionId = defaultProblemProps.sectionId || '',
+  highlightText = defaultProblemProps.highlightText,
+}: ProblemProps) => {
 
   const isDark = theme === 'dark';
+
+    // Initialize the problems array in the store to ensure it exists
+    useEffect(() => {
+      // Get the current section content
+      const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+      
+      // Check if problems array doesn't exist yet in the store
+      if (!sectionContent.problems) {
+        // Initialize with a copy of the default problems
+        useDesignStore.getState().updateSectionField(sectionId, 'problems', JSON.parse(JSON.stringify(problems)));
+      }
+    }, [sectionId, problems]);  
 
   return (
     <MySection 
@@ -46,13 +49,27 @@ export const ProblemV4: React.FC<ProblemProps> = ({
 
           {/* Title */}
           <MyHeading theme={theme} as='h1' className='text-center text-[28px] sm:text-[36px]'>
-            {title}
-            <Highlight>You?</Highlight>
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={title}
+              contentPath={`title`}
+            />
+            <Highlight>
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={highlightText}
+                contentPath={`highlightText`}
+              />
+            </Highlight>
           </MyHeading>
 
           {/* Subtitle */}
           <MyParagraph theme={theme}>
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath={`subtitle`}
+            />
           </MyParagraph>
 
           {/* Problems Container */}
@@ -62,10 +79,11 @@ export const ProblemV4: React.FC<ProblemProps> = ({
 
             {/* Problems List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-              {problems.map((problem, index) => (
-                <div 
-                  key={index}
-                  className={`
+            {(problems || []).slice(0, 3).map((problem, index) => (
+
+              <div 
+                key={index}
+                className={`
                     flex flex-col items-center justify-start p-6 md:p-8 rounded-[10px] border w-full
                     ${isDark ? 'bg-white/10 border-white/20' : 'bg-white border-[#E4E4E7]'}
                     ${isDark ? '' : 'shadow-[0px_2px_8px_0px_rgba(16,24,40,0.05)]'}
@@ -83,18 +101,26 @@ export const ProblemV4: React.FC<ProblemProps> = ({
                   {/* Title */}
                   <div className="text-center">
                     <MyHeading theme={theme} as='h3' className='mt-4 !text-[16px] sm:!text-[20px] font-bold' >
-                      {problem.title}
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={problem.title}
+                        contentPath={`problems.${index}.title`}
+                      />
                     </MyHeading>
                     
                     <MyParagraph 
                       theme={theme}
                       className='mt-2 !text-[16px] !max-w-[400px]'
                     >
-                      {problem.description}
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={problem.description}
+                        contentPath={`problems.${index}.description`}
+                      />
                     </MyParagraph>
                   </div>
-                </div>
-              ))}
+              </div>
+            ))}
             </div>
           </div>
         </div>

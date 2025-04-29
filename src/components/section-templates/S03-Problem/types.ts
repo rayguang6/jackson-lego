@@ -5,6 +5,8 @@ export interface ProblemProps extends BaseSectionProps {
   title: string;
   subtitle: string;
   badgeText: string;
+  sectionTitle: string;
+  highlightText: string;
   problems: {
     title: string;
     description: string;
@@ -17,6 +19,8 @@ export const defaultProblemProps: ProblemProps = {
   subtitle: "It's time to take control and design like a pro — fast and easy.",
   badgeText: "PROBLEM",
   theme: ThemeType.light,
+  sectionTitle: "... and a lot more, but I don’t want to keep you here for an hour.",
+  highlightText: " you?",
   problems: [
     { 
       title: "Confused by complex design tools",
@@ -36,4 +40,3 @@ export const defaultProblemProps: ProblemProps = {
     }, 
   ],
 }; 
-

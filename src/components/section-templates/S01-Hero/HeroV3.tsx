@@ -13,15 +13,19 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { EditableText } from '@/components/editable/EditableText';
 
 export const HeroV3: React.FC<HeroProps> = ({
+  logoName = defaultHeroProps.logoName,
   title = defaultHeroProps.title,
   subtitle = defaultHeroProps.subtitle,
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  features = defaultHeroProps.features,
-  videoThumbnailUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_3,
-  sectionId,
-  credibilityText = defaultHeroProps.credibilityText
+  imageUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_3,
+  feature1 = defaultHeroProps.feature1,
+  feature2 = defaultHeroProps.feature2,
+  feature3 = defaultHeroProps.feature3,
+  sectionId = defaultHeroProps.sectionId || '',
+  credibilityText = defaultHeroProps.credibilityText,
+  highlightText = defaultHeroProps.highlightText,
 }: HeroProps) => {
 
 
@@ -37,63 +41,114 @@ export const HeroV3: React.FC<HeroProps> = ({
           {/* Left Content */}
           <div className="flex flex-col">
             {/* Logo */}
-            <div className="mb-8">
-              <LogoIcon 
-                theme={theme}
-              />
-            </div>
+
+              <div className="flex items-center justify-start gap-3">
+                <LogoIcon 
+                  theme={theme}
+                />
+                <MyHeading as="h4" theme={theme} className="m-0">
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={logoName}
+                    contentPath={`logoName`}
+                  />
+                </MyHeading>
+              </div>
+
 
             {/* Badge */}
-            <div className="">
+            <div className="mt-5">
               <Badge theme={theme}>
-                {badgeText}
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={badgeText}
+                  contentPath={`badgeText`}
+                />
               </Badge>
             </div>
 
             {/* Title */}
             <MyHeading theme={theme} as='h1' className="max-w-[1000px] mt-8">
               <EditableText
+                sectionId={sectionId}
                 defaultValue={title}
                 contentPath={`title`}
-                className="w-full"
               />
               <Highlight> 
-                  Maximum Efficiency
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={highlightText}
+                  contentPath={`highlightText`}
+                />
               </Highlight>
             </MyHeading>
 
             <MyParagraph theme={theme} className="max-w-[1000px] mt-8">
               <EditableText
+                sectionId={sectionId}
                 defaultValue={subtitle}
                 contentPath={`subtitle`}
-                className="w-full"
               />
             </MyParagraph>
   
             {/* Feature List */}
             <div className="flex gap-4 mt-2">
-              {features?.map((feature, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-5 h-5 flex items-center justify-center">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+              {/* Feature 1 */}
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M20 6L9 17L4 12" stroke={'var(--primary-color)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <span style={{ fontFamily: 'var(--body-font)' }} className={`text-sm leading-[1.75] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     <EditableText
-                      defaultValue={feature}
-                      contentPath={`features.${index}`}
-                      className="w-full"
+                      sectionId={sectionId}
+                      defaultValue={feature1}
+                      contentPath={`feature1`}
                     />
                     </span>
-                </div>
-              ))}
+                </div>  
+              {/* Feature 2 */}
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 6L9 17L4 12" stroke={'var(--primary-color)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span style={{ fontFamily: 'var(--body-font)' }} className={`text-sm leading-[1.75] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={feature2}
+                      contentPath={`feature2`}
+                    />
+                    </span>
+                </div>  
+              {/* Feature 3 */}
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 6L9 17L4 12" stroke={'var(--primary-color)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span style={{ fontFamily: 'var(--body-font)' }} className={`text-sm leading-[1.75] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={feature3}
+                      contentPath={`feature3`}
+                    />
+                    </span>
+                </div>  
+
+
+
             </div>
 
             {/* CTA Button */}
             <div className="mt-8">
               <PrimaryButton theme={theme}>
                 <EditableText
+                  sectionId={sectionId} 
                   defaultValue={ctaText}
                   contentPath={`ctaText`}
                   className="w-full"
@@ -113,6 +168,7 @@ export const HeroV3: React.FC<HeroProps> = ({
               </div>
               <p style={{ fontFamily: 'var(--body-font)' }} className={`text-sm font-medium ${isDark ? 'text-white/50' : 'text-gray-500'}`}>
                 <EditableText
+                  sectionId={sectionId}
                   defaultValue={credibilityText || ''}
                   contentPath={`credibilityText`}
                   className="w-full"
@@ -125,7 +181,7 @@ export const HeroV3: React.FC<HeroProps> = ({
           <div className="relative w-full rounded-[20px] overflow-hidden flex items-center justify-center">
             <div className={`relative h-full rounded-[15px] overflow-hidden `}>
               <Image
-                src={videoThumbnailUrl}
+                src={imageUrl}
                 alt="Video thumbnail"
                 width={500}
                 height={500}

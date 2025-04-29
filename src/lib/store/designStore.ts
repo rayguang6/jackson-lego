@@ -169,28 +169,63 @@ export const useDesignStore = create<DesignStore>()(
             },
           })),
 
-        updateSectionField: (sectionId, path, value) =>
-          set((state) => {
-            const updated = state.design.sections.map((s) => {
-              if (s.id !== sectionId) return s
-              const copy = JSON.parse(JSON.stringify(s.content || {}))
-              const parts = path.split('.')
-              let cur: any = copy
-              for (let i = 0; i < parts.length - 1; i++) {
-                if (!cur[parts[i]]) cur[parts[i]] = {}
-                cur = cur[parts[i]]
-              }
-              cur[parts[parts.length - 1]] = value
-              return { ...s, content: copy }
-            })
-            return {
-              design: {
-                ...state.design,
-                sections: updated,
-                updatedAt: new Date().toISOString(),
-              },
-            }
-          }),
+          updateSectionField: (sectionId, path, value) =>
+            set((state) => {
+              const updated = state.design.sections.map((s) => {
+                if (s.id !== sectionId) return s;
+                
+                // Create a deep copy of the content
+                const copy = JSON.parse(JSON.stringify(s.content || {}));
+                
+                // Check if the path contains dots for nested properties
+                if (path.includes('.')) {
+                  // Split the path by dots to navigate nested objects/arrays
+                  const parts = path.split('.');
+                  let current = copy;
+                  
+                  // Navigate to the parent of the property we want to set
+                  for (let i = 0; i < parts.length - 1; i++) {
+                    const part = parts[i];
+                    
+                    // If the part is a number, treat it as array index
+                    const index = !isNaN(Number(part)) ? Number(part) : part;
+                    
+                    // If the path doesn't exist yet, create it
+                    if (current[index] === undefined) {
+                      // Check if the next part is a number to decide between array or object
+                      const nextPart = parts[i + 1];
+                      const isNextPartNumeric = !isNaN(Number(nextPart));
+                      
+                      // Create array for numeric indices, object otherwise
+                      current[index] = isNextPartNumeric ? [] : {};
+                    }
+                    
+                    // Move to the next level
+                    current = current[index];
+                  }
+                  
+                  // Set the value at the final property
+                  const lastPart = parts[parts.length - 1];
+                  
+                  // Handle array index if the last part is a number
+                  const lastIndex = !isNaN(Number(lastPart)) ? Number(lastPart) : lastPart;
+                  current[lastIndex] = value;
+                } else {
+                  // Simple case: direct property
+                  copy[path] = value;
+                }
+                
+                return { ...s, content: copy };
+              });
+              
+              return {
+                design: {
+                  ...state.design,
+                  sections: updated,
+                  updatedAt: new Date().toISOString(),
+                },
+              };
+            }),
 
         // STYLE OPERATIONS (all call mergeStyle directly)
         updateStyleGuide: mergeStyle,

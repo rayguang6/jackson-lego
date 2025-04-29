@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { SolutionsProps, defaultSolutionsProps } from './types';
 
@@ -9,15 +9,31 @@ import { Badge } from '@/components/template-ui/Badge';
 import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 
 export const SolutionsV3: React.FC<SolutionsProps> = ({
   title = defaultSolutionsProps.title,
   subtitle = defaultSolutionsProps.subtitle,
   badgeText = defaultSolutionsProps.badgeText,
   sectionTitle = defaultSolutionsProps.sectionTitle,
+  theme = defaultSolutionsProps.theme,
+  imageUrl = defaultSolutionsProps.imageUrl,
   features = defaultSolutionsProps.features,
-  theme = defaultSolutionsProps.theme
-}) => {
+  sectionId = defaultSolutionsProps.sectionId || '',
+}: SolutionsProps) => {
+
+    // Initialize the features array in the store to ensure it exists
+    useEffect(() => {
+      // Get the current section content
+      const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+      
+      // Check if features array doesn't exist yet in the store
+      if (!sectionContent.features) {
+        // Initialize with a copy of the default features
+        useDesignStore.getState().updateSectionField(sectionId, 'features', JSON.parse(JSON.stringify(features)));
+      }
+    }, [sectionId, features]);
   
   // Ensure we have 6 features (2 rows of 3)
   const displayFeatures = features.slice(0, 6);
@@ -32,25 +48,46 @@ export const SolutionsV3: React.FC<SolutionsProps> = ({
         {/* Header Section */}
         <div className="flex justify-center mb-10">
           <Badge theme={theme}>
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={badgeText}
+              contentPath={`badgeText`}
+            />  
           </Badge>
         </div>
         
         {/* Main content */}
         <div className="max-w-3xl mx-auto mb-16 text-center">
-          <MyHeading theme={theme} as='h2' className="mb-6">
-            {sectionTitle} - {title}
-          </MyHeading>
+          <div className="flex flex-row gap-0">
+            <MyHeading theme={theme} as='h2' className="mb-6">
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={sectionTitle || ''}
+                contentPath={`sectionTitle`}
+              />
+            </MyHeading>
+            <MyHeading theme={theme} as='h2' className="mb-6">
+              <EditableText
+                  sectionId={sectionId}
+                  defaultValue={title}
+                  contentPath={`title`}
+                />
+            </MyHeading>
+          </div>
           
           <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath={`subtitle`}
+            />
           </p>
         </div>
         
         <div className="max-w-6xl mx-auto">
           {/* Features - First Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 mb-10">
-            {displayFeatures.map((feature, index) => (
+            {(displayFeatures || []).map((feature, index) => (
 
               <div key={index} className="flex flex-col items-center text-center">
                 <div className="mb-4 p-3 rounded-md border w-12 h-12 flex items-center justify-center"
@@ -104,11 +141,19 @@ export const SolutionsV3: React.FC<SolutionsProps> = ({
                 </div>
 
                 <MyHeading theme={theme} as='h5' className="text-xl font-bold mb-2 text-gray-900">
-                  {feature.title}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={feature.title}
+                    contentPath={`features.${index}.title`}
+                  />
                 </MyHeading>
 
                 <MyParagraph theme={theme} className="text-base max-w-xs">
-                  {feature.description}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={feature.description}
+                    contentPath={`features.${index}.description`}
+                  />
                 </MyParagraph>
               </div>
             ))}

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SolutionsProps, defaultSolutionsProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
@@ -8,16 +8,31 @@ import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { GridIcon } from '@/components/template-ui/icons/GridIcon';
-
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 export const SolutionsV4: React.FC<SolutionsProps> = ({
   title = defaultSolutionsProps.title,
   subtitle = defaultSolutionsProps.subtitle,
   badgeText = defaultSolutionsProps.badgeText,
-  features = defaultSolutionsProps.features,
+  sectionTitle = defaultSolutionsProps.sectionTitle,
   theme = defaultSolutionsProps.theme,
-  sectionId
-}) => {
+  imageUrl = defaultSolutionsProps.imageUrl,
+  features = defaultSolutionsProps.features,
+  sectionId = defaultSolutionsProps.sectionId || '',
+}: SolutionsProps) => {
   const isDark = theme === 'dark';
+
+    // Initialize the features array in the store to ensure it exists
+    useEffect(() => {
+      // Get the current section content
+      const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+      
+      // Check if features array doesn't exist yet in the store
+      if (!sectionContent.features) {
+        // Initialize with a copy of the default features
+        useDesignStore.getState().updateSectionField(sectionId, 'features', JSON.parse(JSON.stringify(features)));
+      }
+    }, [sectionId, features]);
   
   return (
     <MySection theme={theme} className="py-16 md:py-24" backgroundColor={ isDark ? "" : GLOBALCSS_VAR.primaryColor10}
@@ -26,17 +41,29 @@ export const SolutionsV4: React.FC<SolutionsProps> = ({
         {/* Badge */}
         <div className="flex justify-center mb-8">
           <Badge theme={theme}>
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={badgeText}
+              contentPath={`badgeText`}
+            />
           </Badge>
         </div>
         
         {/* Header Section */}
         <div className="max-w-3xl mx-auto mb-16 text-center">
           <MyHeading theme={theme} as='h2' className={`text-3xl md:text-4xl font-bold mb-6`}>
-            {title}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue= {title}
+              contentPath={`title`}
+            />
           </MyHeading>
           <MyParagraph theme={theme} className={`text-lg`}>
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath={`subtitle`}
+            />
           </MyParagraph>
         </div>
         
@@ -58,12 +85,20 @@ export const SolutionsV4: React.FC<SolutionsProps> = ({
               
               {/* Title */}
               <MyHeading as='h5' className={`text-xl font-semibold mb-2`}>
-                {feature.title}
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={feature.title}
+                  contentPath={`features.${index}.title`}
+                />
               </MyHeading>
               
               {/* Description */}
               <MyParagraph className={`text-base`}>
-                {feature.description}
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={feature.description}
+                  contentPath={`features.${index}.description`}
+                />
               </MyParagraph>
             </div>
           ))}

@@ -7,34 +7,34 @@ import { ThemeType, VersionType } from '@/lib/types';
 export const socialProofTemplates: SectionTemplatesVariants = {
   [ThemeType.light]: {
     [VersionType.v1]: {
-      id: 'social-proof-v1-light',
+      id: 'socialproof-v1-light',
       component: SocialProofV1,
       theme: ThemeType.light
     },
     [VersionType.v2]: {
-      id: 'social-proof-v2-light',
+      id: 'socialproof-v2-light',
       component: SocialProofV2,
       theme: ThemeType.light
     },
     [VersionType.v3]: {
-      id: 'social-proof-v3-light',
+      id: 'socialproof-v3-light',
       component: SocialProofV3,
       theme: ThemeType.light
     }
   },
   [ThemeType.dark]: {
     [VersionType.v1]: {
-      id: 'social-proof-v1-dark',
+      id: 'socialproof-v1-dark',
       component: SocialProofV1,
       theme: ThemeType.dark
     },
     [VersionType.v2]: {
-      id: 'social-proof-v2-dark',
+      id: 'socialproof-v2-dark',
       component: SocialProofV2,
       theme: ThemeType.dark
     },
     [VersionType.v3]: {
-      id: 'social-proof-v3-dark',
+      id: 'socialproof-v3-dark',
       component: SocialProofV3,
       theme: ThemeType.dark
     }

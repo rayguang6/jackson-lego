@@ -5,7 +5,7 @@ import { useDesignStore } from '@/lib/store/designStore';
 import { usePathname } from 'next/navigation';
 
 interface EditableTextProps {
-  sectionId?: string;
+  sectionId: string;
   contentPath: string;
   defaultValue: string;
   className?: string;
@@ -114,7 +114,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
   
   // Add visual cue for editable content in the website builder
   const editableClass = isWebsiteBuilder 
-    ? 'hover:ring-2 hover:ring-blue-300 hover:ring-opacity-50 px-1 py-0.5 rounded cursor-text' 
+    ? 'hover:ring-2 hover:ring-blue-300 hover:ring-opacity-50 py-0.5 rounded cursor-text' 
     : '';
   
   return (
