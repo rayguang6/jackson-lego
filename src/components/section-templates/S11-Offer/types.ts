@@ -1,9 +1,9 @@
 import { BaseSectionProps, ThemeType } from '@/lib/types';
 
 export interface OfferProps extends BaseSectionProps {
-  badgeText?: string;
-  title?: string;
-  subtitle?: string;
+  badgeText: string;
+  title: string;
+  subtitle: string;
   image?: string;
 
   offers?:{
@@ -12,12 +12,12 @@ export interface OfferProps extends BaseSectionProps {
     description: string;
     imageUrl?: string;
   }[];
-  specialOfferTitle?: string;
-  specialOfferSubtitle?: string;
-  specialOfferPrice?: string;
-  specialOfferOriginalPrice?: string;
-  ctaText?: string;
-  footerText?: string;
+  specialOfferTitle: string;
+  specialOfferSubtitle: string;
+  specialOfferPrice: string;
+  specialOfferOriginalPrice: string;
+  ctaText: string;
+  footerText: string;
 }
 
 export const defaultOfferProps: OfferProps = {

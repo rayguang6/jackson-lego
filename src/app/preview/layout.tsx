@@ -4,7 +4,7 @@ import { archivo, fontVariables } from "@/lib/fonts";
 import StyleProvider from "@/lib/contexts/StyleProvider";
 // Removed the import for StyleProvider due to the error
 export const metadata: Metadata = {
-  title: "Website Preview - Jackson Lego",
+  title: "Website Preview - One Click Design",
   description: "Preview your website design",
 };
 

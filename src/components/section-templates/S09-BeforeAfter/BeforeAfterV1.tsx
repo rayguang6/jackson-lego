@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BeforeAfterProps, defaultBeforeAfterProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
@@ -8,19 +8,29 @@ import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
   title = defaultBeforeAfterProps.title,
   subtitle = defaultBeforeAfterProps.subtitle,
   badgeText = defaultBeforeAfterProps.badgeText,
   comparisonItems = defaultBeforeAfterProps.comparisonItems,
-  beforeLabel = defaultBeforeAfterProps.beforeLabel,
+  beforeLabel = defaultBeforeAfterProps.beforeLabel,  
   afterLabel = defaultBeforeAfterProps.afterLabel,
+  beforeHeading = defaultBeforeAfterProps.beforeHeading,
+  afterHeading = defaultBeforeAfterProps.afterHeading,
   ctaText = defaultBeforeAfterProps.ctaText,
-  ctaLink = defaultBeforeAfterProps.ctaLink,
   theme = defaultBeforeAfterProps.theme,
-  sectionId,
+  sectionId = defaultBeforeAfterProps.sectionId || '',
 }: BeforeAfterProps) => {
   const isDark = theme === 'dark';
+
+  // Initialize the comparisonItems array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+  }, [sectionId, comparisonItems]);
 
   return (
     <MySection 
@@ -29,7 +39,13 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
     >
       {/* Badge */}
       <div className="flex justify-center items-center">
-        <Badge theme={theme}>{badgeText}</Badge>
+        <Badge theme={theme}>
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={badgeText}
+            contentPath="badgeText"
+          />
+        </Badge>
       </div>
 
       {/* Title and subtitle */}
@@ -39,7 +55,13 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
           <span style={{ color: GLOBALCSS_VAR.primaryColor }}>shortcut</span>
           <span> for you</span>
         </MyHeading>
-        <MyParagraph theme={theme} className='text-base'>{subtitle}</MyParagraph>
+        <MyParagraph theme={theme} className='text-base'>
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={subtitle}
+            contentPath="subtitle"
+          />
+        </MyParagraph>
       </div>
 
       {/* Before-After Comparison */}
@@ -51,7 +73,11 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
             backgroundColor: isDark ? '#1F2937' : '#F9FAFB' 
             }}>
             <MyHeading theme={theme} as='h4' className="mb-6">
-              <span style={{ color: '#FF4545' }}>BEFORE</span> using YourBrand:
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={beforeLabel}
+                contentPath="beforeLabel"
+              />
             </MyHeading>
             <ul className="space-y-5">
               {comparisonItems?.map((item, index) => (
@@ -63,7 +89,11 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
                     </svg>
                   </div>
                   <MyParagraph theme={theme} className="text-base font-medium text-[#4B5563]">
-                    {item.before}
+                    <EditableText
+                      sectionId={sectionId}       
+                      defaultValue={item.before}
+                      contentPath={`comparisonItems.${index}.before`}
+                    />
                   </MyParagraph>
                 </li>
               ))}
@@ -76,7 +106,11 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
             backgroundColor: isDark ? '#1F2937' : '#F9FAFB' 
             }}>
             <MyHeading theme={theme} as='h4' className="mb-6">
-              <span style={{ color: '#37CA37' }}>AFTER</span> using YourBrand:
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={afterLabel}
+                contentPath="afterLabel"
+              />
             </MyHeading>
             <ul className="space-y-5">
               {comparisonItems?.map((item, index) => (
@@ -88,7 +122,11 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
                     </svg>
                   </div>
                   <MyParagraph theme={theme} className="text-base font-medium text-[#4B5563]">
-                    {item.after}
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={item.after}
+                      contentPath={`comparisonItems.${index}.after`}
+                    />
                   </MyParagraph>
                 </li>
               ))}
@@ -100,7 +138,11 @@ export const BeforeAfterV1: React.FC<BeforeAfterProps> = ({
       {/* CTA Button */}
       <div className="text-center mt-14">
         <PrimaryButton theme={theme}>
-          {ctaText}
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={ctaText}
+            contentPath="ctaText"
+          />
         </PrimaryButton>
       </div>
     </MySection>

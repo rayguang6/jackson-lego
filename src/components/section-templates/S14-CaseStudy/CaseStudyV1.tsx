@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CaseStudyProps, defaultCaseStudyProps } from './types';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { EditableText } from '@/components/editable/EditableText';
@@ -7,7 +7,7 @@ import { Badge } from '@/components/template-ui/Badge';
 import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
-
+import { useDesignStore } from '@/lib/store/designStore';
 export const CaseStudyV1: React.FC<CaseStudyProps> = ({
   title = defaultCaseStudyProps.title,
   subtitle = defaultCaseStudyProps.subtitle,
@@ -15,8 +15,17 @@ export const CaseStudyV1: React.FC<CaseStudyProps> = ({
   ctaText = defaultCaseStudyProps.ctaText,
   caseStudies = defaultCaseStudyProps.caseStudies,
   theme = defaultCaseStudyProps.theme,
-  sectionId
+  sectionId = defaultCaseStudyProps.sectionId || '',
 }: CaseStudyProps) => {
+
+  // Initialize the caseStudies array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    if (sectionId && !sectionContent.caseStudies) {
+      useDesignStore.getState().updateSectionField(sectionId, 'caseStudies', JSON.parse(JSON.stringify(caseStudies)));
+    }
+  }, [sectionId, caseStudies]);
   // Ensure caseStudies is always an array
   const safeStudies = Array.isArray(caseStudies) 
     ? caseStudies 

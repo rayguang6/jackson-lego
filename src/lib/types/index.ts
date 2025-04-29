@@ -44,12 +44,7 @@ export enum SectionType {
   S15_Guarantee = 'guarantee',
   S16_CTA = 'cta',
   S17_WebinarHero = 'webinarhero',
-  S18_WebinarBenefits = 'webinarbenefits',
-  S19_WebinarFeatures = 'webinarfeatures',
-  S20_WebinarTestimonials = 'webinartestimonials',
-  S21_WebinarPricing = 'webinarpricing',
-  S22_WebinarSchedule = 'webinarschedule',
-  S23_WebinarCTA = 'webinarcta',
+  S18_WebinarCTA = 'webinarcta',
 }
 
 // Template interface

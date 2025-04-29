@@ -10,15 +10,14 @@ import { Badge } from '@/components/template-ui/Badge';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { ThemeType } from '@/lib/types';
 
-export const GuaranteeV1: React.FC<GuaranteeProps> = (props) => {
-  const {
-    title,
-    subtitle,
-    badgeText,
-    imageUrl,
-    theme,
-    sectionId
-  } = { ...defaultGuaranteeProps, ...props };
+export const GuaranteeV1: React.FC<GuaranteeProps> = ({
+  title = defaultGuaranteeProps.title,
+  subtitle = defaultGuaranteeProps.subtitle,
+  badgeText = defaultGuaranteeProps.badgeText,
+  imageUrl = defaultGuaranteeProps.imageUrl,
+  theme = defaultGuaranteeProps.theme,
+  sectionId = defaultGuaranteeProps.sectionId || '',
+}: GuaranteeProps) => {
 
   const isDark = theme === 'dark';
 

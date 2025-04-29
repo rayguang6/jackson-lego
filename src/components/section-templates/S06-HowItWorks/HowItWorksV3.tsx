@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { MySection } from '@/components/template-ui/MySection';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
@@ -10,6 +10,8 @@ import { MyHeading } from '@/components/template-ui/MyHeading';
 import Image from 'next/image';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 export const HowItWorksV3: React.FC<HowItWorksProps> = ({
   theme = defaultHowItWorksProps.theme,
   title = defaultHowItWorksProps.title,
@@ -17,8 +19,21 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
   badgeText = defaultHowItWorksProps.badgeText,
   features = defaultHowItWorksProps.features,
   ctaText = defaultHowItWorksProps.ctaText,
+  sectionId = defaultHowItWorksProps.sectionId || '',
 }) => {
   const isDark = theme === 'dark';
+
+  // Initialize the features array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+    // Check if features array doesn't exist yet in the store
+    if (!sectionContent.features) {
+      // Initialize with a copy of the default features
+      useDesignStore.getState().updateSectionField(sectionId, 'features', JSON.parse(JSON.stringify(features)));
+    }
+  }, [sectionId, features]);
 
 
   return (
@@ -32,7 +47,11 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
           <Badge
             theme={theme}
           >
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={badgeText}
+              contentPath="badgeText"
+            />
           </Badge>
 
           {/* Title */}
@@ -40,14 +59,22 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
             theme={theme}
             className="text-center max-w-[600px]"
           >
-            {title}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={title}
+              contentPath="title"
+            />
           </MyHeading>
 
           {/* Subtitle */}
           <MyParagraph
             theme={theme}
           >
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath="subtitle"
+            />
           </MyParagraph>
 
 
@@ -117,12 +144,20 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
 
                 {/* Step Title */}
                 <MyHeading as='h4' theme={theme}>
-                  {feature.title}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={feature.title}
+                    contentPath={`features.${index}.title`}
+                  />
                 </MyHeading>
 
                 {/* Step Description */}
                 <MyParagraph theme={theme} className='mt-4'>
-                  {feature.description}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={feature.description}
+                    contentPath={`features.${index}.description`}
+                  />
                 </MyParagraph>
               </div>
             ))}
@@ -130,7 +165,11 @@ export const HowItWorksV3: React.FC<HowItWorksProps> = ({
 
           {/* CTA Button */}
           <PrimaryButton theme={theme} className="mt-8">
-            {ctaText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={ctaText}
+              contentPath="ctaText"
+            />
           </PrimaryButton>
         </div>
       </div>

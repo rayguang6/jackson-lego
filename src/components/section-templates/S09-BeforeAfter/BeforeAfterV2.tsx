@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { BeforeAfterProps, defaultBeforeAfterProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
@@ -10,19 +10,29 @@ import { MyHeading } from '@/components/template-ui/MyHeading';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { LogoIcon } from '@/components/template-ui/icons/LogoIcon';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
   title = defaultBeforeAfterProps.title,
   subtitle = defaultBeforeAfterProps.subtitle,
-  badgeText = defaultBeforeAfterProps.badgeText,
+  badgeText = defaultBeforeAfterProps.badgeText,  
   comparisonItems = defaultBeforeAfterProps.comparisonItems,
+  beforeLabel = defaultBeforeAfterProps.beforeLabel,  
+  afterLabel = defaultBeforeAfterProps.afterLabel,
   beforeHeading = defaultBeforeAfterProps.beforeHeading,
   afterHeading = defaultBeforeAfterProps.afterHeading,
   ctaText = defaultBeforeAfterProps.ctaText,
-  ctaLink = defaultBeforeAfterProps.ctaLink,
   theme = defaultBeforeAfterProps.theme,
-  sectionId,
+  sectionId = defaultBeforeAfterProps.sectionId || '',
 }: BeforeAfterProps) => {
-  // Using just 4 items for V2 layout
+  const isDark = theme === 'dark';
+
+  // Initialize the comparisonItems array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+  }, [sectionId, comparisonItems]);
   const displayItems = comparisonItems?.slice(0, 4) || [];
 
   return (
@@ -32,15 +42,31 @@ export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
     >
       {/* Badge */}
       <div className="flex justify-center items-center">
-        <Badge theme={theme}>{badgeText || 'FAST TRACK YOUR SUCCESS'}</Badge>
+        <Badge theme={theme}>
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={badgeText}
+            contentPath="badgeText"
+          />
+        </Badge>
       </div>
 
       {/* Title and subtitle */}
       <div className="text-center mb-14 mt-5">
         <MyHeading theme={theme} as='h2' className="text-3xl md:text-4xl font-semibold mb-4">
-          {title}
+          <EditableText
+            sectionId={sectionId}
+            defaultValue= {title}
+            contentPath="title"
+          />
         </MyHeading>
-        <MyParagraph theme={theme} className='text-lg'>{subtitle}</MyParagraph>
+        <MyParagraph theme={theme} className='text-lg'>
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={subtitle}
+            contentPath="subtitle"
+          />
+        </MyParagraph>
       </div>
 
       {/* Comparison Visualization */}
@@ -62,7 +88,11 @@ export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
             
             <div className="flex-1 flex flex-col justify-center items-center">
               <MyHeading as='h4' className=" font-medium text-center leading-tight !max-w-[300px]">
-                {beforeHeading}
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={beforeHeading}
+                  contentPath="beforeHeading"
+                />
               </MyHeading>
               <ul className="space-y-4 w-full mt-8">
                 {displayItems.map((item, index) => (
@@ -74,7 +104,11 @@ export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
                         </svg>
                     </div>
                     <MyParagraph theme={theme} className="text-base" style={{color: '#4B5563'}}>
-                      {item.before}
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={item.before}
+                        contentPath={`comparisonItems.${index}.before`}
+                      />
                     </MyParagraph>
                   </li>
                 ))}
@@ -141,7 +175,11 @@ export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
 
               <div className="flex-1 flex flex-col justify-center">
                 <MyHeading as='h4' className=" font-medium text-center" style={{color: '#fff'}}>
-                  {afterHeading}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={afterHeading}
+                    contentPath="afterHeading"
+                  />
                 </MyHeading>
                 <ul className="space-y-4 mx-auto mt-8">
                   {displayItems.map((item, index) => (
@@ -153,7 +191,11 @@ export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
                       </svg>
                     </div>
                       <MyParagraph className="text-base text-white">
-                        {item.after}
+                        <EditableText
+                          sectionId={sectionId}
+                          defaultValue={item.after}
+                          contentPath={`comparisonItems.${index}.after`}
+                        />    
                       </MyParagraph>
                     </li>
                   ))}
@@ -167,7 +209,13 @@ export const BeforeAfterV2: React.FC<BeforeAfterProps> = ({
 
       {/* CTA Button */}
       <div className="text-center mt-14">
-        <PrimaryButton theme={theme}>{ctaText}</PrimaryButton>
+        <PrimaryButton theme={theme}>
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={ctaText}
+            contentPath="ctaText"
+          />
+        </PrimaryButton>
       </div>
     </MySection>
   );

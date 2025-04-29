@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TestimonialsProps, defaultTestimonialsProps } from './types';
@@ -12,7 +12,8 @@ import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { MyHeading } from '@/components/template-ui/MyHeading';
 import { PlayButton } from '@/components/template-ui/PlayButton';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
-
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 // Video thumbnail with play button overlay
 const VideoThumbnail = ({ src }: { src: string }) => {
   return (
@@ -66,8 +67,21 @@ export const TestimonialsV5: React.FC<TestimonialsProps> = ({
   testimonials = defaultTestimonialsProps.testimonials,
   theme = defaultTestimonialsProps.theme,
   ctaText = defaultTestimonialsProps.ctaText,
+  sectionId = defaultTestimonialsProps.sectionId || '',
 }) => {
   const isDark = theme === 'dark';
+
+  // Initialize the testimonials array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+    // Check if testimonials array doesn't exist yet in the store   
+    if (!sectionContent.testimonials) {
+      // Initialize with a copy of the default testimonials
+      useDesignStore.getState().updateSectionField(sectionId, 'testimonials', JSON.parse(JSON.stringify(testimonials)));
+    }
+  }, [sectionId, testimonials]);  
     
   return (
     <MySection theme={theme} className="py-24">
@@ -75,18 +89,30 @@ export const TestimonialsV5: React.FC<TestimonialsProps> = ({
         {/* Badge */}
         <div className="flex justify-center mb-5">
           <Badge theme={theme}>
-            {badgeText || 'TESTIMONIALS'}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={badgeText}
+              contentPath="badgeText"
+            />
           </Badge>
         </div>
         
         {/* Header */}
         <div className="max-w-2xl mx-auto mb-16 text-center">
           <MyHeading as='h2' theme={theme} className="mb-5 text-4xl font-semibold">
-            {title || 'What our clients say about us'}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={title}
+              contentPath="title"
+            />
           </MyHeading>
           
           <MyParagraph theme={theme} className="text-lg">
-            {subtitle || 'See how our solutions are making a difference for businesses like yours.'}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath="subtitle"
+            />
           </MyParagraph>
         </div>
         
@@ -105,16 +131,28 @@ export const TestimonialsV5: React.FC<TestimonialsProps> = ({
                 
                 {/* Quote */}
                 <MyParagraph theme={theme} className={`${isDark ? 'text-gray-200' : 'text-gray-800'} text-lg mb-4 flex-grow`} style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}>
-                  "{testimonial.quote}"
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={testimonial.quote}
+                    contentPath={`testimonials.${index}.quote`}
+                  />
                 </MyParagraph>
                 
                 {/* Author */}
                 <div className="mt-auto">
                   <MyHeading as='h5' theme={theme} className={`font-semibold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: GLOBALCSS_VAR.headingFont }}>  
-                    {testimonial.author}
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={testimonial.author}
+                      contentPath={`testimonials.${index}.author`}
+                    />
                   </MyHeading>
                   <MyParagraph theme={theme} className={`text-base ${isDark ? 'text-gray-300' : 'text-gray-500'}`} style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}>
-                    {testimonial.role} {testimonial.company ? `@${testimonial.company}` : ''}
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={testimonial.role}
+                      contentPath={`testimonials.${index}.role`}
+                    /> {testimonial.company ? `@${testimonial.company}` : ''}
                   </MyParagraph>
                 </div>
               </div>
@@ -125,7 +163,11 @@ export const TestimonialsV5: React.FC<TestimonialsProps> = ({
         {/* CTA Button */}
         <div className="flex justify-center">
           <PrimaryButton theme={theme} className="mt-8">
-            {ctaText || 'Get Instant Access'}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={ctaText}
+              contentPath="ctaText"
+            />
           </PrimaryButton>  
         </div>
       </div>

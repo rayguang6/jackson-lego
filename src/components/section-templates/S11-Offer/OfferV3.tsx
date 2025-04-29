@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { OfferProps, defaultOfferProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyHeading } from '@/components/template-ui/MyHeading';
@@ -8,22 +8,32 @@ import Image from 'next/image';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { EditableText } from '@/components/editable/EditableText';
 import { MySection } from '@/components/template-ui/MySection';
+import { useDesignStore } from '@/lib/store/designStore';
 
 export const OfferV3: React.FC<OfferProps> = ({
   badgeText = defaultOfferProps.badgeText,
   title = defaultOfferProps.title,
   subtitle = defaultOfferProps.subtitle,
-  theme = defaultOfferProps.theme,
   offers = defaultOfferProps.offers || [],
+  theme = defaultOfferProps.theme,
   specialOfferTitle = defaultOfferProps.specialOfferTitle,
   specialOfferSubtitle = defaultOfferProps.specialOfferSubtitle,
   specialOfferPrice = defaultOfferProps.specialOfferPrice,
   specialOfferOriginalPrice = defaultOfferProps.specialOfferOriginalPrice,
   ctaText = defaultOfferProps.ctaText,
-  sectionId
+  footerText = defaultOfferProps.footerText,
+  sectionId = defaultOfferProps.sectionId || '',
 }: OfferProps) => {
-
   const isDark = theme === 'dark';
+
+  // Initialize the offers array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    if (sectionId && !sectionContent.offers) {
+      useDesignStore.getState().updateSectionField(sectionId, 'offers', JSON.parse(JSON.stringify(offers)));
+    }
+  }, [sectionId, offers]);
   
   // The benefit lists from the Figma design
   const benefitLists = {

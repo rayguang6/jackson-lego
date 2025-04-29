@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HowItWorksProps, defaultHowItWorksProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { Badge } from '@/components/template-ui/Badge';
@@ -8,6 +8,8 @@ import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 export const HowItWorksV4: React.FC<HowItWorksProps> = ({
   title = defaultHowItWorksProps.title,
   subtitle = defaultHowItWorksProps.subtitle,
@@ -15,9 +17,21 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
   features = defaultHowItWorksProps.features,
   ctaText = defaultHowItWorksProps.ctaText,
   theme = defaultHowItWorksProps.theme,
-  sectionId
+  sectionId = defaultHowItWorksProps.sectionId || '',
 }) => {
   const isDark = theme === 'dark';
+
+  // Initialize the features array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+    // Check if features array doesn't exist yet in the store
+    if (!sectionContent.features) {
+      // Initialize with a copy of the default features
+      useDesignStore.getState().updateSectionField(sectionId, 'features', JSON.parse(JSON.stringify(features)));
+    }
+  }, [sectionId, features]);
   
   // Make sure we have exactly 3 features
   const displayFeatures = features?.slice(0, 3) || [];
@@ -29,17 +43,29 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
           {/* Badge */}
           <div className="mb-8">
             <Badge theme={theme}>
-              {badgeText}
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={badgeText}
+                contentPath="badgeText"
+              />
             </Badge>
           </div>
           
           {/* Title and Subtitle */}
           <div className="max-w-3xl mx-auto mb-16 text-center">
             <MyHeading theme={theme} className='mb-6'>
-              {title}
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={title}
+                contentPath="title"
+              />
             </MyHeading>
             <MyParagraph theme={theme}>
-              {subtitle}
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={subtitle}
+                contentPath="subtitle"
+              />
             </MyParagraph>
           </div>
           
@@ -71,11 +97,19 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
                   {/* Step Content */}
                   <div>
                     <MyHeading as='h4' theme={theme} className='mb-3'>
-                      {title}
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={title}
+                        contentPath={`features.${index}.title`}
+                      />
                     </MyHeading>
                     <MyParagraph theme={theme}>
-                      {feature.description}
-                    </MyParagraph>
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={feature.description}
+                        contentPath={`features.${index}.description`}
+                      />
+                      </MyParagraph>
                   </div>
                 </div>
               );
@@ -86,7 +120,11 @@ export const HowItWorksV4: React.FC<HowItWorksProps> = ({
           {ctaText && (
             <div className="mt-6">
               <PrimaryButton theme={theme} className="px-7 py-3 rounded-lg font-bold uppercase tracking-wider flex items-center shadow-md hover:shadow-lg transition-shadow">
-                {ctaText}
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={ctaText}
+                  contentPath="ctaText"
+                />
               </PrimaryButton>
             </div>
           )}

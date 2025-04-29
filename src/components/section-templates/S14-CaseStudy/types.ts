@@ -4,8 +4,8 @@ import { BaseSectionProps, ThemeType } from "@/lib/types";
 export interface CaseStudyProps extends BaseSectionProps {
   title: string;
   subtitle: string;
-  badgeText?: string;
-  ctaText?: string;
+  badgeText: string;
+  ctaText: string;
   caseStudies: {
     companyName: string;
     companyLogo?: string;

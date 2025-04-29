@@ -4,19 +4,19 @@ import { BaseSectionProps, ThemeType } from "@/lib/types";
 export interface AboutProps extends BaseSectionProps {
   title: string;
   subtitle: string;
-  badgeText?: string;
-  quote?: {
+  badgeText: string;
+  quote: {
     text: string;
     author: string;
     position: string;
     heading?: string;
   };
-  features?: {
+  features: {
     icon?: string;
     title: string;
     description: string;
   }[];
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 export const defaultAboutProps: AboutProps = {

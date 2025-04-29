@@ -15,7 +15,7 @@ export const CTAV3: React.FC<CTAProps> = ({
   ctaText = defaultCTAProps.ctaText,
   theme = defaultCTAProps.theme,
   imageUrl = defaultCTAProps.imageUrl || '',  
-  sectionId
+  sectionId = defaultCTAProps.sectionId || '',
 }: CTAProps) => {
   const isDark = theme === 'dark';
 

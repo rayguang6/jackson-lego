@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { archivo, fontVariables } from "@/lib/fonts";
 export const metadata: Metadata = {
-  title: "Jackson Lego - Web Design Generator",
+  title: "One Click Design - by Yew Brothers",
   description: "Quickly create beautiful web designs with AI",
 };
 

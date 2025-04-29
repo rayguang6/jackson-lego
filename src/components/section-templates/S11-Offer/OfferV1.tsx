@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { OfferProps, defaultOfferProps } from './types';
 import { Badge } from '@/components/template-ui/Badge';
 import { MyHeading } from '@/components/template-ui/MyHeading';
@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { MySection } from '@/components/template-ui/MySection';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { EditableText } from '@/components/editable/EditableText';
+import { useDesignStore } from '@/lib/store/designStore';
 
 export const OfferV1: React.FC<OfferProps> = ({
     badgeText = defaultOfferProps.badgeText,
@@ -21,10 +22,18 @@ export const OfferV1: React.FC<OfferProps> = ({
     specialOfferOriginalPrice = defaultOfferProps.specialOfferOriginalPrice,
     ctaText = defaultOfferProps.ctaText,
     footerText = defaultOfferProps.footerText,
-    sectionId
+    sectionId = defaultOfferProps.sectionId || '',
   }: OfferProps) => {
+    const isDark = theme === 'dark';
 
-  const isDark = theme === 'dark';
+    // Initialize the offers array in the store to ensure it exists
+    useEffect(() => {
+      // Get the current section content
+      const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+      if (sectionId && !sectionContent.offers) {
+        useDesignStore.getState().updateSectionField(sectionId, 'offers', JSON.parse(JSON.stringify(offers)));
+      }
+    }, [sectionId, offers]);
   
   return (
     <MySection theme={theme}>

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { TestimonialsProps, defaultTestimonialsProps } from './types';
 
@@ -9,7 +9,8 @@ import { Badge } from '@/components/template-ui/Badge';
 import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
-
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 // Custom placeholder avatar component
 const UserAvatar = ({ author, index, isDark, avatarUrl }: { author: string; index: number; isDark: boolean; avatarUrl?: string }) => {
   // Only use the custom avatar if no avatarUrl is provided
@@ -47,9 +48,23 @@ export const TestimonialsV2: React.FC<TestimonialsProps> = ({
   subtitle = defaultTestimonialsProps.subtitle,
   badgeText = defaultTestimonialsProps.badgeText,
   testimonials = defaultTestimonialsProps.testimonials,
-  theme = defaultTestimonialsProps.theme
+  theme = defaultTestimonialsProps.theme,
+  sectionId = defaultTestimonialsProps.sectionId || '',
+  ctaText = defaultTestimonialsProps.ctaText,
 }) => {
   const isDark = theme === 'dark';
+
+  // Initialize the testimonials array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+    // Check if testimonials array doesn't exist yet in the store   
+    if (!sectionContent.testimonials) {
+      // Initialize with a copy of the default testimonials
+      useDesignStore.getState().updateSectionField(sectionId, 'testimonials', JSON.parse(JSON.stringify(testimonials)));
+    }
+  }, [sectionId, testimonials]);  
   
   const renderStars = (rating: number = 5) => {
     return Array(5).fill(0).map((_, i) => (
@@ -81,18 +96,30 @@ export const TestimonialsV2: React.FC<TestimonialsProps> = ({
         {/* Badge */}
         <div className="flex justify-center mb-10">
           <Badge theme={theme}>
-            {badgeText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={badgeText}
+              contentPath="badgeText"
+            />
           </Badge>
         </div>
         
         {/* Header */}
         <div className="max-w-3xl mx-auto mb-10 text-center">
           <MyHeading theme={theme} className="mb-5 text-4xl font-semibold">
-            {title}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={title}
+              contentPath="title"
+            />
           </MyHeading>
           
           <MyParagraph theme={theme} className="text-lg">
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath="subtitle"
+            />
           </MyParagraph>
         </div>
         
@@ -121,13 +148,21 @@ export const TestimonialsV2: React.FC<TestimonialsProps> = ({
                       className={`text-xl font-semibold mb-1.5 ${isDark ? 'text-white' : 'text-gray-900'}`}
                       style={{ fontFamily: GLOBALCSS_VAR.headingFont }}
                     >
-                      {testimonial.author}
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={testimonial.author}
+                        contentPath={`testimonials.${index}.author`}
+                      />
                     </h3>
                     <p 
                       className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
                       style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
                     >
-                      {testimonial.role} {testimonial.company ? `@${testimonial.company}` : ''}
+                      <EditableText
+                        sectionId={sectionId}
+                        defaultValue={testimonial.role}
+                        contentPath={`testimonials.${index}.role`}
+                      /> {testimonial.company ? `@${testimonial.company}` : ''}
                     </p>
                   </div>
                 </div>
@@ -138,7 +173,11 @@ export const TestimonialsV2: React.FC<TestimonialsProps> = ({
                     className={`text-center ${isDark ? 'text-gray-200' : 'text-gray-700'}`}
                     style={{ fontFamily: GLOBALCSS_VAR.bodyFont }}
                   >
-                    "{testimonial.quote}"
+                    <EditableText
+                      sectionId={sectionId}
+                      defaultValue={testimonial.quote}
+                      contentPath={`testimonials.${index}.quote`}
+                    />
                   </p>
                 </div>
               </div>

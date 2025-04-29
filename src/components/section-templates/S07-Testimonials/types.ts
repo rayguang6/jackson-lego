@@ -4,7 +4,7 @@ export interface TestimonialsProps extends BaseSectionProps {
   // Additional props specific to our implementation if needed
   title: string;
   subtitle: string;
-  badgeText?: string;
+  badgeText: string;
   testimonials: {
     quote: string;
     author: string;
@@ -14,7 +14,7 @@ export interface TestimonialsProps extends BaseSectionProps {
     avatarUrl: string;
     thumbnailUrl: string;
   }[];
-  ctaText?: string;
+  ctaText: string;
 }
 
 // Default values for testimonials

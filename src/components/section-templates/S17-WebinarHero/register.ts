@@ -1,19 +1,19 @@
 import { SectionTemplatesVariants } from '@/lib/templates/types';
-import { S17WebinarHero } from './index';
+import { WebinarHeroV1 } from './WebinarHeroV1';
 import { ThemeType, VersionType } from '@/lib/types';
 
 export const webinarHeroTemplates: SectionTemplatesVariants = {
   [ThemeType.light]: {
     [VersionType.v1]: {
-      id: 's17-webinar-hero-v1-light',
-      component: S17WebinarHero,
+      id: 'webinarHero-v1-light',
+      component: WebinarHeroV1,
       theme: ThemeType.light
     }
   },
   [ThemeType.dark]: {
     [VersionType.v1]: {
-      id: 's17-webinar-hero-v1-dark',
-      component: S17WebinarHero,
+      id: 'webinarHero-v1-dark',
+      component: WebinarHeroV1,
       theme: ThemeType.dark
     }
   }

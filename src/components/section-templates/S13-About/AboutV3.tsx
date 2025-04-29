@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AboutProps, defaultAboutProps } from './types';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { MyHeading } from '@/components/template-ui/MyHeading';
 import { Badge } from '@/components/template-ui/Badge';
 import { EditableText } from '@/components/editable/EditableText';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { useDesignStore } from '@/lib/store/designStore';
 export const AboutV3: React.FC<AboutProps> = ({
   title = defaultAboutProps.title,
   subtitle = defaultAboutProps.subtitle,
   badgeText = defaultAboutProps.badgeText,
+  quote = defaultAboutProps.quote,
   features = defaultAboutProps.features,
   imageUrl = defaultAboutProps.imageUrl,
   theme = defaultAboutProps.theme,
-  sectionId
+  sectionId = defaultAboutProps.sectionId || '',  
 }: AboutProps) => {
+  const isDark = theme === 'dark';
+
+  // Initialize the features array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    if (sectionId && !sectionContent.features) {
+      useDesignStore.getState().updateSectionField(sectionId, 'features', JSON.parse(JSON.stringify(features)));
+    }
+
+    if (sectionId && !sectionContent.quote) {
+      useDesignStore.getState().updateSectionField(sectionId, 'quote', JSON.parse(JSON.stringify(quote)));
+    }
+  }, [sectionId, features, quote]);
+
   return (
     <section className={`py-16 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="container mx-auto px-4 max-w-6xl">

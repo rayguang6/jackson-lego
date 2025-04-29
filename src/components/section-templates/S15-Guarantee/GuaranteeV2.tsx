@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GuaranteeProps, defaultGuaranteeProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
@@ -9,18 +9,16 @@ import Image from 'next/image';
 import { Badge } from '@/components/template-ui/Badge';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { ThemeType } from '@/lib/types';
+import { useDesignStore } from '@/lib/store/designStore';
 
-export const GuaranteeV2: React.FC<GuaranteeProps> = (props) => {
-  const {
-    title,
-    subtitle,
-    badgeText,
-    imageUrl,
-    theme,
-    sectionId
-  } = { ...defaultGuaranteeProps, ...props };
-
-  const isDark = theme === 'dark';
+export const GuaranteeV2: React.FC<GuaranteeProps> = ({
+  title = defaultGuaranteeProps.title,
+  subtitle = defaultGuaranteeProps.subtitle,
+  badgeText = defaultGuaranteeProps.badgeText,
+  imageUrl = defaultGuaranteeProps.imageUrl,
+  theme = defaultGuaranteeProps.theme,
+  sectionId = defaultGuaranteeProps.sectionId || '',
+}: GuaranteeProps) => {
 
   return (
     <MySection 

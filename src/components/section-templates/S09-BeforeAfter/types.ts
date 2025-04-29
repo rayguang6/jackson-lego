@@ -6,16 +6,15 @@ export interface ComparisonItem {
 }
 
 export interface BeforeAfterProps extends BaseSectionProps {
-  title?: string;
-  subtitle?: string;
-  badgeText?: string;
-  comparisonItems?: ComparisonItem[];
-  beforeLabel?: string;
-  afterLabel?: string;
-  beforeHeading?: string;
-  afterHeading?: string;
-  ctaText?: string;
-  ctaLink?: string;
+  title: string;
+  subtitle: string;
+  badgeText: string;
+  comparisonItems: ComparisonItem[];
+  beforeLabel: string;
+  afterLabel: string;
+  beforeHeading: string;
+  afterHeading: string;
+  ctaText: string;
 }
 
 export const defaultBeforeAfterProps: BeforeAfterProps = {
@@ -53,6 +52,5 @@ export const defaultBeforeAfterProps: BeforeAfterProps = {
     }
   ],
   ctaText: 'GET INSTANT ACCESS',
-  ctaLink: '#signup',
   theme: ThemeType.light,
 }; 

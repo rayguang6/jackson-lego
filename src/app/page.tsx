@@ -72,7 +72,7 @@ export default function Home() {
         <header className="bg-white shadow-sm">
           <div className="max-w-full mx-auto px-6 py-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Jackson Lego</h1>
+              <h1 className="text-2xl font-bold text-gray-900">One Click Design - by Yew Brothers</h1>
               <div className="flex space-x-3">
                 {/* 3 Buttons */}
                 <div className="flex items-center gap-4">

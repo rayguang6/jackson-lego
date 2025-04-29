@@ -11,7 +11,7 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { Badge } from '@/components/template-ui/Badge';
 
-export const S17WebinarHero: React.FC<WebinarHeroProps> = ({
+export const WebinarHeroV1: React.FC<WebinarHeroProps> = ({
   topBannerText = defaultWebinarHeroProps.topBannerText,
   mainTitle = defaultWebinarHeroProps.mainTitle,
   subTitle = defaultWebinarHeroProps.subTitle,
@@ -21,19 +21,26 @@ export const S17WebinarHero: React.FC<WebinarHeroProps> = ({
   timeRange = defaultWebinarHeroProps.timeRange,
   registrationLimit = defaultWebinarHeroProps.registrationLimit,
   theme = defaultWebinarHeroProps.theme,
-  sectionId
+  sectionId = defaultWebinarHeroProps.sectionId || '',
+  imageUrl = defaultWebinarHeroProps.imageUrl,
 }: WebinarHeroProps) => {
 
   return (
-    <MySection theme={theme} className="relative overflow-hidden">
+    <MySection theme={theme} className="!p-0 !mx-0 max-w-none">
       {/* Top Banner */}
-      <Badge theme={theme} className="w-full py-2 text-center">
-        <EditableText
-          sectionId={sectionId}
-          contentPath="topBannerText"
-          defaultValue={topBannerText}
-        />
-      </Badge>
+      <div className="bg-gray-900 text-white text-center w-screen mx-auto">
+        <MyParagraph theme={theme} className="text-center">
+          <EditableText
+            sectionId={sectionId}
+            contentPath="topBannerText"
+            defaultValue={topBannerText}
+          />
+        </MyParagraph>
+      </div>
+      <MySection theme={theme} className="">
+
+      
+
 
       <div className="container mx-auto px-4 py-16">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -98,18 +105,19 @@ export const S17WebinarHero: React.FC<WebinarHeroProps> = ({
 
           {/* Right Content - Image */}
           <div className="flex-1 relative">
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-xl">
+
               <Image
-                src={TEMPLATE_IMAGES.WEBINAR.WEBINAR_HERO_IMAGE}
+                src={imageUrl}
                 alt="Webinar Speakers"
                 className="object-cover"
-                fill
-                priority
+                width={500}
+                height={500}
               />
-            </div>
           </div>
         </div>
       </div>
+
+      </MySection>
     </MySection>
   );
 }; 

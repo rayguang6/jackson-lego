@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FAQProps, defaultFAQProps } from './types';
 import { MySection } from '@/components/template-ui/MySection';
 import { MyHeading } from '@/components/template-ui/MyHeading';
@@ -8,6 +8,8 @@ import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { PrimaryButton } from '@/components/template-ui/PrimaryButton';
 import { Badge } from '@/components/template-ui/Badge';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 export const FAQV1: React.FC<FAQProps> = ({
   title = defaultFAQProps.title,
   subtitle = defaultFAQProps.subtitle,
@@ -15,8 +17,21 @@ export const FAQV1: React.FC<FAQProps> = ({
   faqs = defaultFAQProps.faqs,
   ctaText = defaultFAQProps.ctaText,
   theme = defaultFAQProps.theme,
-  sectionId,
+  sectionId = defaultFAQProps.sectionId || '',  
 }: FAQProps) => {
+
+  // Initialize the faqs array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+    // Check if faqs array doesn't exist yet in the store 
+    if (sectionId &&  !sectionContent.faqs) {
+      // Initialize with a copy of the default faqs
+      useDesignStore.getState().updateSectionField(sectionId, 'faqs', JSON.parse(JSON.stringify(faqs)));
+    }
+  }, [sectionId, faqs]);
+  
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggleFAQ = (index: number) => {
@@ -29,17 +44,29 @@ export const FAQV1: React.FC<FAQProps> = ({
       {/* Badge */}
       <div className="flex justify-center mb-5">
         <Badge theme={theme}>
-          {badgeText || 'FAQ'}  
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={badgeText}
+            contentPath="badgeText"
+          />
         </Badge>
       </div>
 
       {/* Title and subtitle */}
       <div className="text-center mb-12 max-w-[800px]">
         <MyHeading theme={theme} className="mb-4">
-          {title}
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={title}
+            contentPath="title"
+          />
         </MyHeading>
         <MyParagraph theme={theme}>
-          {subtitle}
+          <EditableText
+            sectionId={sectionId}
+            defaultValue={subtitle || ''}
+            contentPath="subtitle"
+          />
         </MyParagraph>
       </div>
 
@@ -59,7 +86,11 @@ export const FAQV1: React.FC<FAQProps> = ({
               } font-medium text-lg focus:outline-none`}
               onClick={() => toggleFAQ(index)}
             >
-              <span>{faq.question}</span>
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={faq.question}
+                contentPath={`faqs.${index}.question`}
+              />
               <span className="ml-6">
                 {openIndex === index ? (
                   <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +112,11 @@ export const FAQV1: React.FC<FAQProps> = ({
               }`}
             >
               <MyParagraph theme={theme} className="pl-0">
-                {faq.answer}
+                <EditableText
+                  sectionId={sectionId}
+                  defaultValue={faq.answer}
+                  contentPath={`faqs.${index}.answer`}
+                />
               </MyParagraph>
             </div>
           </div>
@@ -92,7 +127,11 @@ export const FAQV1: React.FC<FAQProps> = ({
       {ctaText && (
         <div className="mt-10">
           <PrimaryButton theme={theme}>
-            {ctaText}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={ctaText}
+              contentPath="ctaText"
+            />
           </PrimaryButton>
         </div>
       )}

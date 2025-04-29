@@ -4,9 +4,9 @@ import { BaseSectionProps, ThemeType } from "@/lib/types";
 export interface GuaranteeProps extends BaseSectionProps {
   title: string;
   subtitle: string;
-  badgeText?: string;
+  badgeText: string;
   badgeIcon?: string;
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 export const defaultGuaranteeProps: GuaranteeProps = {

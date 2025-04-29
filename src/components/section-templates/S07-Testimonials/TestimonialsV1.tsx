@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TestimonialsProps, defaultTestimonialsProps } from './types';
 
 import { MySection } from '@/components/template-ui/MySection';
@@ -8,6 +8,8 @@ import { Badge } from '@/components/template-ui/Badge';
 import { MyHeading } from '@/components/template-ui/MyHeading';
 import { MyParagraph } from '@/components/template-ui/MyParagraph';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
+import { useDesignStore } from '@/lib/store/designStore';
+import { EditableText } from '@/components/editable/EditableText';
 // Custom placeholder avatar component
 const UserAvatar = ({ author, index, isDark }: { author: string; index: number; isDark: boolean }) => {
   const colors = ['#EF083A', '#3267FF', '#9061F9', '#2DA94F', '#FF8C42'];
@@ -30,17 +32,23 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
   badgeText = defaultTestimonialsProps.badgeText,
   testimonials = defaultTestimonialsProps.testimonials,
   theme = defaultTestimonialsProps.theme,
-  sectionId
+  sectionId = defaultTestimonialsProps.sectionId || '',
+  ctaText = defaultTestimonialsProps.ctaText,
 }) => {
   const isDark = theme === 'dark';
-  // const badgeColor = 'text-[#EF083A]';
-  // const headingColor = isDark ? 'text-white' : 'text-[#343434]';
-  // const subtitleColor = isDark ? 'text-gray-300' : 'text-[#4B5162]';
-  // const cardBg = isDark ? 'bg-gray-800' : 'bg-white';
-  // const cardBorder = isDark ? 'border-gray-700' : 'border-[#E5E5E7]';
-  // const quoteColor = isDark ? 'text-white' : 'text-[#101828]';
-  // const authorColor = isDark ? 'text-white' : 'text-[#101828]';
-  // const roleColor = isDark ? 'text-gray-400' : 'text-[#475467]';
+
+  // Initialize the testimonials array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    
+    // Check if testimonials array doesn't exist yet in the store   
+    if (!sectionContent.testimonials) {
+      // Initialize with a copy of the default testimonials
+      useDesignStore.getState().updateSectionField(sectionId, 'testimonials', JSON.parse(JSON.stringify(testimonials)));
+    }
+  }, [sectionId, testimonials]);  
+  
   
   // Make sure we have at least 3 testimonials
   const displayTestimonials = testimonials.slice(0, 3);
@@ -66,18 +74,30 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
           {/* Badge */}
           <div className="mb-3">
             <Badge theme={theme}>
-              {badgeText}
+              <EditableText
+                sectionId={sectionId}
+                defaultValue={badgeText || ''}
+                contentPath="badgeText"
+              />        
             </Badge>
           </div>
           
           {/* Title */}
           <MyHeading theme={theme}>
-            {title}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={title}
+              contentPath="title"
+            />
           </MyHeading>
           
           {/* Subtitle */}
           <MyParagraph theme={theme}>
-            {subtitle}
+            <EditableText
+              sectionId={sectionId}
+              defaultValue={subtitle}
+              contentPath="subtitle"
+            />
           </MyParagraph>
         </div>
         
@@ -106,17 +126,29 @@ export const TestimonialsV1: React.FC<TestimonialsProps> = ({
                     letterSpacing: '-0.04em'
                   }}
                 >
-                  "{testimonial.quote}"
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={testimonial.quote}
+                    contentPath={`testimonials.${index}.quote`}
+                  />  
                 </p>
               </div>
               
               {/* Author Info */}
               <div className="mt-auto">
                 <MyHeading as='h4' >
-                  {testimonial.author}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={testimonial.author}
+                    contentPath={`testimonials.${index}.author`}
+                  />
                 </MyHeading>
                 <MyParagraph className='mt-2'>
-                  {testimonial.role}{testimonial.company ? `, ${testimonial.company}` : ''}
+                  <EditableText
+                    sectionId={sectionId}
+                    defaultValue={testimonial.role}
+                    contentPath={`testimonials.${index}.role`}
+                  />
                 </MyParagraph>
               </div>
             </div>

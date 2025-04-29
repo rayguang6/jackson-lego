@@ -11,7 +11,7 @@ export interface HowItWorksProps extends BaseSectionProps {
     description: string;
   }[];
   image: string;
-  ctaText?: string;
+  ctaText: string;
 }
 
 // Default values that can be used by any Hero variant

@@ -3,8 +3,8 @@ import { BaseSectionProps, ThemeType } from "@/lib/types";
 
 export interface WhoIsThisForProps extends BaseSectionProps {
   title: string;
-  subtitle?: string;
-  badgeText?: string;
+  subtitle: string;
+  badgeText: string;
   profiles: {
     role: string;
     description: string;

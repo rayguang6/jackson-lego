@@ -7,17 +7,18 @@ export interface FAQItem {
 }
 
 export interface FAQProps extends BaseSectionProps {
-  title?: string;
-  subtitle?: string;
+  title: string;
+  subtitle: string;
   faqs?: FAQItem[];
-  ctaText?: string;
-  badgeText?: string;
+  ctaText: string;
+  badgeText: string;
 }
 
 export const defaultFAQProps: FAQProps = {
   title: 'Frequently Asked Questions',
   subtitle: 'Everything you need to know about the product and billing. ',
   badgeText: 'FAQS',
+  ctaText: 'GET INSTANT ACCESS',
   faqs: [
     {
       question: 'What is this product?',

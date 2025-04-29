@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { WhoIsThisForProps, defaultWhoIsThisForProps } from './types';
 import { GLOBALCSS_VAR } from '@/lib/constants/GlobalCssStyle';
 import { MyHeading } from '@/components/template-ui/MyHeading';
@@ -7,16 +7,26 @@ import Image from 'next/image';
 import { Badge } from '@/components/template-ui/Badge';
 import { MySection } from '@/components/template-ui/MySection';
 import { EditableText } from '@/components/editable/EditableText';
+import { useDesignStore } from '@/lib/store/designStore';
 
 export const WhoIsThisForV2: React.FC<WhoIsThisForProps> = ({
-  title = "If you think you are one of them...",
+  title = defaultWhoIsThisForProps.title,
   subtitle = defaultWhoIsThisForProps.subtitle,
   profiles = defaultWhoIsThisForProps.profiles || [],
   theme = defaultWhoIsThisForProps.theme,
   badgeText = defaultWhoIsThisForProps.badgeText,
-  sectionId
+  sectionId = defaultWhoIsThisForProps.sectionId || '',
 }) => {
   const isDark = theme === 'dark';
+
+  // Initialize the profiles array in the store to ensure it exists
+  useEffect(() => {
+    // Get the current section content
+    const sectionContent = useDesignStore.getState().design.sections.find(s => s.id === sectionId)?.content || {};
+    if (sectionId && !sectionContent.profiles) {
+      useDesignStore.getState().updateSectionField(sectionId, 'profiles', JSON.parse(JSON.stringify(profiles)));
+    }
+  }, [sectionId, profiles]);
 
   return (
     <MySection theme={theme}>

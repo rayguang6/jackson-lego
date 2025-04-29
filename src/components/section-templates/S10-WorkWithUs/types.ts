@@ -3,9 +3,9 @@ import { BaseSectionProps, ThemeType } from '@/lib/types';
 
 
 export interface WorkWithUsProps extends BaseSectionProps {
-  badgeText?: string;
-  title?: string;
-  subtitle?: string;
+  badgeText: string;
+  title: string;
+  subtitle: string;
   cardItems: {
     title: string;
     description: string;
