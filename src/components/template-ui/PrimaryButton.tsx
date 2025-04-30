@@ -6,12 +6,14 @@ interface PrimaryButtonProps {
   children: React.ReactNode;
   theme: 'light' | 'dark';
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   children,
   theme,
   className = '',
+  style = {},
 }) => {
 
   return (
@@ -19,7 +21,8 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
       className={`group font-archivo inline-flex items-center px-10 py-5 text-white rounded-lg font-bold text-base hover:opacity-90 transition-all duration-300 ${className}`}
       style={{ 
         backgroundColor: 'var(--primary-color)',
-        fontFamily: 'var(--body-font)' 
+        fontFamily: 'var(--body-font)',
+        ...style
       }}
     >
       {children}

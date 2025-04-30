@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import FontSelector from './FontSelector';
 import { useDesignStore } from '@/lib/store/designStore';
+import { FONT_OPTIONS } from '@/lib/fonts';
+import { StarIcon } from '@/components/template-ui/icons/StarIcon';
 
 // interface DesignHook {
 //   styleGuide: any;
@@ -64,13 +66,60 @@ const getShades = (hexColor: string): string[] => {
   return shades;
 };
 
+// NEW: extract HSL to hex conversion function
+const convertHSLToHex = (h: number, s: number, l: number): string => {
+  s /= 100;
+  l /= 100;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = l - c / 2;
+  let r = 0, g = 0, b = 0;
+  if (0 <= h && h < 60) { r = c; g = x; b = 0; }
+  else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
+  else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
+  else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
+  else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
+  else { r = c; g = 0; b = x; }
+  const rHex = Math.round((r + m) * 255).toString(16).padStart(2, '0');
+  const gHex = Math.round((g + m) * 255).toString(16).padStart(2, '0');
+  const bHex = Math.round((b + m) * 255).toString(16).padStart(2, '0');
+  return `#${rHex}${gHex}${bHex}`;
+};
+
 const BrandGuide: React.FC = () => {
     // 1️⃣ Pull from Zustand
   const styleGuide           = useDesignStore(s => s.design.styleGuide);
   const updatePrimaryColor   = useDesignStore(s => s.updatePrimaryColor);
   const updateSecondaryColor = useDesignStore(s => s.updateSecondaryColor);
   const resetStyleGuide      = useDesignStore(s => s.resetStyleGuide);
+  // NEW: font update actions
+  const updateHeadingFont = useDesignStore(s => s.updateHeadingFont);
+  const updateBodyFont    = useDesignStore(s => s.updateBodyFont);
   
+  // Shuffle both primary and secondary colors
+  const shuffleColors = () => {
+    // Primary
+    const hue1 = Math.floor(Math.random() * 360);
+    const sat1 = Math.floor(Math.random() * 30 + 70);
+    const light1 = Math.floor(Math.random() * 20 + 40);
+    const randomColor1 = convertHSLToHex(hue1, sat1, light1);
+    updatePrimaryColor(randomColor1);
+    // Secondary
+    const hue2 = Math.floor(Math.random() * 360);
+    const sat2 = Math.floor(Math.random() * 30 + 70);
+    const light2 = Math.floor(Math.random() * 20 + 40);
+    const randomColor2 = convertHSLToHex(hue2, sat2, light2);
+    updateSecondaryColor(randomColor2);
+  };
+
+  // Shuffle both heading and body fonts randomly
+  const shuffleFonts = () => {
+    const fontValues = FONT_OPTIONS.map(f => f.value);
+    const pickRandom = () => fontValues[Math.floor(Math.random() * fontValues.length)];
+    updateHeadingFont(pickRandom());
+    updateBodyFont(pickRandom());
+  };
+
   // 2️⃣ Local configs, synced on every styleGuide change
   const [colorConfigs, setColorConfigs] = useState<ColorConfig[]>([]);
   useEffect(() => {
@@ -255,47 +304,12 @@ const BrandGuide: React.FC = () => {
     }
   }, [activeColorId]);
 
-  // Add this function to your component before the return statement
+  // Update handleColorShuffle to use top-level convertHSLToHex
   const handleColorShuffle = () => {
     if (!activeColorId) return;
-    
-    // Generate a pleasing random color using HSL for better control
-    const hue = Math.floor(Math.random() * 360); // Random hue (0-359)
-    const saturation = Math.floor(Math.random() * 30 + 70); // Higher saturation (70-100%)
-    const lightness = Math.floor(Math.random() * 20 + 40); // Medium lightness (40-60%)
-    
-    // Convert HSL to Hex
-    const convertHSLToHex = (h: number, s: number, l: number) => {
-      s /= 100;
-      l /= 100;
-      
-      const c = (1 - Math.abs(2 * l - 1)) * s;
-      const x = c * (1 - Math.abs((h / 60) % 2 - 1));
-      const m = l - c / 2;
-      
-      let r = 0, g = 0, b = 0;
-      
-      if (0 <= h && h < 60) {
-        r = c; g = x; b = 0;
-      } else if (60 <= h && h < 120) {
-        r = x; g = c; b = 0;
-      } else if (120 <= h && h < 180) {
-        r = 0; g = c; b = x;
-      } else if (180 <= h && h < 240) {
-        r = 0; g = x; b = c;
-      } else if (240 <= h && h < 300) {
-        r = x; g = 0; b = c;
-      } else {
-        r = c; g = 0; b = x;
-      }
-      
-      const rHex = Math.round((r + m) * 255).toString(16).padStart(2, '0');
-      const gHex = Math.round((g + m) * 255).toString(16).padStart(2, '0');
-      const bHex = Math.round((b + m) * 255).toString(16).padStart(2, '0');
-      
-      return `#${rHex}${gHex}${bHex}`;
-    };
-    
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 30 + 70);
+    const lightness = Math.floor(Math.random() * 20 + 40);
     const randomColor = convertHSLToHex(hue, saturation, lightness);
     handleColorChange(randomColor);
   };
@@ -314,13 +328,30 @@ const BrandGuide: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full">
+      {/* Global actions */}
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h1 className="text-2xl font-bold">Brand Guide</h1>
+          <p className="text-sm text-gray-600">Customize your primary & secondary colors and fonts</p>
+        </div>
+        <button
+          onClick={handleResetStyle}
+          className="flex items-center space-x-1 px-3 py-1 text-sm rounded hover:bg-gray-50"
+        >
+          <span>🔄</span>
+          <span>Reset Brand Guide</span>
+        </button>
+      </div>
+
       {/* Header */}
       <div className="flex-shrink-0 bg-white py-4 mb-4 flex justify-between items-center">
         <h2 className="text-xl font-semibold">Brand Colors</h2>
         <button
-          onClick={handleResetStyle}
-          className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">
-          Reset
+          onClick={shuffleColors}
+          className="flex items-center space-x-1 px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50"
+        >
+          <StarIcon className="h-4 w-4" />
+          <span>Shuffle Colors</span>
         </button>
       </div>
 
@@ -543,7 +574,16 @@ const BrandGuide: React.FC = () => {
 
         {/* Typography */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Typography</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Typography</h2>
+            <button
+              onClick={shuffleFonts}
+              className="flex items-center space-x-1 px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50"
+            >
+              <StarIcon className="h-4 w-4" />
+              <span>Shuffle Fonts</span>
+            </button>
+          </div>
           <FontSelector />
         </div>
 
