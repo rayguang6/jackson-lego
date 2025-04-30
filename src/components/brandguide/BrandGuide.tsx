@@ -336,10 +336,10 @@ const BrandGuide: React.FC = () => {
         </div>
         <button
           onClick={handleResetStyle}
-          className="flex items-center space-x-1 px-3 py-1 text-sm rounded hover:bg-gray-50"
+          className="flex items-center space-x-1 px-4 py-2 border border-blue-500 bg-white text-blue-500 text-sm font-medium rounded-md shadow-sm hover:bg-blue-50 transition-colors cursor-pointer"
         >
           <span>🔄</span>
-          <span>Reset Brand Guide</span>
+          <span>Reset Style</span>
         </button>
       </div>
 

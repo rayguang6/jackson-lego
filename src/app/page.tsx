@@ -11,6 +11,7 @@ import { useDesignStore } from '@/lib/store/designStore';
 import StyleProvider from '@/lib/contexts/StyleProvider';
 import FunnelSelectionDialog from '@/components/FunnelSelectionDialog';
 import { WebsiteSection } from '@/lib/types';
+import Image from 'next/image';
 
 export default function Home() {
   const [isStructurePanelOpen, setIsStructurePanelOpen] = useState(true);
@@ -67,7 +68,9 @@ export default function Home() {
         <header className="bg-white shadow-sm">
           <div className="max-w-full mx-auto px-6 py-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900">One Click Design - by Yew Brothers</h1>
+              <div className="flex items-center space-x-3">
+                <Image src="/images/main/oneclick design v1.png" alt="One Click Design Logo" width={180} height={40} priority />
+              </div>
               <div className="flex space-x-3">
                 {/* 3 Buttons */}
                 <div className="flex items-center gap-4">

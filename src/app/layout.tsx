@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { archivo, fontVariables } from "@/lib/fonts";
 export const metadata: Metadata = {
-  title: "One Click Design - by Yew Brothers",
+  title: "One Click Design",
   description: "Quickly create beautiful web designs with AI",
 };
 
