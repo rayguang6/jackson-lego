@@ -1,6 +1,8 @@
 import React from 'react';
 import { SectionType, ThemeType, VersionType, WebsiteSection } from '@/lib/types';
 import { v4 as uuidv4 } from 'uuid';
+import { StarIcon } from '@/components/template-ui/icons/StarIcon';
+import { getTemplatesForSectionType } from '@/lib/templates';
 
 interface FunnelSelectionDialogProps {
   onClose: () => void;
@@ -8,143 +10,71 @@ interface FunnelSelectionDialogProps {
 }
 
 const FunnelSelectionDialog: React.FC<FunnelSelectionDialogProps> = ({ onClose, onSelect }) => {
-  const handleSelectFunnel = (type: 'normal' | 'webinar') => {
-    let sections: WebsiteSection[] = [];
-    
-    if (type === 'normal') {
-      sections = [
-        {
-          id: uuidv4(),
-          type: SectionType.S01_Hero,
-          title: 'Hero Section',
-          order: 0,
-          templateId: `${SectionType.S01_Hero}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S03_Problem,
-          title: 'Problem Section',
-          order: 1,
-          templateId: `${SectionType.S03_Problem}-${VersionType.v1}-${ThemeType.dark}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S04_Solutions,
-          title: 'Solutions Section',
-          order: 2,
-          templateId: `${SectionType.S04_Solutions}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S05_FeaturesOrServices,
-          title: 'Features Section',
-          order: 3,
-          templateId: `${SectionType.S05_FeaturesOrServices}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S06_HowItWorks,
-          title: 'How It Works Section',
-          order: 4,
-          templateId: `${SectionType.S06_HowItWorks}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S07_Testimonials,
-          title: 'Testimonials Section',
-          order: 5,
-          templateId: `${SectionType.S07_Testimonials}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S16_CTA,
-          title: 'CTA Section',
-          order: 6,
-          templateId: `${SectionType.S16_CTA}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-      ];
-    } else {
-      sections = [
-        {
-          id: uuidv4(),
-          type: SectionType.S17_WebinarHero,
-          title: 'Webinar Hero Section',
-          order: 0,
-          templateId: `${SectionType.S17_WebinarHero}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S18_WebinarBenefits,
-          title: 'Webinar Benefits Section',
-          order: 1,
-          templateId: `${SectionType.S18_WebinarBenefits}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S19_WebinarFeatures,
-          title: 'Webinar Features Section',
-          order: 2,
-          templateId: `${SectionType.S19_WebinarFeatures}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S20_WebinarTestimonials,
-          title: 'Webinar Testimonials Section',
-          order: 3,
-          templateId: `${SectionType.S20_WebinarTestimonials}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S21_WebinarPricing,
-          title: 'Webinar Pricing Section',
-          order: 4,
-          templateId: `${SectionType.S21_WebinarPricing}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S22_WebinarSchedule,
-          title: 'Webinar Schedule Section',
-          order: 5,
-          templateId: `${SectionType.S22_WebinarSchedule}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-        {
-          id: uuidv4(),
-          type: SectionType.S23_WebinarCTA,
-          title: 'Webinar CTA Section',
-          order: 6,
-          templateId: `${SectionType.S23_WebinarCTA}-${VersionType.v1}-${ThemeType.light}`,
-          theme: ThemeType.light,
-          content: {},
-        },
-      ];
-    }
-    
+  // Define all funnel options and their section sequences
+  const funnelDefinitions: Array<{
+    id: 'lead-magnet' | 'webinar' | 'vsl' | 'high-ticket' | 'course' | 'tripwire' | 'launch';
+    name: string;
+    desc: string;
+    sectionTypes: SectionType[];
+  }> = [
+    { id: 'lead-magnet', name: 'Lead Magnet Funnel', desc: 'Collect emails for a free PDF, guide, or checklist', sectionTypes: [
+      SectionType.S01_Hero, SectionType.S03_Problem, SectionType.S04_Solutions, SectionType.S05_FeaturesOrServices,
+      SectionType.S13_About, SectionType.S07_Testimonials, SectionType.S08_FAQ, SectionType.S16_CTA
+    ] },
+    { id: 'webinar', name: 'Webinar Funnel', desc: 'Register for a live or automated webinar', sectionTypes: [
+      SectionType.S17_WebinarHero, SectionType.S04_Solutions, SectionType.S05_FeaturesOrServices,
+      SectionType.S12_WhoIsThisFor, SectionType.S13_About, SectionType.S07_Testimonials,
+      SectionType.S08_FAQ, SectionType.S18_WebinarCTA
+    ] },
+    { id: 'vsl', name: 'VSL Funnel', desc: 'Sell through a video sales letter', sectionTypes: [
+      SectionType.S01_Hero, SectionType.S03_Problem, SectionType.S09_BeforeAfter, SectionType.S04_Solutions,
+      SectionType.S05_FeaturesOrServices, SectionType.S07_Testimonials, SectionType.S15_Guarantee, SectionType.S16_CTA
+    ] },
+    { id: 'high-ticket', name: 'High-Ticket Application Funnel', desc: 'Qualify and get people to book a call', sectionTypes: [
+      SectionType.S01_Hero, SectionType.S03_Problem, SectionType.S12_WhoIsThisFor, SectionType.S04_Solutions,
+      SectionType.S05_FeaturesOrServices, SectionType.S14_CaseStudy, SectionType.S13_About, SectionType.S08_FAQ, SectionType.S16_CTA
+    ] },
+    { id: 'course', name: 'Course Funnel', desc: 'Sell an online course', sectionTypes: [
+      SectionType.S01_Hero, SectionType.S09_BeforeAfter, SectionType.S04_Solutions, SectionType.S05_FeaturesOrServices,
+      SectionType.S12_WhoIsThisFor, SectionType.S07_Testimonials, SectionType.S08_FAQ, SectionType.S15_Guarantee, SectionType.S16_CTA
+    ] },
+    { id: 'tripwire', name: 'Tripwire Funnel', desc: 'Low-ticket product to acquire paying users', sectionTypes: [
+      SectionType.S01_Hero, SectionType.S03_Problem, SectionType.S05_FeaturesOrServices, SectionType.S07_Testimonials,
+      SectionType.S15_Guarantee, SectionType.S16_CTA
+    ] },
+    { id: 'launch', name: 'Product Launch Funnel', desc: 'Announce or launch a product/SaaS', sectionTypes: [
+      SectionType.S01_Hero, SectionType.S05_FeaturesOrServices, SectionType.S06_HowItWorks, SectionType.S13_About,
+      SectionType.S07_Testimonials, SectionType.S08_FAQ, SectionType.S16_CTA
+    ] },
+  ];
+
+  const handleSelectFunnel = (id: typeof funnelDefinitions[number]['id']) => {
+    const def = funnelDefinitions.find(f => f.id === id);
+    if (!def) return;
+    const sections: WebsiteSection[] = def.sectionTypes.map((type, idx) => {
+      // Pick first available template variant; fallback to v1-light
+      const variants = getTemplatesForSectionType(type);
+      let templateId: string;
+      let theme: ThemeType;
+      if (variants.length > 0) {
+        // Randomly pick a variant for diversity
+        const chosen = variants[Math.floor(Math.random() * variants.length)];
+        templateId = chosen.id;
+        theme = chosen.theme;
+      } else {
+        templateId = `${type}-${VersionType.v1}-${ThemeType.light}`;
+        theme = ThemeType.light;
+      }
+      return {
+        id: uuidv4(),
+        type,
+        title: `${type.replace(/^[A-Z0-9]+_?/, '')} Section`,
+        order: idx,
+        templateId,
+        theme,
+        content: {},
+      };
+    });
     onSelect(sections);
     onClose();
   };
@@ -165,39 +95,21 @@ const FunnelSelectionDialog: React.FC<FunnelSelectionDialogProps> = ({ onClose, 
         </div>
         
         <div className="space-y-3">
-          <button
-            onClick={() => handleSelectFunnel('normal')}
-            className="w-full p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 text-left group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-                </svg>
+          {funnelDefinitions.map(f => (
+            <button
+              key={f.id}
+              onClick={() => handleSelectFunnel(f.id)}
+              className="w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200 text-left flex items-center gap-3 group"
+            >
+              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                <StarIcon className="h-5 w-5 text-gray-600" />
               </div>
               <div>
-                <h3 className="font-medium text-gray-900">Normal Funnel</h3>
-                <p className="text-sm text-gray-500">Standard sales funnel with hero, problem, solutions, and more</p>
+                <h3 className="font-medium text-gray-900">{f.name}</h3>
+                <p className="text-sm text-gray-500">{f.desc}</p>
               </div>
-            </div>
-          </button>
-          
-          <button
-            onClick={() => handleSelectFunnel('webinar')}
-            className="w-full p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 text-left group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-medium text-gray-900">Webinar Funnel</h3>
-                <p className="text-sm text-gray-500">Webinar-specific funnel with schedule, benefits, and registration</p>
-              </div>
-            </div>
-          </button>
+            </button>
+          ))}
         </div>
       </div>
     </div>
