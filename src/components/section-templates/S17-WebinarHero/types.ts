@@ -14,7 +14,7 @@ export interface WebinarHeroProps extends BaseSectionProps {
 }
 
 export const defaultWebinarHeroProps: WebinarHeroProps = {
-  theme: ThemeType.dark,
+  theme: ThemeType.light,
   topBannerText: '96%的 [目标受众群体] 还不会用 [你的独特方法] 提高 [实现的目标]',
   mainTitle: '如何用 [方法] 在 [具体时间范围] 内 [实现具体可量化的结果]，就算',
   subTitle: '[常见异议，如"没有经验"/"以前失败过"]',

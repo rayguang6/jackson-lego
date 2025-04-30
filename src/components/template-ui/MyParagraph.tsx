@@ -17,7 +17,7 @@ export const MyParagraph: React.FC<ParagraphProps> = ({
 }) => {
 
   const isDark = theme === 'dark';
-  const textColor = isDark ? 'text-gray-300' : 'text-gray-400';
+  const textColor = isDark ? 'text-gray-300' : 'text-gray-700';
 
   return (
     <p

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { templateRegistry } from '@/lib/templates';
 import { SectionType } from '@/lib/types/index';
+import { v4 as uuidv4 } from 'uuid';
 
 // Type for legacy template structure - for type checking only
 interface LegacyTemplates {
@@ -14,6 +15,9 @@ interface LegacyTemplates {
 export default function DebugPage() {
   const [selectedSection, setSelectedSection] = useState<SectionType | 'all'>('all');
   const [selectedVariant, setSelectedVariant] = useState<string | 'all'>('all');
+  
+  // Create a mock sectionId to pass to all components
+  const debugSectionId = "debug-" + uuidv4();
   
   // Get all section types that have variants
   const availableSections = Object.entries(templateRegistry)
@@ -28,6 +32,57 @@ export default function DebugPage() {
              (legacyTemplates.dark && Object.keys(legacyTemplates.dark).length > 0);
     })
     .map(([sectionType]) => sectionType as SectionType);
+
+  // Dynamic loading and initialization of default props
+  useEffect(() => {
+    const initializeStore = async () => {
+      try {
+        // Import the store
+        const { useDesignStore } = require('@/lib/store/designStore');
+        
+        // Get template components that might be displayed
+        const filteredTemplates = getFilteredTemplates();
+        
+        // Process each template
+        for (const { section, template } of filteredTemplates) {
+          try {
+            // Dynamically import the defaultProps for this section type
+            // This assumes a consistent file structure where each section type has a types.ts file
+            // in a folder matching the section name
+            const module = await import(`@/components/sections/${section}/types`);
+            
+            // Get the default props from the module
+            // This assumes each types.ts exports a defaultXXXProps matching the section name
+            const defaultPropKey = `default${section.split('-')
+              .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+              .join('')}Props`;
+            
+            const defaultProps = module[defaultPropKey];
+            
+            if (defaultProps) {
+              // Check for arrays that need initialization
+              for (const [key, value] of Object.entries(defaultProps)) {
+                if (Array.isArray(value)) {
+                  // Store arrays in the store with the correct path
+                  useDesignStore.getState().updateSectionField(
+                    debugSectionId, 
+                    key, 
+                    JSON.parse(JSON.stringify(value))
+                  );
+                }
+              }
+            }
+          } catch (err) {
+            console.warn(`Could not load default props for ${section}:`, err);
+          }
+        }
+      } catch (err) {
+        console.error("Error initializing debug store:", err);
+      }
+    };
+    
+    initializeStore();
+  }, [selectedSection, selectedVariant, debugSectionId]);
 
   // Get all available variants from all sections
   const getAllVariants = () => {
@@ -145,21 +200,59 @@ export default function DebugPage() {
     return allTemplates;
   };
 
-  // Render a single template
+  // Async function to get default props for a template
+  const loadDefaultProps = async (section: SectionType) => {
+    try {
+      // Dynamically import the types module for this section
+      const module = await import(`@/components/sections/${section}/types`);
+      
+      // Get the default props from the module
+      const defaultPropKey = `default${section.split('-')
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('')}Props`;
+      
+      return module[defaultPropKey] || {};
+    } catch (err) {
+      console.warn(`Could not load default props for ${section}:`, err);
+      return {};
+    }
+  };
+
+  // Render a single template - includes dynamic props loading
   const renderTemplate = (section: SectionType, template: any, index: number) => {
     const { theme, component: Component } = template;
     const sectionName = section.charAt(0).toUpperCase() + section.slice(1).replace(/_/g, ' ');
     const variant = template.id.split('-').find((part: string) => part.startsWith('v')) || 'v1';
     
+    // Use React.lazy to dynamically load the component with default props
+    const LazyWrapper = React.lazy(async () => {
+      const defaultProps = await loadDefaultProps(section);
+      
+      return {
+        default: () => (
+          <div key={`${template.id}-${index}`} className="border rounded-lg overflow-hidden shadow-md mb-8">
+            <div className={`p-3 font-medium ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-800 text-white'}`}>
+              {sectionName} - {variant} - {theme}
+            </div>
+            <div>
+              <Component 
+                {...defaultProps} 
+                theme={theme} 
+                sectionId={debugSectionId} 
+              />
+            </div>
+          </div>
+        )
+      };
+    });
+    
     return (
-      <div key={`${template.id}-${index}`} className="border rounded-lg overflow-hidden shadow-md mb-8">
-        <div className={`p-3 font-medium ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-800 text-white'}`}>
-          {sectionName} - {variant} - {theme}
-        </div>
-        <div>
-          {React.createElement(Component, { theme })}
-        </div>
-      </div>
+      <React.Suspense 
+        key={`${section}-${template.id}-${index}`} 
+        fallback={<div className="p-8 text-center">Loading component...</div>}
+      >
+        <LazyWrapper />
+      </React.Suspense>
     );
   };
 
@@ -237,4 +330,4 @@ export default function DebugPage() {
       </div>
     </div>
   );
-} 
+}

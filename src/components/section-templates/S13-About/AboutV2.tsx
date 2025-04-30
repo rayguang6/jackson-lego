@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AboutProps, defaultAboutProps } from './types';
 import { EditableText } from '@/components/editable/EditableText';
 import { MySection } from '@/components/template-ui/MySection';
