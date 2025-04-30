@@ -61,18 +61,18 @@ const FunnelSelectionDialog: React.FC<FunnelSelectionDialogProps> = ({ onClose, 
         const chosen = variants[Math.floor(Math.random() * variants.length)];
         templateId = chosen.id;
         theme = chosen.theme;
-      } else {
+    } else {
         templateId = `${type}-${VersionType.v1}-${ThemeType.light}`;
         theme = ThemeType.light;
       }
       return {
-        id: uuidv4(),
+          id: uuidv4(),
         type,
         title: `${type.replace(/^[A-Z0-9]+_?/, '')} Section`,
         order: idx,
         templateId,
         theme,
-        content: {},
+          content: {},
       };
     });
     onSelect(sections);
@@ -96,7 +96,7 @@ const FunnelSelectionDialog: React.FC<FunnelSelectionDialogProps> = ({ onClose, 
         
         <div className="space-y-3">
           {funnelDefinitions.map(f => (
-            <button
+          <button
               key={f.id}
               onClick={() => handleSelectFunnel(f.id)}
               className="w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200 text-left flex items-center gap-3 group"
@@ -107,8 +107,8 @@ const FunnelSelectionDialog: React.FC<FunnelSelectionDialogProps> = ({ onClose, 
               <div>
                 <h3 className="font-medium text-gray-900">{f.name}</h3>
                 <p className="text-sm text-gray-500">{f.desc}</p>
-              </div>
-            </button>
+            </div>
+          </button>
           ))}
         </div>
       </div>

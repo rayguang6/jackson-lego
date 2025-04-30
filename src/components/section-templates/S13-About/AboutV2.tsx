@@ -57,7 +57,7 @@ export const AboutV2: React.FC<AboutProps> = ({
                 defaultValue={title}
               />
             </MyHeading>
-            <MyParagraph theme={theme} className="text-lg text-gray-600 mb-10">
+            <MyParagraph theme={theme} className="text-lg mb-10">
               <EditableText
                 sectionId={sectionId}
                 contentPath="subtitle"
@@ -67,7 +67,7 @@ export const AboutV2: React.FC<AboutProps> = ({
 
             {/* Quote */}
             {quote && (
-              <div className="text-white p-8 rounded-lg" style={{ backgroundColor: GLOBALCSS_VAR.primaryColor10 }}>
+              <div className="text-white p-8 rounded-lg" style={{ backgroundColor: isDark ? GLOBALCSS_VAR.primaryColor10 : 'ffffff10' }}>
                 <div className="mb-4">
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.5 25H5L10 15H15L12.5 25Z" stroke={GLOBALCSS_VAR.primaryColor} strokeWidth="2" />

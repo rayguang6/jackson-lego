@@ -173,7 +173,7 @@ export const OfferV3: React.FC<OfferProps> = ({
                         defaultValue="The Proven Modular System"
                       />
                     </MyHeading>
-                    <ul className="space-y-2">
+                    {/* <ul className="space-y-2">
                       {benefitLists.modularSystem.map((benefit, index) => (
                         <li key={index} className="flex items-start">
                           <span className="flex-shrink-0 w-6 h-6 mr-3 text-green-500">
@@ -190,7 +190,7 @@ export const OfferV3: React.FC<OfferProps> = ({
                           </MyParagraph>
                         </li>
                       ))}
-                    </ul>
+                    </ul> */}
                   </div>
                   
                   {/* Column 2 */}

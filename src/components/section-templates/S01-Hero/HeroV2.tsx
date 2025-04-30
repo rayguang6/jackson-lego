@@ -23,7 +23,7 @@ export const HeroV2: React.FC<HeroProps> = ({
   ctaText = defaultHeroProps.ctaText,
   badgeText = defaultHeroProps.badgeText,
   theme = defaultHeroProps.theme,
-  imageUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_5,
+  imageUrl = TEMPLATE_IMAGES.HERO.VIDEO_THUMBNAIL_1,
   sectionId = defaultHeroProps.sectionId || ''
 }: HeroProps) => {
 

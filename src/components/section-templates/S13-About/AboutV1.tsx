@@ -55,7 +55,7 @@ export const AboutV1: React.FC<AboutProps> = ({
                 defaultValue={title}
               />
             </MyHeading>
-            <MyParagraph theme={theme} className="text-lg text-gray-600 mb-10">
+            <MyParagraph theme={theme} className="text-lg mb-10">
               <EditableText
                 sectionId={sectionId}
                 contentPath="subtitle"

@@ -53,7 +53,7 @@ export const AboutV3: React.FC<AboutProps> = ({
                 defaultValue={title}
               />
             </MyHeading>
-            <MyParagraph className='mt-5'>
+            <MyParagraph className='mt-5' theme={theme}>
               <EditableText
                 sectionId={sectionId}
                 contentPath="subtitle"
